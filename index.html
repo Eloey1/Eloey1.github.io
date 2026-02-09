@@ -16,9 +16,13 @@
             --text-primary: #ededed;
             --text-secondary: #a1a1aa;
             --accent-color: #64ffda;
-            --accent-glow: rgba(100, 255, 218, 0.15);
+            --accent-glow: rgba(100, 255, 218, 0.1);
             --font-main: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         * {
@@ -31,7 +35,7 @@
             font-family: var(--font-main);
             margin: 0;
             line-height: 1.6;
-            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+            overflow-x: hidden;
         }
 
         /* Typography */
@@ -67,6 +71,7 @@
             color: var(--text-secondary);
             font-size: 1.1rem;
             max-width: 600px;
+            margin-bottom: 20px;
         }
 
         .accent {
@@ -78,7 +83,7 @@
             font-size: 0.9rem;
         }
 
-        /* Layout & Container */
+        /* Container */
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -87,20 +92,22 @@
 
         /* Navigation */
         nav {
-            padding: 30px 0;
+            padding: 20px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky; /* Keeps nav visible */
+            position: sticky;
             top: 0;
             background: rgba(10, 10, 10, 0.85);
             backdrop-filter: blur(10px);
             z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
             nav .logo {
                 font-weight: 700;
                 color: var(--accent-color);
+                font-size: 1.1rem;
             }
 
             nav ul {
@@ -131,40 +138,28 @@
             position: relative;
         }
 
-            /* Background decorative glow */
-            .hero::before {
-                content: '';
-                position: absolute;
-                top: 20%;
-                right: 0;
-                width: 300px;
-                height: 300px;
-                background: var(--accent-color);
-                filter: blur(150px);
-                opacity: 0.1;
-                z-index: -1;
-            }
-
-            .hero h3 {
-                font-family: var(--font-mono);
-                color: var(--accent-color);
-                font-size: 1.1rem;
-                margin-bottom: 20px;
-                font-weight: 400;
-            }
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
 
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 14px 28px;
+            padding: 12px 24px;
             text-decoration: none;
             border-radius: 4px;
             font-family: var(--font-mono);
-            font-size: 0.95rem;
-            margin-top: 40px;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
             background: transparent;
+            cursor: pointer;
         }
 
             .btn:hover {
@@ -172,20 +167,36 @@
                 transform: translateY(-3px);
             }
 
-        /* Project Showcase Section */
-        #projects {
+        .btn-secondary {
+            border-color: #333;
+            color: #ededed;
+        }
+
+            .btn-secondary:hover {
+                border-color: var(--accent-color);
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Section Spacing */
+        section {
             padding: 80px 0;
         }
 
+        /* --- FEATURED PROJECTS (Big Cards) --- */
         .project-card {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
             gap: 40px;
-            margin-bottom: 120px;
+            margin-bottom: 100px;
             align-items: center;
         }
 
-            /* Alternate layout for even projects */
             .project-card.reverse {
                 grid-template-columns: 1fr 1.2fr;
                 direction: rtl;
@@ -195,7 +206,6 @@
                     direction: ltr;
                 }
 
-        /* Project Image Area */
         .project-visual {
             position: relative;
             border-radius: 8px;
@@ -203,25 +213,26 @@
             border: 1px solid #333;
             aspect-ratio: 16/9;
             background: #222;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s ease, border-color 0.3s ease; /* Smooth transition */
+            display: block;
+            cursor: pointer;
         }
 
+            /* THIS IS THE ANIMATION FIX */
             .project-visual:hover {
-                transform: scale(1.02);
                 border-color: var(--accent-color);
+                transform: scale(1.02); /* Makes it pop out slightly */
             }
 
             .project-visual img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                display: block;
             }
 
-        /* Project Text Content */
         .project-content h3 {
             font-size: 1.8rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .project-status {
@@ -238,37 +249,35 @@
         .tech-stack {
             font-family: var(--font-mono);
             font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin: 20px 0;
+            color: var(--accent-color);
+            margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
         }
 
-        /* Code Block Styling (Mini IDE) */
+        /* --- MINI IDE --- */
         .code-window {
             background-color: #1e1e1e;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
             margin: 20px 0;
             border: 1px solid #333;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-            font-size: 0.8rem;
-            text-align: left; /* Ensure code is always left aligned even in reverse layout */
+            font-size: 0.75rem;
+            text-align: left;
             direction: ltr;
         }
 
         .window-header {
             background: #252526;
-            padding: 8px 12px;
+            padding: 6px 10px;
             display: flex;
             gap: 6px;
-            border-bottom: 1px solid #333;
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
         }
 
@@ -306,13 +315,64 @@
 
         .comment {
             color: #6a9955;
-            font-style: italic;
         }
 
-        /* Skills Grid */
+        /* --- ARCHIVE GRID (For Old Games) --- */
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .archive-card {
+            background: var(--surface-color);
+            padding: 25px;
+            border-radius: 6px;
+            transition: 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid transparent;
+            text-decoration: none;
+            color: inherit;
+        }
+
+            .archive-card:hover {
+                transform: translateY(-5px);
+                border-color: var(--accent-color);
+            }
+
+        .archive-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .archive-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .archive-card p {
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .archive-tech {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* --- SKILLS --- */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
 
@@ -320,38 +380,25 @@
             background: var(--surface-color);
             padding: 25px;
             border-radius: 6px;
-            border: 1px solid transparent;
             transition: 0.3s;
+            border: 1px solid transparent;
         }
 
             .skill-box:hover {
                 border-color: var(--accent-color);
-                transform: translateY(-5px);
             }
 
             .skill-box ul {
                 padding-left: 20px;
                 color: var(--text-secondary);
+                font-size: 0.95rem;
             }
 
-            .skill-box li {
-                margin-bottom: 8px;
-            }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 50px 0;
-            color: #666;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-        }
-
-        /* ANIMATION UTILITIES */
+        /* --- ANIMATIONS --- */
         .hidden {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            transform: translateY(40px);
+            transition: all 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
 
         .show {
@@ -359,7 +406,6 @@
             transform: translateY(0);
         }
 
-        /* Stagger delays */
         .delay-1 {
             transition-delay: 100ms;
         }
@@ -372,19 +418,68 @@
             transition-delay: 300ms;
         }
 
-        /* Responsive */
+        .delay-4 {
+            transition-delay: 400ms;
+        }
+
+        .delay-5 {
+            transition-delay: 500ms;
+        }
+
+        .delay-6 {
+            transition-delay: 600ms;
+        }
+
+        /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
             }
 
-            .project-card, .project-card.reverse {
-                grid-template-columns: 1fr;
-                direction: ltr;
+            h2 {
+                font-size: 1.5rem;
             }
 
-            .project-visual {
-                aspect-ratio: 16/9;
+            .container {
+                padding: 0 20px;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+                nav ul {
+                    width: 100%;
+                    overflow-x: auto;
+                    padding-bottom: 5px;
+                    gap: 20px;
+                }
+
+            .project-card, .project-card.reverse {
+                grid-template-columns: 1fr;
+                direction: ltr !important;
+                gap: 20px;
+                margin-bottom: 60px;
+            }
+
+            .project-content {
+                direction: ltr !important;
+            }
+
+            .code-window {
+                display: none;
+            }
+
+            .archive-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 450px) {
+            .code-window {
+                display: block;
             }
         }
     </style>
@@ -395,7 +490,8 @@
         <nav>
             <div class="logo mono">&lt;EmilBarkefors /&gt;</div>
             <ul>
-                <li><a href="#projects">Work</a></li>
+                <li><a href="#projects">Engine Work</a></li>
+                <li><a href="#archive">Game Archive</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -404,73 +500,125 @@
         <section class="hero">
             <h3 class="hidden delay-1">Hi, my name is</h3>
             <h1 class="hidden delay-2">Emil Barkefors.</h1>
-            <h1 class="hidden delay-3" style="color: var(--text-secondary);">I build game engines.</h1>
+            <h1 class="hidden delay-3" style="color: var(--text-secondary);">I build tools for creators.</h1>
             <p class="hidden delay-3" style="margin-top: 20px;">
                 I am a C++ programmer specializing in <span class="accent">Tool Development</span> and <span class="accent">Engine Architecture</span>.
-                Currently building a level editor to optimize design workflows.
+                Currently building a custom 3D level editor.
             </p>
-            <div class="hidden delay-3">
-                <a href="#projects" class="btn">View My Work</a>
+
+            <div class="btn-group hidden delay-3">
+                <a href="#projects" class="btn">View Engine Work</a>
+
+                <a href="Resume.pdf" class="btn btn-secondary" target="_blank">Resume</a>
+
+                <a href="https://www.linkedin.com/in/emil-barkefors-901096231/" class="btn btn-secondary" target="_blank">
+                    <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
+                    LinkedIn
+                </a>
             </div>
         </section>
 
         <section id="projects">
-            <h2 class="hidden">Featured Projects</h2>
+            <h2 class="hidden">Engine & Tools</h2>
 
             <div class="project-card hidden">
-                <div class="project-visual">
-                    <img src="https://placehold.co/800x450/1e1e1e/64ffda?text=Forge+Editor+Preview" alt="Level Editor Screenshot">
-                </div>
+                <a href="frostheim.html" class="project-visual">
+                    <img src="https://placehold.co/800x450/1e1e1e/64ffda?text=Frostheim+Editor+Preview" alt="Level Editor">
+                </a>
 
                 <div class="project-content">
-                    <h3>Forge Editor <span class="project-status">In Dev</span></h3>
-                    <div class="tech-stack">
-                        <span>C++20</span>
-                        <span>DX11</span>
-                        <span>ImGui</span>
-                        <span>JSON</span>
-                    </div>
-                    <p>
-                        A robust 3D level editor built from scratch. Designed to handle scene serialization and entity management without the overhead of commercial engines.
-                    </p>
+                    <h3>Frostheim Editor <span class="project-status">In Dev</span></h3>
+                    <div class="tech-stack">C++20 • DX11 • ImGui • JSON</div>
+                    <p>A robust 3D level editor built to streamline asset placement. Features a Command Pattern Undo/Redo stack and ECS architecture.</p>
 
                     <div class="code-window">
-                        <div class="window-header">
-                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-                        </div>
+                        <div class="window-header"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
                         <div class="code-content">
-                            <span class="comment">// Custom Pool Allocator for ECS</span>
-                            <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
-                            T* PoolAllocator::<span class="fn">Allocate</span>() {
-                            <span class="keyword">if</span> (m_FreeList.empty()) {
-                            <span class="fn">ExpandPool</span>();
-                            }
-                            <span class="keyword">return</span> m_FreeList.<span class="fn">pop_back</span>();
+                            <span class="comment">// Command Pattern for Undo/Redo</span>
+                            <span class="keyword">void</span> CommandStack::<span class="fn">Push</span>(ICommand* cmd) {
+                            m_UndoStack.<span class="fn">push</span>(cmd);
+                            <span class="comment">// Clear redo stack on new action</span>
+                            <span class="keyword">while</span> (!m_RedoStack.empty()) { ... }
                             }
                         </div>
                     </div>
-
-                    <a href="https://github.com/Eloey1" class="btn" style="padding: 10px 20px; font-size: 0.8rem;">View on GitHub</a>
+                    <a href="https://github.com/Eloey1/YOUR-REPO" target="_blank" class="btn" style="font-size: 0.8rem;">Read Devlog</a>
                 </div>
             </div>
 
             <div class="project-card reverse hidden">
-                <div class="project-visual">
-                    <img src="https://placehold.co/800x450/1e1e1e/64ffda?text=DX11+Renderer" alt="Renderer Screenshot">
-                </div>
+                <a href="https://github.com/Eloey1/YOUR-RENDERER-REPO" target="_blank" class="project-visual">
+                    <img src="https://placehold.co/800x450/1e1e1e/64ffda?text=Renderer+Showcase" alt="Renderer">
+                </a>
 
                 <div class="project-content">
                     <h3>DX11 PBR Renderer</h3>
-                    <div class="tech-stack">
-                        <span>C++</span>
-                        <span>DirectX 11</span>
-                        <span>HLSL</span>
-                    </div>
-                    <p>
-                        A physically based renderer featuring multi-threaded command buffer generation. Focuses on low-level graphics API management and compute shader culling.
-                    </p>
-                    <a href="https://github.com/Eloey1" class="btn" style="padding: 10px 20px; font-size: 0.8rem;">View Source</a>
+                    <div class="tech-stack">C++ • DirectX 11 • HLSL</div>
+                    <p>Physically based renderer with multi-threaded command generation and compute shader culling.</p>
+                    <a href="#" class="btn" style="font-size: 0.8rem;">View Source</a>
                 </div>
+            </div>
+        </section>
+
+        <section id="archive">
+            <h2 class="hidden">Game Projects</h2>
+            <p class="hidden">A collection of my games made here at TGA.</p>
+            <div class="archive-grid">
+
+                <a href="https://snackapawn.itch.io/pawns-gambit" target="_blank" class="archive-card hidden delay-1">
+                    <div class="archive-header">
+                        <h3>Pawn's Gambit</h3>
+                        <span class="mono accent">Itch.io ↗</span>
+                    </div>
+                    <p>Award winning puzzle game (The Rookies Runner up & People's Choice).</p>
+                    <div class="archive-tech">C# • Unity • 2025</div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=C2sNwLEPPF4" target="_blank" class="archive-card hidden delay-2">
+                    <div class="archive-header">
+                        <h3>Tunnle Vision</h3>
+                        <span class="mono accent">Video ↗</span>
+                    </div>
+                    <p>Physics-based character controller prototype.</p>
+                    <div class="archive-tech">C++ • TGE • 2025</div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=gxaEJ56esTE" target="_blank" class="archive-card hidden delay-3">
+                    <div class="archive-header">
+                        <h3>Beak Noir</h3>
+                        <span class="mono accent">Video ↗</span>
+                    </div>
+                    <p>Isometric top down adventure game.</p>
+                    <div class="archive-tech">C++ • TGE • 2025</div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=6T9ucwCqhoA" target="_blank" class="archive-card hidden delay-4">
+                    <div class="archive-header">
+                        <h3>Spite Oathbound</h3>
+                        <span class="mono accent">Video ↗</span>
+                    </div>
+                    <p>Top down diablo like game.</p>
+                    <div class="archive-tech">C++ • Frostheim • 2026</div>
+                </a>
+
+                <a href="https://www.youtube.com/" target="_blank" class="archive-card hidden delay-5">
+                    <div class="archive-header">
+                        <h3>TBA</h3>
+                        <span class="mono accent">Video ↗</span>
+                    </div>
+                    <p>3D platformer in progress.</p>
+                    <div class="archive-tech">C++ • Frostheim • 2026</div>
+                </a>
+
+                <a href="https://www.youtube.com/" target="_blank" class="archive-card hidden delay-6">
+                    <div class="archive-header">
+                        <h3>TBA</h3>
+                        <span class="mono accent">Video ↗</span>
+                    </div>
+                    <p>TBA</p>
+                    <div class="archive-tech">C++ • Frostheim • 2026</div>
+                </a>
+
             </div>
         </section>
 
@@ -478,64 +626,44 @@
             <h2 class="hidden">Technical Arsenal</h2>
             <div class="skills-grid hidden">
                 <div class="skill-box">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-color);">Core</h3>
-                    <ul>
-                        <li>C++ (14/17/20)</li>
-                        <li>STL & Templates</li>
-                        <li>Memory Management</li>
-                        <li>Linear Algebra</li>
-                    </ul>
+                    <h3 style="color: var(--accent-color);">Core</h3>
+                    <ul><li>C++ (14/17/20)</li><li>Memory Management</li><li>Linear Algebra</li></ul>
                 </div>
                 <div class="skill-box">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-color);">Engine</h3>
-                    <ul>
-                        <li>DirectX 11 / OpenGL</li>
-                        <li>ImGui / Tools Dev</li>
-                        <li>Entity Component System</li>
-                        <li>Serialization (JSON/Binary)</li>
-                    </ul>
+                    <h3 style="color: var(--accent-color);">Engine</h3>
+                    <ul><li>DirectX 11 / OpenGL</li><li>ImGui / Tools</li><li>ECS Architecture</li></ul>
                 </div>
                 <div class="skill-box">
-                    <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-color);">Workflow</h3>
-                    <ul>
-                        <li>Premake / CMake</li>
-                        <li>Perforce / Git</li>
-                        <li>RenderDoc</li>
-                        <li>Visual Studio</li>
-                    </ul>
+                    <h3 style="color: var(--accent-color);">Tools</h3>
+                    <ul><li>Git / Perforce</li><li>Premake / CMake</li><li>RenderDoc</li></ul>
                 </div>
             </div>
         </section>
 
         <section id="contact" style="padding: 100px 0; text-align: center;">
             <h2 class="hidden" style="justify-content: center; border: none;">What's Next?</h2>
-            <h1 class="hidden" style="font-size: 3rem; margin-bottom: 20px;">Let's Connect</h1>
+            <h1 class="hidden">Let's Connect</h1>
             <p class="hidden" style="margin: 0 auto 40px auto;">
-                I am currently building my level editor and looking for Internship or Junior opportunities in Tools & Engine programming.
+                Looking for Internship opportunities in Engine Programming.
             </p>
-            <a href="mailto:emilb2002@gmail.com" class="btn hidden">Say Hello</a>
+            <a href="mailto:emilb2002@gmail.com" class="btn hidden">Email Me</a>
         </section>
 
         <footer>
-            <p>&copy; 2026 Emil Barkefors. Built with C++ fueled caffeine.</p>
+            <p class="mono">&copy; 2026 Emil Barkefors</p>
         </footer>
     </div>
 
     <script>
-        const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
         if (entry.isIntersecting) {
         entry.target.classList.add('show');
-        observer.unobserve(entry.target); // Only animate once
+        } else {
+        entry.target.classList.remove('show');
         }
         });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
         const hiddenElements = document.querySelectorAll('.hidden');
         hiddenElements.forEach((el) => observer.observe(el));

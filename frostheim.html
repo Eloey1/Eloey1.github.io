@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frostheim Editor | Deep Dive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* REUSING YOUR CORE STYLES FOR CONSISTENCY */
+        :root {
+            --bg-color: #0a0a0a;
+            --surface-color: #161616;
+            --text-primary: #ededed;
+            --text-secondary: #a1a1aa;
+            --accent-color: #64ffda;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Navigation Back Button */
+        .back-nav {
+            margin-bottom: 40px;
+        }
+
+            .back-nav a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-family: var(--font-mono);
+                font-size: 0.9rem;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: 0.3s;
+            }
+
+                .back-nav a:hover {
+                    color: var(--accent-color);
+                    transform: translateX(-5px);
+                }
+
+        /* Header */
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            color: var(--accent-color);
+            font-family: var(--font-mono);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Main Visual (Video or Big GIF) */
+        .showcase-media {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #222;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+            .showcase-media img, .showcase-media video {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        /* Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        h2 {
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: var(--surface-color);
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+
+            .feature-card h3 {
+                color: var(--text-primary);
+                margin-top: 0;
+            }
+
+        /* Image Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+            .gallery-item img {
+                width: 100%;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .gallery-item:hover img {
+                transform: scale(1.05);
+            }
+
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #d4d4d4;
+            overflow-x: auto;
+            border-left: 3px solid var(--accent-color);
+            margin: 20px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="back-nav">
+            <a href="index.html">← Back to Portfolio</a>
+        </div>
+
+        <span class="subtitle">PROJECT SHOWCASE</span>
+        <h1>Frostheim Editor</h1>
+        <div style="margin-top: 15px; font-family: var(--font-mono); color: var(--text-secondary); font-size: 0.9rem;">
+            C++20 • DirectX 11 • ImGui • JSON Serialization
+        </div>
+
+        <div class="showcase-media">
+            <img src="https://placehold.co/1200x675/1e1e1e/64ffda?text=Main+Editor+View" alt="Editor Interface">
+        </div>
+
+        <div class="content-grid">
+
+            <section>
+                <h2>Project Overview</h2>
+                <p>
+                    Frostheim is a custom 3D level editor designed to bridge the gap between engine efficiency and designer workflow.
+                    Built from scratch in C++ using DirectX 11, it focuses on fast iteration times and robust scene management.
+                </p>
+                <p>
+                    My goal was to implement industry-standard patterns (ECS, Command Pattern) to create a tool that feels responsive and professional.
+                </p>
+            </section>
+
+            <section>
+                <h2>Technical Challenges</h2>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Undo/Redo System</h3>
+                        <p>Implemented a robust Command Pattern. Every action (Move, Rotate, Delete) is encapsulated as a command object pushed onto a stack.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Entity Component System</h3>
+                        <p>Data-oriented design using contiguous memory arrays for components to minimize cache misses during update loops.</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">Command Stack Implementation</h3>
+                <div class="code-block">
+                    void CommandStack::Undo() {
+                    if (m_UndoStack.empty()) return;
+
+                    ICommand* cmd = m_UndoStack.top();
+                    cmd->Undo(); // Revert logic
+                    m_UndoStack.pop();
+                    m_RedoStack.push(cmd);
+                    }
+                </div>
+            </section>
+
+            <section>
+                <h2>Gallery & Features</h2>
+                <p>Visual breakdown of the tools capabilities.</p>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://placehold.co/600x400/222/64ffda?text=Gizmos+&+Transform" alt="Gizmos">
+                        <div style="padding: 10px; background: #222; font-size: 0.8rem; color: #aaa;">ImGuizmo Integration</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://placehold.co/600x400/222/64ffda?text=Content+Browser" alt="Asset Browser">
+                        <div style="padding: 10px; background: #222; font-size: 0.8rem; color: #aaa;">Drag & Drop Assets</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://placehold.co/600x400/222/64ffda?text=Scene+Hierarchy" alt="Scene Graph">
+                        <div style="padding: 10px; background: #222; font-size: 0.8rem; color: #aaa;">Parent/Child Hierarchy</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://placehold.co/600x400/222/64ffda?text=JSON+Serialization" alt="Serialization">
+                        <div style="padding: 10px; background: #222; font-size: 0.8rem; color: #aaa;">Scene Saving/Loading</div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <footer style="text-align: center; margin-top: 80px; color: var(--text-secondary); font-size: 0.9rem;">
+            &copy; 2026 Emil Barkefors
+        </footer>
+    </div>
+
+</body>
+</html>
