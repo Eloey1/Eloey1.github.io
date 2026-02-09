@@ -1,4 +1,544 @@
----
-layout: home
-# Index page
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emil Barkefors | Engine Programmer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --surface-color: #161616;
+            --surface-hover: #222222;
+            --text-primary: #ededed;
+            --text-secondary: #a1a1aa;
+            --accent-color: #64ffda;
+            --accent-glow: rgba(100, 255, 218, 0.15);
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            margin: 0;
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            margin: 0;
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+            h2::after {
+                content: "";
+                display: block;
+                height: 1px;
+                background: #333;
+                flex: 1;
+                margin-left: 20px;
+            }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+        }
+
+        .accent {
+            color: var(--accent-color);
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        /* Layout & Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; /* Keeps nav visible */
+            top: 0;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+            nav .logo {
+                font-weight: 700;
+                color: var(--accent-color);
+            }
+
+            nav ul {
+                list-style: none;
+                display: flex;
+                gap: 30px;
+                margin: 0;
+                padding: 0;
+            }
+
+            nav a {
+                color: var(--text-secondary);
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: 0.3s;
+            }
+
+                nav a:hover {
+                    color: var(--accent-color);
+                }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+            /* Background decorative glow */
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: 20%;
+                right: 0;
+                width: 300px;
+                height: 300px;
+                background: var(--accent-color);
+                filter: blur(150px);
+                opacity: 0.1;
+                z-index: -1;
+            }
+
+            .hero h3 {
+                font-family: var(--font-mono);
+                color: var(--accent-color);
+                font-size: 1.1rem;
+                margin-bottom: 20px;
+                font-weight: 400;
+            }
+
+        .btn {
+            display: inline-block;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            margin-top: 40px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: transparent;
+        }
+
+            .btn:hover {
+                background-color: var(--accent-glow);
+                transform: translateY(-3px);
+            }
+
+        /* Project Showcase Section */
+        #projects {
+            padding: 80px 0;
+        }
+
+        .project-card {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            margin-bottom: 120px;
+            align-items: center;
+        }
+
+            /* Alternate layout for even projects */
+            .project-card.reverse {
+                grid-template-columns: 1fr 1.2fr;
+                direction: rtl;
+            }
+
+                .project-card.reverse .project-content {
+                    direction: ltr;
+                }
+
+        /* Project Image Area */
+        .project-visual {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+            aspect-ratio: 16/9;
+            background: #222;
+            transition: transform 0.4s ease;
+        }
+
+            .project-visual:hover {
+                transform: scale(1.02);
+                border-color: var(--accent-color);
+            }
+
+            .project-visual img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+        /* Project Text Content */
+        .project-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .project-status {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: rgba(100,255,218,0.1);
+            color: var(--accent-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .tech-stack {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* Code Block Styling (Mini IDE) */
+        .code-window {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            font-size: 0.8rem;
+            text-align: left; /* Ensure code is always left aligned even in reverse layout */
+            direction: ltr;
+        }
+
+        .window-header {
+            background: #252526;
+            padding: 8px 12px;
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid #333;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .red {
+            background: #ff5f56;
+        }
+
+        .yellow {
+            background: #ffbd2e;
+        }
+
+        .green {
+            background: #27c93f;
+        }
+
+        .code-content {
+            padding: 15px;
+            font-family: var(--font-mono);
+            color: #d4d4d4;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .type {
+            color: #4ec9b0;
+        }
+
+        .fn {
+            color: #dcdcaa;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-box {
+            background: var(--surface-color);
+            padding: 25px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+            .skill-box:hover {
+                border-color: var(--accent-color);
+                transform: translateY(-5px);
+            }
+
+            .skill-box ul {
+                padding-left: 20px;
+                color: var(--text-secondary);
+            }
+
+            .skill-box li {
+                margin-bottom: 8px;
+            }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px 0;
+            color: #666;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+
+        /* ANIMATION UTILITIES */
+        .hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger delays */
+        .delay-1 {
+            transition-delay: 100ms;
+        }
+
+        .delay-2 {
+            transition-delay: 200ms;
+        }
+
+        .delay-3 {
+            transition-delay: 300ms;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .project-card, .project-card.reverse {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            }
+
+            .project-visual {
+                aspect-ratio: 16/9;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <div class="logo mono">&lt;EmilBarkefors /&gt;</div>
+            <ul>
+                <li><a href="#projects">Work</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <section class="hero">
+            <h3 class="hidden delay-1">Hi, my name is</h3>
+            <h1 class="hidden delay-2">Emil Barkefors.</h1>
+            <h1 class="hidden delay-3" style="color: var(--text-secondary);">I build game engines.</h1>
+            <p class="hidden delay-3" style="margin-top: 20px;">
+                I am a C++ programmer specializing in <span class="accent">Tool Development</span> and <span class="accent">Engine Architecture</span>.
+                Currently building a level editor to optimize design workflows.
+            </p>
+            <div class="hidden delay-3">
+                <a href="#projects" class="btn">View My Work</a>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2 class="hidden">Featured Projects</h2>
+
+            <div class="project-card hidden">
+                <div class="project-visual">
+                    <img src="https://placehold.co/800x450/1e1e1e/64ffda?text=Forge+Editor+Preview" alt="Level Editor Screenshot">
+                </div>
+
+                <div class="project-content">
+                    <h3>Forge Editor <span class="project-status">In Dev</span></h3>
+                    <div class="tech-stack">
+                        <span>C++20</span>
+                        <span>DX11</span>
+                        <span>ImGui</span>
+                        <span>JSON</span>
+                    </div>
+                    <p>
+                        A robust 3D level editor built from scratch. Designed to handle scene serialization and entity management without the overhead of commercial engines.
+                    </p>
+
+                    <div class="code-window">
+                        <div class="window-header">
+                            <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+                        </div>
+                        <div class="code-content">
+                            <span class="comment">// Custom Pool Allocator for ECS</span>
+                            <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;
+                            T* PoolAllocator::<span class="fn">Allocate</span>() {
+                            <span class="keyword">if</span> (m_FreeList.empty()) {
+                            <span class="fn">ExpandPool</span>();
+                            }
+                            <span class="keyword">return</span> m_FreeList.<span class="fn">pop_back</span>();
+                            }
+                        </div>
+                    </div>
+
+                    <a href="https://github.com/Eloey1" class="btn" style="padding: 10px 20px; font-size: 0.8rem;">View on GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-card reverse hidden">
+                <div class="project-visual">
+                    <img src="https://placehold.co/800x450/1e1e1e/64ffda?text=DX11+Renderer" alt="Renderer Screenshot">
+                </div>
+
+                <div class="project-content">
+                    <h3>DX11 PBR Renderer</h3>
+                    <div class="tech-stack">
+                        <span>C++</span>
+                        <span>DirectX 11</span>
+                        <span>HLSL</span>
+                    </div>
+                    <p>
+                        A physically based renderer featuring multi-threaded command buffer generation. Focuses on low-level graphics API management and compute shader culling.
+                    </p>
+                    <a href="https://github.com/Eloey1" class="btn" style="padding: 10px 20px; font-size: 0.8rem;">View Source</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2 class="hidden">Technical Arsenal</h2>
+            <div class="skills-grid hidden">
+                <div class="skill-box">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-color);">Core</h3>
+                    <ul>
+                        <li>C++ (14/17/20)</li>
+                        <li>STL & Templates</li>
+                        <li>Memory Management</li>
+                        <li>Linear Algebra</li>
+                    </ul>
+                </div>
+                <div class="skill-box">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-color);">Engine</h3>
+                    <ul>
+                        <li>DirectX 11 / OpenGL</li>
+                        <li>ImGui / Tools Dev</li>
+                        <li>Entity Component System</li>
+                        <li>Serialization (JSON/Binary)</li>
+                    </ul>
+                </div>
+                <div class="skill-box">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 15px; color: var(--accent-color);">Workflow</h3>
+                    <ul>
+                        <li>Premake / CMake</li>
+                        <li>Perforce / Git</li>
+                        <li>RenderDoc</li>
+                        <li>Visual Studio</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" style="padding: 100px 0; text-align: center;">
+            <h2 class="hidden" style="justify-content: center; border: none;">What's Next?</h2>
+            <h1 class="hidden" style="font-size: 3rem; margin-bottom: 20px;">Let's Connect</h1>
+            <p class="hidden" style="margin: 0 auto 40px auto;">
+                I am currently building my level editor and looking for Internship or Junior opportunities in Tools & Engine programming.
+            </p>
+            <a href="mailto:emilb2002@gmail.com" class="btn hidden">Say Hello</a>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Emil Barkefors. Built with C++ fueled caffeine.</p>
+        </footer>
+    </div>
+
+    <script>
+        const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+        if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target); // Only animate once
+        }
+        });
+        }, observerOptions);
+
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el));
+    </script>
+</body>
+</html>
