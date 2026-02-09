@@ -5,7 +5,7 @@ categories: [Portfolio, Game Engine]
 tags: [cpp, opengl, physics, tools]
 pin: true
 image:
-  path: /assets/img/shooter-preview.jpg
+  path: /assets/img/test_image.png
   alt: A screenshot of the game running
 ---
 
