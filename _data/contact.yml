@@ -2,13 +2,15 @@
 
 - type: github
   icon: "fab fa-github"
+  url: "https://github.com/Eloey1"
 
-- type: twitter
-  icon: "fa-brands fa-x-twitter"
+- type: linkedin
+  icon: 'fab fa-linkedin'
+  url: 'https://www.linkedin.com/in/emil-barkefors-901096231'
 
 - type: email
   icon: "fas fa-envelope"
-  noblank: true # open link in current tab
+  url: "mailto:emilb2002@gmail.com"
 
 - type: rss
   icon: "fas fa-rss"
