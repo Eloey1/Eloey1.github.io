@@ -788,27 +788,20 @@
             gizmo.style.transform = `rotateX(-30deg) rotateY(${rotation}deg)`;
         });
 
-        // SCROLL ANIMATIONS & NAV
+       // SCROLL ANIMATIONS (Re-triggers on scroll up/down)
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('show');
+                if (entry.isIntersecting) {
+                    // Add class when element is visible
+                    entry.target.classList.add('show');
+                } else {
+                    // Remove class when element leaves the screen
+                    entry.target.classList.remove('show');
+                }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
 
-        const sections = document.querySelectorAll("section");
-        const navLi = document.querySelectorAll("nav ul li a");
-        window.onscroll = () => {
-            let current = "";
-            sections.forEach((section) => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 150) current = section.getAttribute("id");
-            });
-            navLi.forEach((a) => {
-                a.classList.remove("active");
-                if (a.getAttribute("href").includes(current)) a.classList.add("active");
-            });
-        };
+        document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
 
         // FPS COUNTER
         const fpsElem = document.getElementById("fps");
