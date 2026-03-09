@@ -189,13 +189,23 @@
         animateParticles();
 
         // -----------------------------------------------------
-        // 3. SEAMLESS FADE TRANSITION LOGIC
+        // SEAMLESS PAGE TRANSITION & BACK-BUTTON FIX
         // -----------------------------------------------------
-        document.addEventListener('DOMContentLoaded', () => {
-            // Reveal page on load
-            setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
+        
+        // 1. Reveal page on load (and handle the browser 'Back' button)
+        window.addEventListener('pageshow', (event) => {
+            // If the page is loaded from the browser's memory cache (Back button)
+            if (event.persisted) {
+                document.body.classList.remove('is-exiting');
+                document.body.classList.add('is-loaded');
+            } else {
+                // Normal first-time load
+                setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
+            }
+        });
 
-            // Fade out on click
+        // 2. Fade out on link click
+        document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
@@ -209,7 +219,7 @@
                     }
                 });
             });
-
+        });
             // Scroll Reveal Observer
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {

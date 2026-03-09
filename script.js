@@ -448,36 +448,37 @@ if (gizmoGl) {
 }
 
 // -----------------------------------------------------
-// SEAMLESS PAGE TRANSITION LOGIC
-// -----------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. Reveal page on load
-    // Wait a brief moment to ensure WebGL has compiled, then lift the curtain
-    setTimeout(() => {
-        document.body.classList.add('is-loaded');
-    }, 100);
-
-    // 2. Handle link clicks for the exit animation
-    document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Only intercept internal links (ignore anchors and external/PDF links)
-            if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
-                e.preventDefault();
-                const destination = this.href;
-
-                // Drop the curtain and trigger UI push-back
-                document.body.classList.remove('is-loaded');
-                document.body.classList.add('is-exiting');
-
-                // Wait 500ms for the curtain to fully cover the screen, then navigate
-                setTimeout(() => {
-                    window.location.href = destination;
-                }, 500); 
+        // SEAMLESS PAGE TRANSITION & BACK-BUTTON FIX
+        // -----------------------------------------------------
+        
+        // 1. Reveal page on load (and handle the browser 'Back' button)
+        window.addEventListener('pageshow', (event) => {
+            // If the page is loaded from the browser's memory cache (Back button)
+            if (event.persisted) {
+                document.body.classList.remove('is-exiting');
+                document.body.classList.add('is-loaded');
+            } else {
+                // Normal first-time load
+                setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
             }
         });
-    });
-});
+
+        // 2. Fade out on link click
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
+                        e.preventDefault();
+                        const destination = this.href;
+                        
+                        document.body.classList.remove('is-loaded');
+                        document.body.classList.add('is-exiting');
+                        
+                        setTimeout(() => { window.location.href = destination; }, 500); 
+                    }
+                });
+            });
+        });
 
 // -----------------------------------------------------
 // GLOBAL IDE WINDOW COLLAPSE LOGIC
