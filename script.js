@@ -71,7 +71,7 @@ function renderPortfolio() {
                     <p>${proj.description}</p>
                     <a href="${proj.projectLink}" style="color: var(--accent-color); font-family: var(--font-mono); font-size: 0.9rem; text-decoration: underline; text-underline-offset: 4px;">${proj.linkText}</a>
                 </div>
-                <div class="ide-window">
+                <div class="ide-window collapsed">
                     <div class="ide-header">
                         <div class="ide-dot" style="background:#ff5f56"></div><div class="ide-dot" style="background:#ffbd2e"></div><div class="ide-dot" style="background:#27c93f"></div>
                         <span style="margin-left:auto; color:#666;">${proj.codeSnippet.title}</span>
@@ -477,4 +477,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+});
+
+// -----------------------------------------------------
+// GLOBAL IDE WINDOW COLLAPSE LOGIC
+// -----------------------------------------------------
+document.addEventListener('click', function(e) {
+    // Check if the user clicked on an IDE header (or the text inside it)
+    const header = e.target.closest('.ide-header');
+    if (header) {
+        // Find the parent window and toggle the 'collapsed' class
+        const window = header.closest('.ide-window');
+        if (window) {
+            window.classList.toggle('collapsed');
+        }
+    }
 });

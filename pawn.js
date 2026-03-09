@@ -99,7 +99,7 @@ function renderProjectPage() {
     // Generate Code Snippet if it exists
     const codeHtml = projectData.codeSnippet ? `
         <div class="ide-wrapper scroll-reveal" style="margin-top: 40px;">
-            <div class="ide-window">
+            <div class="ide-window collapsed">
                 <div class="ide-header">
                     <div class="ide-dot" style="background:#ff5f56"></div><div class="ide-dot" style="background:#ffbd2e"></div><div class="ide-dot" style="background:#27c93f"></div>
                     <span style="margin-left:auto; color:var(--text-secondary); font-size: 0.75rem;">${projectData.codeSnippet.title}</span>
@@ -191,3 +191,18 @@ function renderProjectPage() {
 }
 
 renderProjectPage();
+
+// -----------------------------------------------------
+// GLOBAL IDE WINDOW COLLAPSE LOGIC
+// -----------------------------------------------------
+document.addEventListener('click', function(e) {
+    // Check if the user clicked on an IDE header (or the text inside it)
+    const header = e.target.closest('.ide-header');
+    if (header) {
+        // Find the parent window and toggle the 'collapsed' class
+        const window = header.closest('.ide-window');
+        if (window) {
+            window.classList.toggle('collapsed');
+        }
+    }
+});

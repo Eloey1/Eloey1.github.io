@@ -138,7 +138,7 @@ a { text-decoration: none; color: inherit; }
 .bento-footer { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-top: 1.5rem; display: flex; justify-content: space-between; }
 
 /* =========================================================
-   Code Window (Sci-Fi Engine HUD Aesthetic)
+   Code Window (Sci-Fi Engine HUD Aesthetic - COLLAPSIBLE)
    ========================================================= */
 .ide-window { 
     background: rgba(10, 15, 20, 0.6); 
@@ -146,14 +146,14 @@ a { text-decoration: none; color: inherit; }
     border-right: 1px solid var(--surface-border);
     border-bottom: 1px solid var(--surface-border);
     border-left: 3px solid var(--accent-color); /* Thick glowing left edge */
-    border-radius: 0; /* No rounded corners */
+    border-radius: 0; 
     font-family: var(--font-mono); 
     font-size: 0.85rem; 
     overflow: hidden; 
     box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.05); 
     max-width: 100%; 
-    /* Futuristic cut-off corner on the bottom right */
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    transition: all 0.3s ease;
 }
 
 .ide-header { 
@@ -162,6 +162,13 @@ a { text-decoration: none; color: inherit; }
     display: flex; 
     align-items: center; 
     border-bottom: 1px solid rgba(0, 240, 255, 0.15); 
+    cursor: pointer; /* Shows a pointing hand when hovering */
+    user-select: none; /* Prevents the text from highlighting when you click */
+    transition: background 0.2s ease;
+}
+
+.ide-header:hover {
+    background: rgba(0, 240, 255, 0.15); /* Brightens the header when hovered */
 }
 
 /* Hide Mac Dots */
@@ -174,6 +181,16 @@ a { text-decoration: none; color: inherit; }
     font-size: 0.75rem !important;
     text-transform: uppercase;
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* The interactive collapse arrow */
+.ide-header span::before {
+    content: "▼";
+    font-size: 0.6rem;
+    transition: transform 0.3s ease;
 }
 
 .ide-content { 
@@ -188,7 +205,24 @@ a { text-decoration: none; color: inherit; }
 .kw { color: #ff7b72; } 
 .ty { color: var(--accent-color); text-shadow: 0 0 8px rgba(0,240,255,0.3); } 
 .fn { color: #d2a8ff; } 
-.cm { color: #8b949e; font-style: italic; }
+.cm { color: #8b949e; font-style: italic; } 
+
+/* --- THE COLLAPSED STATE LOGIC --- */
+.ide-window.collapsed {
+    clip-path: none; /* Temporarily removes the sliced corner so it doesn't cut the header text off */
+}
+
+.ide-window.collapsed .ide-content {
+    display: none; /* Hides the code body */
+}
+
+.ide-window.collapsed .ide-header {
+    border-bottom: none; /* Removes the line under the header */
+}
+
+.ide-window.collapsed .ide-header span::before {
+    transform: rotate(-90deg); /* Rotates the arrow to point right (▶) */
+}
 
 
 /* =========================================================
