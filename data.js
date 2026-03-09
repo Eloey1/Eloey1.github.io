@@ -84,7 +84,7 @@ void ParticleEditor::DrawEmitterUI(Emitter& e) {
             title: "Pawn's Gambit",
             description: "The Rookies Runner-up & People's Choice award-winning puzzle game.",
             techStack: ["C#", "Unity", "2025"],
-            link: "pawn.html", // Updated link to your new pawn page!
+            link: "game_template.html", // Updated link to your new pawn page!
             media: {
                 type: "image",
                 src: "https://placehold.co/600x337/111620/00f0ff?text=Pawn's+Gambit+GIF"
