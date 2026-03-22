@@ -1,15 +1,16 @@
-// -----------------------------------------------------
-// 1. GAME PROJECT DATA
-// -----------------------------------------------------
 const projectData = {
     title: "Pawn's Gambit",
     tagline: "The Rookies Runner-up & People's Choice Award-Winning Puzzle Game",
     status: "Released",
-    techStack: ["C#", "Unity 3D", "A* Pathfinding", "Custom Editor Tools"],
-    stats: [
-        { label: "My Role", value: "Gameplay & Tools Programmer" },
-        { label: "Core Mechanic", value: "Chess-based Dungeon Crawler" },
+    awards: [
+        "image/pawns/rookies_runner_up.png",
+        "image/pawns/rookies_peoples_choice.png"
+    ],
+    techStack: ["C#", "Unity 3D", "Mobile", "Performance Profiling"],
+   stats: [
         { label: "Engine", value: "Unity" },
+        { label: "Language", value: "C#" },
+        { label: "Role", value: "Gameplay, Systems & Optimization" },
         { label: "Release Year", value: "2025" }
     ],
     cta: {
@@ -21,60 +22,54 @@ const projectData = {
         src: "https://www.youtube.com/embed/RV0J4raLpqY?si=IUUBVSzTFFv-cV02",
         fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Pawn's+Gambit"
     },
-    overview: [
-        "Pawn's Gambit is an award-winning puzzle game built in Unity. The core mechanic revolves around strict chess movement rules applied to a dynamic dungeon crawler setting.",
-        "My primary role on the team was driving the gameplay programming and developing custom tools to empower our level designers to iterate quickly without bottlenecking the engineering team."
+   overview: [
+        "Pawn's Gambit is an award-winning puzzle game built in Unity for mobile. You are a pawn that needs to save the queen from the king, battling enemies like the Rook, Knight or the Bishop who all have different moves.", 
     ],
     challenges: [
         {
-            title: "Custom A* Pathfinding",
-            desc: "Because enemies and the player are restricted to specific chess-piece movement patterns (e.g., L-shapes for Knights, diagonals for Bishops), standard Unity NavMesh couldn't be used. I engineered a custom A* pathfinding algorithm that calculates valid node traversals based on dynamic piece-state matrices."
+            title: "Camera",
+            desc: "This was my first time making a camera for a mobile game and it was a little different because, for example, the camera shake I made looked fine when testing on my PC. But when we later tried it on the mobile it was crazy strong so i had to tone it down"
         },
         {
-            title: "Level Designer Tooling",
-            desc: "To speed up production, I built custom Unity Editor windows and Gizmos. Designers could instantly paint valid grid tiles, set enemy patrol routes, and simulate movement rules directly in the editor without entering Play Mode."
+            title: "Particles & Optimizations",
+            desc: "I worked a lot with the particles in this project and i had to put in a bit of work on optimizing the particles usages, so it was a lot of research on how i can still have particles without destroying the performance."
         }
     ],
-    // If you don't want to show code for a project, just change this to: codeSnippet: null,
+    
     codeSnippet: null, 
     gallery: [
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Gameplay+Screenshot+1" },
-            caption: "Grid-based movement and combat resolution."
+            media: { type: "image", src: "image/pawns/pawns1.png" },
+            caption: ""
         },
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Gameplay+Screenshot+2" },
-            caption: "Advanced puzzle mechanics with multiple enemy types."
-        },
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Level+Editor+View" },
-            caption: "Custom Unity Inspector tools for rapid level creation."
-        },
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Menu+System" },
-            caption: "Sleek UI and level selection menus."
+            media: { type: "image", src: "image/pawns/pawns2.png" },
+            caption: ""
         }
     ]
 };
 
-// -----------------------------------------------------
-// 2. RENDERING LOGIC (Smart Template)
-// -----------------------------------------------------
-function getMediaHTML(media) {
-    if (media.type === 'video') {
+function getMediaHTML(media) 
+{
+    if (media.type === 'video') 
+    {
         return `<video autoplay loop muted playsinline poster="${media.fallbackImg}">
                     <source src="${media.src}" type="video/mp4">
                     <img src="${media.fallbackImg}" alt="Fallback">
                 </video>`;
-    } else if (media.type === 'iframe') {
-        // Includes the EXACT security attributes YouTube requires
+    } 
+    else if (media.type === 'iframe') 
+    {
         return `<iframe src="${media.src}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>`;
-    } else {
+    } 
+    else 
+    {
         return `<img src="${media.src}" alt="Media">`;
     }
 }
 
-function highlightCode(code) {
+function highlightCode(code) 
+{
     return code
         .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`)
         .replace(/\b(void|delete|while|for|if|else|int|float|double|bool|class|struct|return)\b/g, '<span class="kw">$1</span>')
@@ -83,10 +78,10 @@ function highlightCode(code) {
         .replace(/className=/g, 'class='); 
 }
 
-function renderProjectPage() {
+function renderProjectPage() 
+{
     const container = document.getElementById('project-content');
 
-    // Generate CTA Button if it exists
     const ctaHtml = projectData.cta ? `
         <div style="margin-top: 2rem;">
             <a href="${projectData.cta.url}" target="_blank" class="btn btn-primary" style="padding: 16px; font-size: 1rem;">
@@ -96,7 +91,6 @@ function renderProjectPage() {
         </div>
     ` : '';
 
-    // Generate Code Snippet if it exists
     const codeHtml = projectData.codeSnippet ? `
         <div class="ide-wrapper scroll-reveal" style="margin-top: 40px;">
             <div class="ide-window collapsed">
@@ -117,20 +111,28 @@ function renderProjectPage() {
             </a>
         </div>
 
-        <header class="project-hero">
+       <header class="project-hero">
             <div class="status-badge fade-in d-1"><div class="pulse"></div> ${projectData.status}</div>
             <h1 class="text-gradient fade-in d-2">${projectData.title}</h1>
             <p class="project-tagline fade-in d-3">${projectData.tagline}</p>
+            
+            ${projectData.awards ? `
+            <div class="awards-container fade-in d-4" style="display: flex; gap: 20px; margin-top: 25px; align-items: center;">
+                ${projectData.awards.map(badge => `
+                    <img src="${badge}" alt="The Rookies Award Badge" style="height: 120px; width: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                `).join('')}
+            </div>
+            ` : ''}
         </header>
 
-        <div class="media-wrapper media-reveal hero-media">
+        <div class="media-wrapper media-reveal hero-media d-5" style="margin-top: 2rem;">
             ${getMediaHTML(projectData.mainMedia)}
         </div>
 
         <div class="article-layout">
             <aside class="article-sidebar fade-in d-4">
                 <div class="stats-panel">
-                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">Project Telemetry</h3>
+                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">Project Details</h3>
                     ${projectData.stats.map(s => `
                         <div class="stat-item">
                             <span class="stat-label">${s.label}</span>
@@ -173,12 +175,16 @@ function renderProjectPage() {
                     <div class="gallery-grid">
                         ${projectData.gallery.map(item => `
                             <div class="gallery-item">
-                                <div class="media-wrapper" style="padding-bottom: 66.66%; border-bottom: none;">
+                                <div class="media-wrapper" style="padding-bottom: 66.66%; border-bottom: none; ${item.caption ? '' : 'border-radius: 12px;'}">
                                     ${getMediaHTML(item.media)}
                                 </div>
+                                
+                                ${item.caption ? `
                                 <div class="gallery-caption">
                                     <span class="accent" style="margin-right: 5px;">></span> ${item.caption}
                                 </div>
+                                ` : ''}
+
                             </div>
                         `).join('')}
                     </div>
@@ -192,16 +198,14 @@ function renderProjectPage() {
 
 renderProjectPage();
 
-// -----------------------------------------------------
-// GLOBAL IDE WINDOW COLLAPSE LOGIC
-// -----------------------------------------------------
-document.addEventListener('click', function(e) {
-    // Check if the user clicked on an IDE header (or the text inside it)
+document.addEventListener('click', function(e) 
+{
     const header = e.target.closest('.ide-header');
-    if (header) {
-        // Find the parent window and toggle the 'collapsed' class
+    if (header) 
+    {
         const window = header.closest('.ide-window');
-        if (window) {
+        if (window) 
+        {
             window.classList.toggle('collapsed');
         }
     }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frostheim Editor | Emil Barkefors</title>
 
-   <style>
+    <style>
         html { background-color: #030407 !important; }
         body { background-color: transparent !important; margin: 0; }
     </style>
@@ -19,12 +19,17 @@
 <body>
     <div id="transition-curtain"></div>
     <canvas id="shader-canvas"></canvas>
-    <canvas id="particle-canvas"></canvas>
 
     <main class="article-container" id="project-content">
-        </main>
+    </main>
 
-    <footer class="sidebar-footer" style="max-width: 900px; margin: 50px auto; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.05);">
+    <div style="text-align: center; padding: 20px 20px 60px 20px; max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
+        <a href="index.html" class="back-btn" style="justify-content: center; min-width: 250px;">
+            ← Return to Dashboard
+        </a>
+    </div>
+
+    <footer class="sidebar-footer" style="max-width: 900px; margin: 0 auto 50px auto; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 10;">
         <span>&copy; 2026 Emil Barkefors</span>
     </footer>
 
@@ -115,116 +120,20 @@
         }
 
         // -----------------------------------------------------
-        // 2. INTERACTIVE PARTICLES
+        // 2. SEAMLESS PAGE TRANSITION & BACK-BUTTON FIX
         // -----------------------------------------------------
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const particleCount = 60;
-        const connectionDistance = 150;
-        const mouse = { x: null, y: null };
-
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        // Desktop Mouse Events
-        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-
-        // Mobile Touch Events (Let users play with particles using their fingers!)
-        window.addEventListener('touchstart', (e) => { 
-            mouse.x = e.touches[0].clientX; 
-            mouse.y = e.touches[0].clientY; 
-        }, {passive: true});
-
-        window.addEventListener('touchmove', (e) => { 
-            mouse.x = e.touches[0].clientX; 
-            mouse.y = e.touches[0].clientY; 
-        }, {passive: true});
-
-        window.addEventListener('touchend', () => { 
-            mouse.x = null; 
-            mouse.y = null; 
-        });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.6;
-                this.vy = (Math.random() - 0.5) * 0.6;
-                this.size = Math.random() * 2 + 1;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(0, 240, 255, 0.6)';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (dist < connectionDistance) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${(1 - dist / connectionDistance) * 0.3})`;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-
-                if (mouse.x != null) {
-                    const dx = particles[i].x - mouse.x;
-                    const dy = particles[i].y - mouse.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (dist < 200) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 240, 255, ${(1 - dist / 200) * 0.5})`;
-                        ctx.lineWidth = 1.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(mouse.x, mouse.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        // -----------------------------------------------------
-        // SEAMLESS PAGE TRANSITION & BACK-BUTTON FIX
-        // -----------------------------------------------------
-        
-        // 1. Reveal page on load (and handle the browser 'Back' button)
         window.addEventListener('pageshow', (event) => {
-            // If the page is loaded from the browser's memory cache (Back button)
             if (event.persisted) {
                 document.body.classList.remove('is-exiting');
                 document.body.classList.add('is-loaded');
             } else {
-                // Normal first-time load
                 setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
             }
         });
 
-        // 2. Fade out on link click
         document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
+
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
@@ -238,32 +147,40 @@
                     }
                 });
             });
-        });
 
-        // -----------------------------------------------------
-        // SCROLL REVEAL LOGIC
-        // -----------------------------------------------------
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set up the observer to watch for elements scrolling into view
+            // -----------------------------------------------------
+            // 3. SCROLL REVEAL LOGIC
+            // -----------------------------------------------------
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
-                        // Optional: Stop observing once revealed so it doesn't animate out
                         observer.unobserve(entry.target);
                     }
                 });
             }, {
-                threshold: 0.15, // Trigger when 15% of the element is visible
-                rootMargin: "0px 0px -50px 0px" // Trigger slightly before the bottom
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
             });
 
-            // We use setTimeout because project.js needs a split second to generate the HTML
             setTimeout(() => {
                 document.querySelectorAll('.scroll-reveal').forEach((el) => {
                     observer.observe(el);
                 });
             }, 100);
+        });
+
+        // -----------------------------------------------------
+        // 4. GLOBAL IDE WINDOW COLLAPSE LOGIC
+        // -----------------------------------------------------
+        document.addEventListener('click', function(e) {
+            const header = e.target.closest('.ide-header');
+            if (header) {
+                const window = header.closest('.ide-window');
+                if (window) {
+                    window.classList.toggle('collapsed');
+                }
+            }
         });
 
     </script>

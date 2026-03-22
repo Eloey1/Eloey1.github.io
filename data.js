@@ -8,10 +8,16 @@ const portfolioData = {
         skills: [
             "C++ (14/17/20)", 
             "DirectX 11", 
-            "ECS Architecture", 
+            "ECS", 
             "ImGui Tooling", 
             "RenderDoc", 
-            "Linear Algebra"
+            "Engine Architecture",
+            "HLSL",
+            "C#",
+            "Custom Engine",
+            "Unity",
+            "Godot",
+            "Unreal"
         ],
         links: {
             email: "mailto:emilb2002@gmail.com",
@@ -28,7 +34,7 @@ const portfolioData = {
             statusClass: "active", // Keeps the glowing cyan border
             techStack: ["C++20", "DX11", "ImGui", "JSON"],
             // 3. Updated the description to frame it as your flagship work
-            description: "My flagship project and primary specialization. A custom 3D level editor engineered from scratch to streamline asset placement and iteration. Built on a high-performance ECS architecture, featuring a robust Command Pattern undo/redo stack for non-destructive workflows.",
+            description: "My flagship project and primary specialization. A custom 3D level editor engineered from scratch using ImGui to streamline asset placement and iteration. Built on a high-performance ECS architecture, featuring a robust Command Pattern undo/redo stack.",
             projectLink: "frostheim.html",
             linkText: "Read Technical Breakdown →",
             media: {
@@ -54,8 +60,8 @@ void CommandStack::Push(ICommand* cmd) {
             title: "Particle System & Editor",
             status: "Complete",
             statusClass: "", 
-            techStack: ["C++", "DirectX 11", "ImGui", "Compute Shaders"],
-            description: "A high-performance, GPU-driven particle system paired with a comprehensive ImGui authoring tool. Engineered to empower VFX artists with real-time visual feedback, curve-based property editing, and efficient data serialization.",
+            techStack: ["C++", "DirectX 11", "ImGui", "Shaders"],
+            description: "A modular, Niagara-inspired particle system and tool built entirely from scratch. Engineered a custom ImGui interface featuring curve editors and a component-based architecture where emitters own distinct behavior modules.",
             projectLink: "particle_editor.html", 
             linkText: "View Tool Architecture →",
             media: {
@@ -80,67 +86,70 @@ void ParticleEditor::DrawEmitterUI(Emitter& e) {
     ],
 
     gameProjects: [
-         {
+        {
             title: "Pawn's Gambit",
             description: "The Rookies Runner-up & People's Choice award-winning puzzle game.",
             techStack: ["C#", "Unity", "2025"],
-            link: "game_template.html", // Updated link to your new pawn page!
+            link: "pawn.html",
             media: {
-                type: "image",
-                src: "https://placehold.co/600x337/111620/00f0ff?text=Pawn's+Gambit+GIF"
+                type: "hover-gif", 
+                src: "https://img.youtube.com/vi/RV0J4raLpqY/maxresdefault.jpg", 
+                hoverSrc: "path/to/pawn-gameplay.gif"
             }
         },
         {
             title: "Tunnel Vision",
-            description: "Custom physics-based character controller built natively.",
+            description: "Narrative Driven 2D Platformer.",
             techStack: ["C++", "TGE Engine", "2025"],
-            link: "https://www.youtube.com/watch?v=C2sNwLEPPF4",
+            link: "tunnel_vision.html",
             media: {
-                type: "iframe",
-                src: "https://www.youtube.com/embed/C2sNwLEPPF4"
+                type: "hover-gif",
+                src: "https://img.youtube.com/vi/C2sNwLEPPF4/maxresdefault.jpg",
+                hoverSrc: "path/to/tunnel-vision.gif"
             }
         },
         {
             title: "Beak Noir",
             description: "Isometric top-down adventure featuring custom camera systems.",
             techStack: ["C++", "TGE Engine", "2025"],
-            link: "https://www.youtube.com/watch?v=gxaEJ56esTE",
+            link: "beak_noir.html",
             media: {
-                type: "iframe",
-                src: "https://www.youtube.com/embed/gxaEJ56esTE"
+                type: "hover-gif",
+                src: "https://img.youtube.com/vi/gxaEJ56esTE/maxresdefault.jpg",
+                hoverSrc: "path/to/beak-noir.gif"
             }
         },
         {
             title: "Spite Oathbound",
             description: "Top-down ARPG prototype built to test the Frostheim Engine logic.",
             techStack: ["C++", "Frostheim", "2026"],
-            link: "https://www.youtube.com/watch?v=6T9ucwCqhoA",
+            link: "spite_oathbound.html",
             media: {
-                type: "video",
-                src: "your-spite-video.mp4",
-                fallbackImg: "https://placehold.co/600x337/111620/00f0ff?text=Spite+Oathbound+Video"
+                type: "hover-gif",
+                src: "https://img.youtube.com/vi/6T9ucwCqhoA/maxresdefault.jpg",
+                hoverSrc: "path/to/spite-oathbound.gif"
             }
         },
         {
             title: "3D Platformer",
             description: "Smooth movement and jumping mechanics.",
             techStack: ["C++", "Frostheim", "2026"],
-            link: "https://www.youtube.com/watch?v=6T9ucwCqhoA",
+            link: "#", // Add your HTML link here when ready
             media: {
-                type: "video",
-                src: "your-spite-video.mp4",
-                fallbackImg: "https://placehold.co/600x337/111620/00f0ff?text=TBA"
+                type: "hover-gif",
+                src: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+Static",
+                hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+GIF"
             }
         },
         {
             title: "TBA",
             description: "Unannounced project.",
             techStack: ["C++", "Frostheim", "2026"],
-            link: "https://www.youtube.com/watch?v=6T9ucwCqhoA",
+            link: "#", 
             media: {
-                type: "video",
-                src: "your-spite-video.mp4",
-                fallbackImg: "https://placehold.co/600x337/111620/00f0ff?text=TBA"
+                type: "hover-gif",
+                src: "https://placehold.co/600x337/111620/00f0ff?text=TBA+Static",
+                hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=TBA+GIF"
             }
         }
     ]
