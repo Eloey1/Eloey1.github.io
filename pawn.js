@@ -11,7 +11,7 @@ const projectData = {
         { label: "Engine", value: "Unity" },
         { label: "Language", value: "C#" },
         { label: "Role", value: "Gameplay, Systems & Optimization" },
-        { label: "Release Year", value: "2025" }
+        { label: "Release Year", value: "2024" }
     ],
     cta: {
         text: "Play on Itch.io",
