@@ -3,7 +3,7 @@ const portfolioData = {
         status: "Seeking 2026 Internship",
         name: "Emil Barkefors",
         title: "Engine & Tools Programmer",
-        // 1. Made the bio explicitly state your specialization
+        
         description: "My core specialization is developing custom C++ game engines and intuitive level editor tools that bridge the gap between performance and designer workflow.",
         skills: [
             "C++ (14/17/20)", 
@@ -36,7 +36,7 @@ const portfolioData = {
             // 3. Updated the description to frame it as your flagship work
             description: "My flagship project and primary specialization. A custom 3D level editor engineered from scratch using ImGui to streamline asset placement and iteration. Built on a high-performance ECS architecture, featuring a robust Command Pattern undo/redo stack.",
             projectLink: "frostheim.html",
-            linkText: "Read Technical Breakdown →",
+            linkText: "Read Breakdown →",
             media: {
                 type: "video", 
                 src: "your-editor-video.mp4",
@@ -63,7 +63,7 @@ void CommandStack::Push(ICommand* cmd) {
             techStack: ["C++", "DirectX 11", "ImGui", "Shaders"],
             description: "A modular, Niagara-inspired particle system and tool built entirely from scratch. Engineered a custom ImGui interface featuring curve editors and a component-based architecture where emitters own distinct behavior modules.",
             projectLink: "particle_editor.html", 
-            linkText: "View Tool Architecture →",
+            linkText: "Read Breakdown →",
             media: {
                 type: "image",
                 src: "https://placehold.co/1280x720/111620/00f0ff?text=Particle+Editor+GIF/Image+Goes+Here"

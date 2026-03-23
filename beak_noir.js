@@ -18,51 +18,51 @@ const projectData = {
         fallbackImg: ""
     },
     overview: [
-        "Beak Noir is an isometric action-adventure game where players shoot their way through a dangerous syndicate of gangster vipers to solve the mystery of their missing mouse friend.",
+        "Beak Noir is an isometric action-adventure game where players shoot their way through a dangerous syndicate of gangster snakes to solve the mystery of their missing mouse friend.",
         "This was our fourth game project and second time utilizing The Game Assembly's engine TGE. Since I was already comfortable with the engine at this point, I intentionally challenged myself by taking on new responsibilities. I focused on building pipelines for our level designers and our animators."
     ],
     challenges: [
         {
-            title: "Smooth Target Interpolation (Lerping)",
-            desc: "A hard-locked camera feels incredibly rigid. I implemented a dynamic interpolation system using framerate-independent lerping. The camera calculates the player's future trajectory and smoothly tracks towards a calculated offset, giving the camera a cinematic, 'elastic' feel."
+            title: "Unity - TGE Pipeline",
+            desc: "The Game Assembly's engine TGE didn't have a level editor at the time, so the level designers used Unity. I took on the task of making the exporter from Unity to TGE. I wrote a custom C# Unity export script that output a JSON file to load our scenes in-game."
         },
         {
-            title: "Dynamic Camera Zones",
-            desc: "Different areas of the game required different perspectives. I engineered a trigger-volume system where the camera smoothly transitions between specific states—such as zooming out for large arenas or panning to frame a point of interest—while maintaining its strict isometric angle."
+            title: "Camera Tool",
+            desc: "Sometimes it's hard to visualize how the camera will look in an isometric game by just tweaking numbers in code. To solve this, I built a camera tool to visually set the camera angle and all its properties in real-time. When I was satisfied with the result, the tool saved the settings to a JSON file which was loaded the next time the game booted up."
+        },
+        {
+            title: "Animation Pipeline",
+            desc: "The animations pipeline was new to me but it."
         }
     ],
-    codeSnippet: {
-        title: "src/camera/IsometricCamera.cpp",
-        code: `// Smooth Isometric Camera Tracking
-void IsometricCamera::Update(float deltaTime, const Vector3& targetPos) {
-    // 1. Calculate the ideal camera position based on isometric offset
-    Vector3 desiredPos = targetPos + m_IsometricOffset;
-
-    // 2. Framerate-independent interpolation (Lerp)
-    // Using an exponential decay curve to prevent snapping
-    float t = 1.0f - std::exp(-m_TrackingSpeed * deltaTime);
-    
-    // 3. Smoothly move current position towards desired position
-    m_CurrentPos.x = Lerp(m_CurrentPos.x, desiredPos.x, t);
-    m_CurrentPos.y = Lerp(m_CurrentPos.y, desiredPos.y, t);
-    m_CurrentPos.z = Lerp(m_CurrentPos.z, desiredPos.z, t);
-
-    // 4. Update the View Matrix for the rendering pipeline
-    UpdateViewMatrix(m_CurrentPos, targetPos, Vector3::Up());
+   codeSnippet: {
+        title: "data/animations/Redbeak.json",
+        code: `{
+  "Model": {
+    "fbx": "Character/SK_Redbeak.fbx",
+    "texture": "Art/3D/Characters/C.Materials/T_CH_C_Redbeak.dds",
+    "scale": 1.0
+  },
+  "Idle": {
+    "animation": "Animations/A_Redbeak_idle.fbx",
+    "fps": 30.0,
+    "loop": true
+  },
+  "Run": {
+    "animation": "Animations/A_Redbeak_Run.fbx",
+    "fps": 30.0,
+    "loop": true
+  }
 }`
     },
     gallery: [
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Camera+Zones" },
-            caption: "Debug view of trigger volumes that shift the camera parameters."
+            media: { type: "image", src: "image/beak_noir/BeakNoir1.jpg" },
+            caption: "" // Leave blank or remove the line entirely, no box will show!
         },
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=State+Machine" },
-            caption: "Gameplay state machine handling dialogue and exploration modes."
-        },
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Isometric+Math" },
-            caption: "Orthographic projection matrix setup for true isometric rendering."
+            media: { type: "image", src: "image/beak_noir/BeakNoir5.jpg" } 
+            // I removed the caption line completely here, and it still works!
         }
     ]
 };
@@ -85,13 +85,11 @@ function getMediaHTML(media) {
 
 function highlightCode(code) {
     return code
-        .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`)
-        .replace(/\b(void|float|if|else|return|const)\b/g, '<span class="kw">$1</span>')
-        .replace(/\b(Vector3|IsometricCamera|std)\b/g, '<span class="ty">$1</span>')
-        .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="fn">$1</span>')
+        .replace(/"(.*?)"/g, '<span class="ty" style="color: #a5d6ff;">"$1"</span>')
+        .replace(/\b(\d+\.?\d*)\b/g, '<span class="kw" style="color: #79c0ff;">$1</span>')
+        .replace(/\b(true|false)\b/g, '<span class="kw" style="color: #ff7b72;">$1</span>')
         .replace(/className=/g, 'class='); 
 }
-
 function renderProjectPage() {
     const container = document.getElementById('project-content');
 
@@ -165,12 +163,15 @@ function renderProjectPage() {
                     <div class="gallery-grid">
                         ${projectData.gallery.map(item => `
                             <div class="gallery-item">
-                                <div class="media-wrapper" style="padding-bottom: 66.66%; border-bottom: none;">
+                                <div class="media-wrapper" style="padding-bottom: 66.66%; border-bottom: none; ${item.caption ? '' : 'border-radius: 12px;'}">
                                     ${getMediaHTML(item.media)}
                                 </div>
+                                
+                                ${item.caption ? `
                                 <div class="gallery-caption">
                                     <span class="accent" style="margin-right: 5px;">></span> ${item.caption}
                                 </div>
+                                ` : ''}
                             </div>
                         `).join('')}
                     </div>
