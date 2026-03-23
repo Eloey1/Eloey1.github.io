@@ -5,6 +5,7 @@ const portfolioData = {
         title: "Engine & Tools Programmer",
         
         description: "My core specialization is developing custom C++ game engines and intuitive level editor tools that bridge the gap between performance and designer workflow.",
+        internshipNotice: "I am part of The Game Assembly's internship program. As per the agreement between the Games Industry and The Game Assembly, neither student nor company may be in contact with one another regarding internships before April 23rd. Any internship offers can be made on May 5th, at the earliest.",
         skills: [
             "C++ (14/17/20)", 
             "DirectX 11", 
@@ -29,11 +30,9 @@ const portfolioData = {
     architectureProjects: [
         {
             title: "Frostheim Editor",
-            // 2. Transformed the status badge into a glowing Specialization tag
             status: "★ Specialization", 
-            statusClass: "active", // Keeps the glowing cyan border
+            statusClass: "active",
             techStack: ["C++20", "DX11", "ImGui", "JSON"],
-            // 3. Updated the description to frame it as your flagship work
             description: "My flagship project and primary specialization. A custom 3D level editor engineered from scratch using ImGui to streamline asset placement and iteration. Built on a high-performance ECS architecture, featuring a robust Command Pattern undo/redo stack.",
             projectLink: "frostheim.html",
             linkText: "Read Breakdown →",
@@ -42,19 +41,14 @@ const portfolioData = {
                 src: "your-editor-video.mp4",
                 fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Frostheim+Editor+Video+Goes+Here"
             },
-            codeSnippet: {
-                title: "src/core/CommandStack.cpp",
-                code: `// Command Pattern Undo Stack
-void CommandStack::Push(ICommand* cmd) {
-    m_UndoStack.push(cmd);
-
-    // Clear redo on new action
-    while (!m_RedoStack.empty()) {
-        delete m_RedoStack.top();
-        m_RedoStack.pop();
-    }
-}`
-            }
+            keyFeatures: [
+                "Content Browser with P4 Integration",
+                "Prefab System",
+                "Command Pattern Undo/Redo",
+                "Dynamic Asset Thumbnails",
+                "Macro-Driven C++ Reflection",
+                "Object Picking"
+            ]
         },
         {
             title: "Particle System & Editor",
@@ -68,20 +62,13 @@ void CommandStack::Push(ICommand* cmd) {
                 type: "image",
                 src: "https://placehold.co/1280x720/111620/00f0ff?text=Particle+Editor+GIF/Image+Goes+Here"
             },
-            codeSnippet: {
-                title: "src/tools/ParticleEditor.cpp",
-                code: `// ImGui VFX Authoring Tool
-void ParticleEditor::DrawEmitterUI(Emitter& e) {
-    ImGui::Text("Emission Properties");
-    ImGui::DragFloat("Rate (p/s)", &e.EmissionRate, 1.0f, 0.0f, 5000.0f);
-    
-    // Evaluate custom curve data for over-time properties
-    if (ImGui::TreeNode("Velocity over Lifetime")) {
-        ImGui::CurveEditor("Velocity X", e.VelocityCurveX);
-        ImGui::TreePop();
-    }
-}`
-            }
+            keyFeatures: [
+                "Component-Based Modules",
+                "Easing Curves",
+                "Custom UI",
+                "Extensible Module API",
+                "Macro-Driven C++ Reflection"
+            ]
         }
     ],
 
@@ -110,7 +97,7 @@ void ParticleEditor::DrawEmitterUI(Emitter& e) {
         },
         {
             title: "Beak Noir",
-            description: "Isometric top-down adventure featuring custom camera systems.",
+            description: "Isometric action-adventure game.",
             techStack: ["C++", "TGE Engine", "2025"],
             link: "beak_noir.html",
             media: {
@@ -134,7 +121,7 @@ void ParticleEditor::DrawEmitterUI(Emitter& e) {
             title: "3D Platformer",
             description: "Smooth movement and jumping mechanics.",
             techStack: ["C++", "Frostheim", "2026"],
-            link: "#", // Add your HTML link here when ready
+            link: "#", 
             media: {
                 type: "hover-gif",
                 src: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+Static",

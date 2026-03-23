@@ -3,7 +3,7 @@
 // -----------------------------------------------------
 const projectData = {
     title: "Beak Noir",
-    tagline: "Isometric Adventure",
+    tagline: "An Isometric Action-Adventure. Solve the mystery.",
     status: "Complete",
     techStack: ["C++", "TGE Engine", "Animation", "State Machines", "Pipelines", "ImGui"],
     stats: [
@@ -31,8 +31,8 @@ const projectData = {
             desc: "Sometimes it's hard to visualize how the camera will look in an isometric game by just tweaking numbers in code. To solve this, I built a camera tool to visually set the camera angle and all its properties in real-time. When I was satisfied with the result, the tool saved the settings to a JSON file which was loaded the next time the game booted up."
         },
         {
-            title: "Animation Pipeline",
-            desc: "The animations pipeline was new to me but it."
+            title: "Data-Driven Animation Pipeline",
+            desc: "Working with the animation systems in TGE was completely new to me, making it an challenge. I made a data-driven pipeline instead of hard-coding animation logic, I built a system where animators could independently define states, link FBX files, and configure FPS entirely through simple JSON configuration file."
         }
     ],
    codeSnippet: {

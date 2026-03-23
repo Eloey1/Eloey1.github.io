@@ -20,14 +20,20 @@ function getMediaHTML(media) {
     }
 }
 
-// Helper function for syntax highlighting
-function highlightCode(code) {
-    return code
-        .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`) 
-        .replace(/\b(void|delete|while|for|if|else|int|float|double|bool|class|struct)\b/g, '<span class="kw">$1</span>') 
-        .replace(/\b(CommandStack|ICommand|Renderer|Pipeline)\b/g, '<span class="ty">$1</span>')
-        .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="fn">$1</span>')
-        .replace(/className=/g, 'class='); 
+function getMediaHTML(media) {
+    if (media.type === 'video') {
+        return `
+            <video autoplay loop muted playsinline poster="${media.fallbackImg}">
+                <source src="${media.src}" type="video/mp4">
+                <img src="${media.fallbackImg}" alt="Video Fallback">
+            </video>`;
+    } else if (media.type === 'iframe') {
+        return `<iframe src="${media.src}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    } else if (media.type === 'hover-gif') {
+        return `<img src="${media.src}" data-static="${media.src}" data-hover="${media.hoverSrc}" class="hover-gif" alt="Project Media">`;
+    } else {
+        return `<img src="${media.src}" alt="Project Media">`;
+    }
 }
 
 function renderPortfolio() {
@@ -70,27 +76,37 @@ function renderPortfolio() {
             <div class="media-wrapper" style="position: relative; z-index: 1;">
                 ${getMediaHTML(proj.media)}
             </div>
-            <div class="card-body">
-                <div class="card-title-area" style="position: relative; z-index: 1;">
+            
+            <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 30px;">
+                
+                <div class="card-title-area" style="position: relative; z-index: 1; flex: 1 1 400px; min-width: 0;">
                     <h4>${proj.title} <span class="status ${proj.statusClass}">${proj.status}</span></h4>
                     <div class="tech-list">${proj.techStack.join(' • ')}</div>
-                    <p>${proj.description}</p>
-                    <span style="color: var(--accent-color); font-family: var(--font-mono); font-size: 0.9rem; text-decoration: underline; text-underline-offset: 4px; pointer-events: none;">${proj.linkText}</span>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">${proj.description}</p>
+                    <span style="color: var(--accent-color); font-family: var(--font-mono); font-size: 0.95rem; font-weight: 600; text-decoration: none; pointer-events: none;">
+                        ${proj.linkText}
+                    </span>
                 </div>
                 
-                <div class="ide-window" style="position: relative; z-index: 11;">
-                    <div class="ide-header">
-                        <span style="margin-left:auto; color:#666;">${proj.codeSnippet.title}</span>
-                    </div>
-                    <div class="ide-content">${highlightCode(proj.codeSnippet.code)}</div>
+                <div style="flex: 0 1 420px; width: 100%; background: linear-gradient(145deg, rgba(0, 240, 255, 0.05) 0%, rgba(0, 0, 0, 0) 100%); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 12px; padding: 24px; position: relative; z-index: 1; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+                    <h5 style="color: var(--accent-color); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0; margin-bottom: 16px; border-bottom: 1px solid rgba(0, 240, 255, 0.15); padding-bottom: 10px;">Highlights</h5>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        ${proj.keyFeatures.map(feature => `
+                            <li style="color: var(--text-primary); font-size: 0.95rem; margin-bottom: 12px; display: flex; align-items: flex-start; line-height: 1.5;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 12px; margin-top: 3px; flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                ${feature}
+                            </li>
+                        `).join('')}
+                    </ul>
                 </div>
+
             </div>
         </article>
     `).join('');
     document.getElementById('architecture-container').innerHTML = archHtml;
 
     // 3. Render Games Bento Grid
-    const gamesHtml = portfolioData.gameProjects.map(game => `
+    let gamesHtml = portfolioData.gameProjects.map(game => `
         <div class="bento-card" style="position: relative; overflow: hidden;">
             
             <a href="${game.link}" style="position: absolute; inset: 0; z-index: 10; width: 100%; height: 100%;"></a>
@@ -108,10 +124,21 @@ function renderPortfolio() {
             </div>
         </div>
     `).join('');
+
+    gamesHtml += `
+            <div style="grid-column: 1 / -1; margin-top: 50px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center;">
+                <div style="display: inline-block; text-align: left; background: rgba(0, 240, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; padding: 20px; max-width: 800px;">
+                    <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                        <strong style="color: var(--accent-color);">Important Notice:</strong><br>
+                        ${portfolioData.sidebar.internshipNotice}
+                    </p>
+                </div>
+            </div>
+        `;
+    
     document.getElementById('games-container').innerHTML = gamesHtml;
 }
 
-// Initialize rendering
 renderPortfolio();
 
 // -----------------------------------------------------
