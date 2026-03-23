@@ -89,7 +89,7 @@ void ParticleEditor::DrawEmitterUI(Emitter& e) {
         {
             title: "Pawn's Gambit",
             description: "The Rookies Runner-up & People's Choice award-winning puzzle game.",
-            techStack: ["C#", "Unity", "2025"],
+            techStack: ["C#", "Unity", "2024"],
             link: "pawn.html",
             media: {
                 type: "hover-gif", 
@@ -122,7 +122,7 @@ void ParticleEditor::DrawEmitterUI(Emitter& e) {
         {
             title: "Spite Oathbound",
             description: "Top-down ARPG prototype built to test the Frostheim Engine logic.",
-            techStack: ["C++", "Frostheim", "2026"],
+            techStack: ["C++", "Frostheim", "2025"],
             link: "spite_oathbound.html",
             media: {
                 type: "hover-gif",
