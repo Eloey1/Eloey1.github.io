@@ -4,7 +4,7 @@
 const projectData = {
     title: "Frostheim Editor",
     tagline: "Custom 3D Engine & Level Design Tool",
-    status: "In Development",
+    status: "★ Flagship Project",
     techStack: ["C++20", "DirectX 11", "ImGui", "JSON"],
     stats: [
         { label: "Core Architecture", value: "Entity Component System" },
@@ -12,18 +12,37 @@ const projectData = {
         { label: "Graphics API", value: "DirectX 11" },
         { label: "Lines of Code", value: "15,000+ Native C++" }
     ],
-    mainMedia: {
-        type: "video", 
-        src: "your-editor-video.mp4",
-        fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Main+Editor+View"
-    },
+    
+    steamCarousel: [
+        { 
+            type: "video", 
+            src: "your-editor-video.mp4", 
+            fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Video+Fallback",
+            thumb: "https://placehold.co/240x135/111620/00f0ff?text=Video" 
+        },
+        { 
+            type: "image", 
+            src: "image/editor/editor1.png", 
+            thumb: "image/editor/editor1.png" 
+        },
+        { 
+            type: "image", 
+            src: "image/editor/editor2.png", 
+            thumb: "image/editor/editor2.png" 
+        },
+        { 
+            type: "image", 
+            src: "image/editor/editor3.png", 
+            thumb: "image/editor/editor3.png" 
+        }
+    ],
     
     splitOverviews: [
         {
-            title: "Building the Engine",
+            title: "Motivation & Goal",
             text: [
-                "Frostheim is a custom 3D level editor designed to bridge the gap between engine efficiency and designer workflow. Built entirely from scratch in C++ using DirectX 11, it eliminates the bloat of commercial engines while focusing on lightning-fast iteration times.",
-                "The core philosophy was implementing industry-standard patterns to ensure both performance and a non-destructive editing workflow."
+                "My vision for this level editor went beyond just making another tool. Our team had several great utilities, but they were just standalone windows floating in the void. I wanted to create a unified workspace where they could all live and interact together.",
+                "Having built a smaller-scale level editor in a previous project, I wanted to really challenge myself this time around. My goal was to take everything I had learned and make a proper, production-ready tool for real use cases."
             ],
             media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Frostheim+UI+Screenshot" },
             mediaOnLeft: false
@@ -36,12 +55,17 @@ const projectData = {
             ],
             media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=ECS+Architecture+Diagram" },
             mediaOnLeft: true
-        },
+        }
+    ],
+
+    // NEW: DEEP DIVE SECTIONS (For massive amounts of text and code)
+    deepDives: [
         {
-            title: "Non-Destructive Workflow",
-            text: [
-                "Level designers need the freedom to make mistakes. I engineered a robust Command Pattern for the editor.",
-                "Every transform, deletion, and spawn is encapsulated into an ICommand object, allowing for infinite, memory-safe Undo/Redo operations without breaking scene state."
+            title: "The Command Stack (Undo/Redo System)",
+            paragraphs: [
+                "Level designers need the freedom to make mistakes. I engineered a robust Command Pattern for the editor to ensure nothing is ever truly broken.",
+                "Every transform manipulation, deletion, and asset spawn is encapsulated into an ICommand object. This object holds the exact state of the entity before and after the action. By pushing these onto an Undo stack, designers have infinite, memory-safe Undo/Redo operations without breaking scene state or causing dangling pointers.",
+                "The complexity here came from handling cascading deletions (e.g., deleting a parent object with 50 children). The Command object serializes the entire hierarchy structure before deletion, allowing for a flawless restoration when Undo is pressed."
             ],
             codeSnippet: {
                 title: "src/core/CommandStack.cpp",
@@ -58,36 +82,14 @@ const projectData = {
     m_UndoStack.pop();
     m_RedoStack.push(cmd);
 }`
-            },
-            mediaOnLeft: false
+            }
         },
         {
-            title: "Content Browser & Assets",
-            text: [
-                "I also built a custom content browser that integrates seamlessly with our workflow.",
-                "(You can add more text here about your P4 integration, Prefabs, or drag-and-drop mechanics!)"
-            ],
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Content+Browser" },
-            mediaOnLeft: true
-        }
-    ],
-
-    gallery: [
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Gizmos" },
-            caption: "Math-heavy ImGuizmo integration for 3D manipulation."
-        },
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Content+Browser" },
-            caption: "Custom asset pipeline with drag-and-drop instantiation."
-        },
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Scene+Graph" },
-            caption: "Parent/Child hierarchy processing via relative transform matrices."
-        },
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=JSON" },
-            caption: "Fast scene serialization and deserialization using JSON."
+            title: "Content Browser & P4 Integration",
+            paragraphs: [
+                "A fast editor is useless without a good asset pipeline. I built a custom content browser that reads directory structures dynamically and generates thumbnails for materials, models, and prefabs.",
+                "Furthermore, I integrated Perforce (P4) commands directly into the engine UI. When a designer edits a material, the engine automatically checks out the file via P4 command line integration, preventing frustrating merge conflicts down the line."
+            ]
         }
     ]
 };
@@ -95,11 +97,14 @@ const projectData = {
 // -----------------------------------------------------
 // 2. RENDERING LOGIC
 // -----------------------------------------------------
-function getMediaHTML(media) {
+function getMediaHTML(media, isThumb = false) {
+    if (isThumb) {
+        return `<img src="${media.thumb}" alt="Thumbnail">`;
+    }
     if (media.type === 'video') {
-        return `<video autoplay loop muted playsinline poster="${media.fallbackImg}">
+        return `<video autoplay loop muted playsinline poster="${media.fallbackImg || ''}">
                     <source src="${media.src}" type="video/mp4">
-                    <img src="${media.fallbackImg}" alt="Fallback">
+                    <img src="${media.fallbackImg || ''}" alt="Fallback">
                 </video>`;
     } else if (media.type === 'iframe') {
         return `<iframe src="${media.src}" title="Video" allowfullscreen></iframe>`;
@@ -122,32 +127,38 @@ function renderProjectPage() {
 
     const html = `
         <style>
-            .zig-zag-row {
-                display: flex;
-                flex-direction: column; /* MOBILE: Image on top, Text below */
-                gap: 30px;
-                margin-bottom: 60px;
-                align-items: center;
-            }
-            .zig-zag-col {
-                width: 100%; /* FIXED: Full width on mobile */
-            }
-            .ide-header {
-                cursor: pointer; /* FIXED: Forces iOS mobile to register clicks */
-            }
+            /* Zig-Zag Styles */
+            .zig-zag-row { display: flex; flex-direction: column; gap: 30px; margin-bottom: 60px; align-items: center; }
+            .zig-zag-col { width: 100%; min-width: 0; }
+            .ide-header { cursor: pointer !important; position: relative; z-index: 10; user-select: none; -webkit-tap-highlight-color: transparent; }
+            .ide-header * { pointer-events: none; }
+            
+            /* Steam Carousel Styles */
+            .steam-carousel-container { width: 100%; margin-bottom: 40px; }
+            .steam-main-view { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; margin-bottom: 15px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+            .steam-main-view > * { width: 100%; height: 100%; object-fit: contain; position: absolute; inset: 0; }
+            
+            /* MOBILE: Smooth momentum scrolling for thumbnails */
+            .steam-thumbs-track { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin; scrollbar-color: var(--accent-color) rgba(0,0,0,0.3); -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+            /* MOBILE: Slightly smaller thumbs so more fit on screen */
+            .steam-thumb { flex: 0 0 100px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: all 0.2s ease; background: #111; scroll-snap-align: start; }
+            .steam-thumb.active { opacity: 1; border-color: var(--accent-color); }
+            .steam-thumb:hover { opacity: 0.8; }
+            .steam-thumb > img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+            
+            /* Deep Dive Styles - MOBILE: Smaller padding so text isn't squished */
+            .deep-dive-section { background: rgba(0, 240, 255, 0.02); border: 1px solid rgba(0, 240, 255, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 40px; }
+            .deep-dive-section h2 { margin-top: 0; color: var(--accent-color); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 20px; font-size: 1.4rem; }
+
             @media (min-width: 850px) {
-                .zig-zag-row {
-                    flex-direction: row; /* DESKTOP: Default to Image Left */
-                    gap: 50px;
-                    align-items: center;
-                }
-                .zig-zag-row.media-right {
-                    flex-direction: row-reverse; /* DESKTOP: Swap to Image Right */
-                }
-                .zig-zag-col {
-                    flex: 1 1 0%; /* DESKTOP: Share width equally */
-                    width: auto;
-                }
+                .zig-zag-row { flex-direction: row; gap: 50px; align-items: center; }
+                .zig-zag-row.media-right { flex-direction: row-reverse; }
+                .zig-zag-col { flex: 1 1 0%; width: auto; min-width: 0; }
+                
+                /* DESKTOP: Restore large luxurious padding and larger thumbnails */
+                .deep-dive-section { padding: 40px; }
+                .deep-dive-section h2 { margin-bottom: 25px; font-size: 1.8rem; }
+                .steam-thumb { flex: 0 0 140px; }
             }
         </style>
 
@@ -164,14 +175,23 @@ function renderProjectPage() {
             <p class="project-tagline fade-in d-3">${projectData.tagline}</p>
         </header>
 
-        <div class="media-wrapper media-reveal hero-media">
-            ${getMediaHTML(projectData.mainMedia)}
+        <div class="steam-carousel-container media-reveal fade-in d-4">
+            <div class="steam-main-view" id="carousel-main-view">
+                ${getMediaHTML(projectData.steamCarousel[0])}
+            </div>
+            <div class="steam-thumbs-track" id="carousel-thumbs">
+                ${projectData.steamCarousel.map((item, index) => `
+                    <div class="steam-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" onclick="changeCarouselMedia(${index})">
+                        ${getMediaHTML(item, true)}
+                    </div>
+                `).join('')}
+            </div>
         </div>
 
         <div class="article-layout">
-            <aside class="article-sidebar fade-in d-4">
+            <aside class="article-sidebar fade-in d-5">
                 <div class="stats-panel">
-                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">Engine Telemetry</h3>
+                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">Project Overview</h3>
                     ${projectData.stats.map(s => `
                         <div class="stat-item">
                             <span class="stat-label">${s.label}</span>
@@ -198,10 +218,8 @@ function renderProjectPage() {
                                 ${block.text.map(p => `<p>${p}</p>`).join('')}
                             </div>
                         `;
-                        
                         let visualHTML = '';
                         if (block.codeSnippet) {
-                            // Notice 'collapsed' is added here so it starts closed like it should!
                             visualHTML = `
                                 <div class="ide-window collapsed" style="margin: 0; width: 100%;">
                                     <div class="ide-header" onclick="void(0)">
@@ -218,9 +236,7 @@ function renderProjectPage() {
                                 </div>
                             `;
                         }
-
                         const sideElementHTML = `<div class="zig-zag-col">${visualHTML}</div>`;
-
                         return `
                             <div class="scroll-reveal zig-zag-row ${block.mediaOnLeft ? 'media-left' : 'media-right'}">
                                 ${sideElementHTML}
@@ -230,59 +246,95 @@ function renderProjectPage() {
                     }).join('')}
                 </section>
 
-                <section class="article-section scroll-reveal">
-                    <h2>Gallery</h2>
-                    <div class="gallery-grid">
-                        ${projectData.gallery.map(item => `
-                            <div class="gallery-item">
-                                <div class="media-wrapper" style="padding-bottom: 66.66%; border-bottom: none; ${item.caption ? '' : 'border-radius: 12px;'}">
-                                    ${getMediaHTML(item.media)}
+                <section class="article-section">
+                    ${projectData.deepDives.map(dive => `
+                        <div class="deep-dive-section scroll-reveal">
+                            <h2>${dive.title}</h2>
+                            ${dive.paragraphs.map(p => `<p style="margin-bottom: 20px; line-height: 1.7; font-size: 1.05rem;">${p}</p>`).join('')}
+                            
+                            ${dive.codeSnippet ? `
+                            <div class="ide-window collapsed" style="margin-top: 30px; width: 100%;">
+                                <div class="ide-header" onclick="void(0)">
+                                    <div class="ide-dot" style="background:#ff5f56"></div><div class="ide-dot" style="background:#ffbd2e"></div><div class="ide-dot" style="background:#27c93f"></div>
+                                    <span style="margin-left:auto; color:var(--text-secondary); font-size: 0.75rem;">${dive.codeSnippet.title}</span>
                                 </div>
-                                ${item.caption ? `
-                                <div class="gallery-caption">
-                                    <span class="accent" style="margin-right: 5px;">></span> ${item.caption}
-                                </div>
-                                ` : ''}
+                                <div class="ide-content" style="max-height: 400px; overflow-y: auto; overflow-x: auto;">${highlightCode(dive.codeSnippet.code)}</div>
                             </div>
-                        `).join('')}
-                    </div>
+                            ` : ''}
+                        </div>
+                    `).join('')}
                 </section>
+
             </div>
         </div>
     `;
 
     container.innerHTML = html;
+    startCarouselAutoPlay(); // Start the steam carousel
 }
 
+// -----------------------------------------------------
+// 3. STEAM CAROUSEL LOGIC
+// -----------------------------------------------------
+let carouselIndex = 0;
+let carouselTimer;
+
+window.changeCarouselMedia = function(index) {
+    carouselIndex = index;
+    const mainView = document.getElementById('carousel-main-view');
+    const thumbs = document.querySelectorAll('.steam-thumb');
+    
+    // Update Main View
+    mainView.innerHTML = getMediaHTML(projectData.steamCarousel[index]);
+    
+    // Update active thumb classes
+    thumbs.forEach((t, i) => {
+        if (i === index) t.classList.add('active');
+        else t.classList.remove('active');
+    });
+
+    // Reset the timer when manually clicked
+    resetCarouselTimer();
+};
+
+function startCarouselAutoPlay() {
+    carouselTimer = setInterval(() => {
+        let nextIndex = carouselIndex + 1;
+        if (nextIndex >= projectData.steamCarousel.length) nextIndex = 0;
+        changeCarouselMedia(nextIndex);
+    }, 5000); // Swaps every 5 seconds
+}
+
+function resetCarouselTimer() {
+    clearInterval(carouselTimer);
+    startCarouselAutoPlay();
+}
+
+
+// Initialize the page
 renderProjectPage();
 
 // -----------------------------------------------------
-// SEAMLESS PAGE TRANSITION LOGIC
+// 4. SEAMLESS PAGE TRANSITION LOGIC
 // -----------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.body.classList.add('is-loaded');
-    }, 100);
+    setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
 
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function(e) {
             if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
                 e.preventDefault();
                 const destination = this.href;
-
                 document.body.classList.remove('is-loaded');
                 document.body.classList.add('is-exiting');
-
-                setTimeout(() => {
-                    window.location.href = destination;
-                }, 500); 
+                setTimeout(() => { window.location.href = destination; }, 500); 
             }
         });
     });
 });
 
 // -----------------------------------------------------
-// GLOBAL IDE WINDOW COLLAPSE LOGIC
+// 5. GLOBAL IDE WINDOW COLLAPSE LOGIC
 // -----------------------------------------------------
 document.addEventListener('click', function(e) {
     const header = e.target.closest('.ide-header');

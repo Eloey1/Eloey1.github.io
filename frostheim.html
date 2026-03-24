@@ -169,20 +169,6 @@
                 });
             }, 100);
         });
-
-        // -----------------------------------------------------
-        // 4. GLOBAL IDE WINDOW COLLAPSE LOGIC
-        // -----------------------------------------------------
-        document.addEventListener('click', function(e) {
-            const header = e.target.closest('.ide-header');
-            if (header) {
-                const window = header.closest('.ide-window');
-                if (window) {
-                    window.classList.toggle('collapsed');
-                }
-            }
-        });
-
     </script>
 </body>
 </html>

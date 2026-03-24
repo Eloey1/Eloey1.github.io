@@ -65,7 +65,7 @@ for (std::unique_ptr<ParticleModule>& module : myModules)
         {
             title: "Curves",
             text: [
-                "My technical artists really wanted to have curves in the modules so I added that with a custom UI widget.",
+                "My technical artists really wanted to have curves in the modules so I made that with a custom UI widget.",
                 "I had made a full Easing utility from before so I also upgraded our curve class so I can have different easing on the curve for nice and non-linear curves."
             ],
             media: { type: "image", src: "image/hailstorm/hailstorm5.png" },
@@ -166,6 +166,46 @@ function renderProjectPage() {
     const container = document.getElementById('project-content');
 
     const html = `
+        <style>
+            .zig-zag-row {
+                display: flex;
+                flex-direction: column; /* MOBILE: Image on top, Text below */
+                gap: 30px;
+                margin-bottom: 60px;
+                align-items: center;
+            }
+            .zig-zag-col {
+                width: 100%;
+                min-width: 0; /* CRITICAL FIX: Stops the code block from squishing the layout */
+            }
+            /* Clean CSS fix for clickable headers */
+            .ide-header {
+                cursor: pointer !important;
+                position: relative;
+                z-index: 10;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+            .ide-header * {
+                pointer-events: none; /* Makes sure you click the header, not the text */
+            }
+            @media (min-width: 850px) {
+                .zig-zag-row {
+                    flex-direction: row; /* DESKTOP: Default to Image Left */
+                    gap: 50px;
+                    align-items: center;
+                }
+                .zig-zag-row.media-right {
+                    flex-direction: row-reverse; /* DESKTOP: Swap to Image Right */
+                }
+                .zig-zag-col {
+                    flex: 1 1 0%; /* DESKTOP: Share width equally */
+                    width: auto;
+                    min-width: 0; /* CRITICAL FIX: Stops the code block from squishing the layout */
+                }
+            }
+        </style>
+
         <div class="back-nav fade-in">
             <a href="index.html" class="back-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:5px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -208,7 +248,7 @@ function renderProjectPage() {
                 <section class="article-section">
                     ${projectData.splitOverviews.map(block => {
                         const textHTML = `
-                            <div style="flex: 1 1 350px; min-width: 0;">
+                            <div class="zig-zag-col">
                                 <h2 style="margin-top: 0; margin-bottom: 20px;">${block.title}</h2>
                                 ${block.text.map(p => `<p>${p}</p>`).join('')}
                             </div>
@@ -217,26 +257,28 @@ function renderProjectPage() {
                         let visualHTML = '';
                         if (block.codeSnippet) {
                             visualHTML = `
-                                <div class="ide-window" style="margin: 0;">
-                                    <div class="ide-header">
+                                <div class="ide-window collapsed" style="margin: 0; width: 100%;">
+                                    <div class="ide-header" onclick="void(0)">
+                                        <div class="ide-dot" style="background:#ff5f56"></div><div class="ide-dot" style="background:#ffbd2e"></div><div class="ide-dot" style="background:#27c93f"></div>
                                         <span style="margin-left:auto; color:var(--text-secondary); font-size: 0.75rem;">${block.codeSnippet.title}</span>
                                     </div>
-                                    <div class="ide-content" style="max-height: 350px; overflow-y: auto;">${highlightCode(block.codeSnippet.code)}</div>
+                                    <div class="ide-content" style="max-height: 350px; overflow-y: auto; overflow-x: auto;">${highlightCode(block.codeSnippet.code)}</div>
                                 </div>
                             `;
                         } else if (block.media) {
                             visualHTML = `
-                                <div class="media-wrapper" style="padding-bottom: 60%; border-bottom: none; border-radius: 12px; overflow: hidden; margin: 0; border: 1px solid rgba(255,255,255,0.05);">
+                                <div class="media-wrapper" style="padding-bottom: 60%; border-bottom: none; border-radius: 12px; overflow: hidden; margin: 0; border: 1px solid rgba(255,255,255,0.05); width: 100%; position: relative;">
                                     ${getMediaHTML(block.media)}
                                 </div>
                             `;
                         }
 
-                        const sideElementHTML = `<div style="flex: 1 1 350px; min-width: 0;">${visualHTML}</div>`;
+                        const sideElementHTML = `<div class="zig-zag-col">${visualHTML}</div>`;
 
                         return `
-                            <div class="scroll-reveal" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center; margin-bottom: 60px;">
-                                ${block.mediaOnLeft ? sideElementHTML + textHTML : textHTML + sideElementHTML}
+                            <div class="scroll-reveal zig-zag-row ${block.mediaOnLeft ? 'media-left' : 'media-right'}">
+                                ${sideElementHTML}
+                                ${textHTML}
                             </div>
                         `;
                     }).join('')}
@@ -247,10 +289,11 @@ function renderProjectPage() {
                     <p>An example of how simple it is to construct a new logic module for the particle emitters using the custom component architecture and reflection macros.</p>
                     <div class="ide-wrapper scroll-reveal" style="margin-top: 20px;">
                         <div class="ide-window collapsed">
-                            <div class="ide-header">
+                            <div class="ide-header" onclick="void(0)">
+                                <div class="ide-dot" style="background:#ff5f56"></div><div class="ide-dot" style="background:#ffbd2e"></div><div class="ide-dot" style="background:#27c93f"></div>
                                 <span style="margin-left:auto; color:var(--text-secondary); font-size: 0.75rem;">${projectData.codeSnippet.title}</span>
                             </div>
-                            <div class="ide-content">${highlightCode(projectData.codeSnippet.code)}</div>
+                            <div class="ide-content" style="overflow-x: auto;">${highlightCode(projectData.codeSnippet.code)}</div>
                         </div>
                     </div>
                 </section>
@@ -292,3 +335,41 @@ function renderProjectPage() {
 }
 
 renderProjectPage();
+
+// -----------------------------------------------------
+// SEAMLESS PAGE TRANSITION LOGIC
+// -----------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.body.classList.add('is-loaded');
+    }, 100);
+
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
+                e.preventDefault();
+                const destination = this.href;
+
+                document.body.classList.remove('is-loaded');
+                document.body.classList.add('is-exiting');
+
+                setTimeout(() => {
+                    window.location.href = destination;
+                }, 500); 
+            }
+        });
+    });
+});
+
+// -----------------------------------------------------
+// GLOBAL IDE WINDOW COLLAPSE LOGIC
+// -----------------------------------------------------
+document.addEventListener('click', function(e) {
+    const header = e.target.closest('.ide-header');
+    if (header) {
+        const ideWindow = header.closest('.ide-window');
+        if (ideWindow) {
+            ideWindow.classList.toggle('collapsed');
+        }
+    }
+});
