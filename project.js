@@ -4,13 +4,13 @@
 const projectData = {
     title: "Frostheim Editor",
     tagline: "Custom 3D Engine & Level Design Tool",
-    status: "★ Flagship Project",
+    status: "★ Flagship Project & Specialization",
     techStack: ["C++20", "DirectX 11", "ImGui", "JSON"],
     stats: [
-        { label: "Core Architecture", value: "Entity Component System" },
-        { label: "Design Pattern", value: "Command Pattern (Undo/Redo)" },
-        { label: "Graphics API", value: "DirectX 11" },
-        { label: "Lines of Code", value: "15,000+ Native C++" }
+        { label: "TEMP", value: "TEMP" },
+        { label: "TEMP", value: "TEMP" },
+        { label: "TEMP", value: "TEMP" },
+        { label: "TEMP", value: "TEMP" }
     ],
     
     steamCarousel: [
@@ -41,19 +41,19 @@ const projectData = {
         {
             title: "Motivation & Goal",
             text: [
-                "My vision for this level editor went beyond just making another tool. Our team had several great utilities, but they were just standalone windows floating in the void. I wanted to create a unified workspace where they could all live and interact together.",
+                "My vision for this level editor was to create a familiar environment. Our team had several great utilities, but they were just standalone windows floating in the void. I wanted to create a unified workspace where they could all live and interact together.",
                 "Having built a smaller-scale level editor in a previous project, I wanted to really challenge myself this time around. My goal was to take everything I had learned and make a proper, production-ready tool for real use cases."
             ],
             media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Frostheim+UI+Screenshot" },
             mediaOnLeft: false
         },
         {
-            title: "Data-Oriented ECS",
+            title: "Result & Reflection",
             text: [
-                "To handle massive object counts without CPU cache misses, the engine avoids traditional Object-Oriented deep inheritance.",
-                "Instead, it utilizes an Entity Component System (ECS) with packed contiguous memory arrays for components, drastically speeding up the core update loop."
+                ".",
+                "."
             ],
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=ECS+Architecture+Diagram" },
+            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=TEMP" },
             mediaOnLeft: true
         }
     ],
@@ -61,11 +61,11 @@ const projectData = {
     // NEW: DEEP DIVE SECTIONS (For massive amounts of text and code)
     deepDives: [
         {
-            title: "The Command Stack (Undo/Redo System)",
+            title: "Temp",
             paragraphs: [
-                "Level designers need the freedom to make mistakes. I engineered a robust Command Pattern for the editor to ensure nothing is ever truly broken.",
-                "Every transform manipulation, deletion, and asset spawn is encapsulated into an ICommand object. This object holds the exact state of the entity before and after the action. By pushing these onto an Undo stack, designers have infinite, memory-safe Undo/Redo operations without breaking scene state or causing dangling pointers.",
-                "The complexity here came from handling cascading deletions (e.g., deleting a parent object with 50 children). The Command object serializes the entire hierarchy structure before deletion, allowing for a flawless restoration when Undo is pressed."
+                ".",
+                ".",
+                "."
             ],
             codeSnippet: {
                 title: "src/core/CommandStack.cpp",
@@ -87,8 +87,8 @@ const projectData = {
         {
             title: "Content Browser & P4 Integration",
             paragraphs: [
-                "A fast editor is useless without a good asset pipeline. I built a custom content browser that reads directory structures dynamically and generates thumbnails for materials, models, and prefabs.",
-                "Furthermore, I integrated Perforce (P4) commands directly into the engine UI. When a designer edits a material, the engine automatically checks out the file via P4 command line integration, preventing frustrating merge conflicts down the line."
+                ".",
+                "."
             ]
         }
     ]

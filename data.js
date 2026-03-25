@@ -33,7 +33,7 @@ const portfolioData = {
             status: "★ Specialization", 
             statusClass: "active",
             techStack: ["C++20", "DX11", "ImGui", "JSON"],
-            description: "My flagship project and primary specialization. A custom 3D level editor engineered from scratch using ImGui to streamline asset placement and iteration. Built on a high-performance ECS architecture, featuring a robust Command Pattern undo/redo stack.",
+            description: "My flagship project and primary specialization. A custom 3D level editor created using ImGui.",
             projectLink: "frostheim.html",
             linkText: "Read Breakdown →",
             media: {
@@ -108,7 +108,7 @@ const portfolioData = {
         },
         {
             title: "Spite Oathbound",
-            description: "Top-down ARPG prototype built to test the Frostheim Engine logic.",
+            description: "Top-down ARPG built in our custom engine Frostheim.",
             techStack: ["C++", "Frostheim", "2025"],
             link: "spite_oathbound.html",
             media: {
@@ -119,7 +119,7 @@ const portfolioData = {
         },
         {
             title: "3D Platformer",
-            description: "Smooth movement and jumping mechanics.",
+            description: "Smooth movement.",
             techStack: ["C++", "Frostheim", "2026"],
             link: "#", 
             media: {
