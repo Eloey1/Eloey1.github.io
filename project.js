@@ -3,7 +3,7 @@
 // -----------------------------------------------------
 const projectData = {
     title: "Frostheim Editor",
-    tagline: "Custom 3D Engine & Level Design Tool",
+    tagline: "Custom Engine & Custom Editor",
     status: "★ Flagship Project & Specialization",
     techStack: ["C++20", "DirectX 11", "ImGui", "JSON"],
     stats: [
@@ -36,32 +36,41 @@ const projectData = {
             thumb: "image/editor/editor3.png" 
         }
     ],
-    
-    splitOverviews: [
+
+    introSections: [
         {
             title: "Motivation & Goal",
-            text: [
+            paragraphs: [
                 "My vision for this level editor was to create a familiar environment. Our team had several great utilities, but they were just standalone windows floating in the void. I wanted to create a unified workspace where they could all live and interact together.",
                 "Having built a smaller-scale level editor in a previous project, I wanted to really challenge myself this time around. My goal was to take everything I had learned and make a proper, production-ready tool for real use cases."
-            ],
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Frostheim+UI+Screenshot" },
-            mediaOnLeft: false
+            ]
         },
         {
             title: "Result & Reflection",
+            paragraphs: [
+                "I am incredibly proud of how the editor turned out. While a project of this scale is never truly 'finished,' it successfully achieved its primary goal: drastically improving our team's workflow by bringing previously scattered utilities into one seamless, unified environment.",
+                "Will I keep developing Frostheim's editor? Absolutely. Building this from scratch was a massive challenge, but wrestling with complex architectural problems is exactly how you grow as an engine and tools programmer. I plan to continue expanding its features and pushing the editor to be the best it can possibly be."
+            ]
+        }
+    ],
+    
+    // Zig-Zag layout (Good for scannable highlights)
+    splitOverviews: [
+        {
+            title: "TEMP",
             text: [
                 ".",
                 "."
             ],
             media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=TEMP" },
-            mediaOnLeft: true
+            mediaOnLeft: false
         }
     ],
 
-    // NEW: DEEP DIVE SECTIONS (For massive amounts of text and code)
+    // DEEP DIVE SECTIONS (For massive amounts of text and code)
     deepDives: [
         {
-            title: "Temp",
+            title: "The Command Stack (Undo/Redo System)",
             paragraphs: [
                 ".",
                 ".",
@@ -127,6 +136,12 @@ function renderProjectPage() {
 
     const html = `
         <style>
+            /* Intro Styles */
+            .intro-block { margin-bottom: 50px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .intro-section { margin-bottom: 30px; }
+            .intro-section h2 { color: var(--accent-color); margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; }
+            .intro-section p { margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary); }
+
             /* Zig-Zag Styles */
             .zig-zag-row { display: flex; flex-direction: column; gap: 30px; margin-bottom: 60px; align-items: center; }
             .zig-zag-col { width: 100%; min-width: 0; }
@@ -151,6 +166,7 @@ function renderProjectPage() {
             .deep-dive-section h2 { margin-top: 0; color: var(--accent-color); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 20px; font-size: 1.4rem; }
 
             @media (min-width: 850px) {
+                .intro-section h2 { font-size: 1.8rem; }
                 .zig-zag-row { flex-direction: row; gap: 50px; align-items: center; }
                 .zig-zag-row.media-right { flex-direction: row-reverse; }
                 .zig-zag-col { flex: 1 1 0%; width: auto; min-width: 0; }
@@ -210,6 +226,15 @@ function renderProjectPage() {
 
             <div class="article-main fade-in d-5">
                 
+                <section class="intro-block scroll-reveal">
+                    ${projectData.introSections.map(section => `
+                        <div class="intro-section">
+                            <h2>${section.title}</h2>
+                            ${section.paragraphs.map(p => `<p>${p}</p>`).join('')}
+                        </div>
+                    `).join('')}
+                </section>
+
                 <section class="article-section">
                     ${projectData.splitOverviews.map(block => {
                         const textHTML = `
@@ -270,7 +295,7 @@ function renderProjectPage() {
     `;
 
     container.innerHTML = html;
-    startCarouselAutoPlay(); // Start the steam carousel
+    startCarouselAutoPlay();
 }
 
 // -----------------------------------------------------
@@ -284,16 +309,13 @@ window.changeCarouselMedia = function(index) {
     const mainView = document.getElementById('carousel-main-view');
     const thumbs = document.querySelectorAll('.steam-thumb');
     
-    // Update Main View
     mainView.innerHTML = getMediaHTML(projectData.steamCarousel[index]);
     
-    // Update active thumb classes
     thumbs.forEach((t, i) => {
         if (i === index) t.classList.add('active');
         else t.classList.remove('active');
     });
 
-    // Reset the timer when manually clicked
     resetCarouselTimer();
 };
 
@@ -302,7 +324,7 @@ function startCarouselAutoPlay() {
         let nextIndex = carouselIndex + 1;
         if (nextIndex >= projectData.steamCarousel.length) nextIndex = 0;
         changeCarouselMedia(nextIndex);
-    }, 5000); // Swaps every 5 seconds
+    }, 5000);
 }
 
 function resetCarouselTimer() {
@@ -310,8 +332,6 @@ function resetCarouselTimer() {
     startCarouselAutoPlay();
 }
 
-
-// Initialize the page
 renderProjectPage();
 
 // -----------------------------------------------------
