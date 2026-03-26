@@ -20,6 +20,11 @@ const projectData = {
             fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Video+Fallback",
             thumb: "https://placehold.co/240x135/111620/00f0ff?text=Video" 
         },
+        {
+            type: "image",
+            src: "image/editor/UndoAndRedo.gif",
+            thumb: "image/editor/editor1.png"
+        },
         { 
             type: "image", 
             src: "image/editor/editor1.png", 
