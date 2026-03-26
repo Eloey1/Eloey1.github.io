@@ -37,8 +37,8 @@ const portfolioData = {
             projectLink: "frostheim.html",
             linkText: "Read Breakdown →",
             media: {
-                type: "video", 
-                src: "your-editor-video.mp4",
+                type: "image", 
+                src: "image/editor/UndoAndRedo.gif",
                 fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Frostheim+Editor+Video+Goes+Here"
             },
             keyFeatures: [
@@ -77,7 +77,7 @@ const portfolioData = {
             title: "Pawn's Gambit",
             description: "The Rookies Runner-up & People's Choice award-winning puzzle game.",
             techStack: ["C#", "Unity", "2024"],
-            link: "pawn.html",
+            link: "pawn",
             media: {
                 type: "hover-gif", 
                 src: "https://img.youtube.com/vi/RV0J4raLpqY/maxresdefault.jpg", 
@@ -99,7 +99,7 @@ const portfolioData = {
             title: "Beak Noir",
             description: "Isometric action-adventure game.",
             techStack: ["C++", "TGE Engine", "2025"],
-            link: "beak_noir.html",
+            link: "beak_noir",
             media: {
                 type: "hover-gif",
                 src: "https://img.youtube.com/vi/gxaEJ56esTE/maxresdefault.jpg",

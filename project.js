@@ -2,8 +2,8 @@
 // 1. PROJECT DATA
 // -----------------------------------------------------
 const projectData = {
-    title: "Frostheim Editor",
-    tagline: "Custom Engine & Custom Editor",
+    title: "Frostheim's Editor",
+    tagline: "A In-House Editor",
     status: "★ Flagship Project & Specialization",
     techStack: ["C++20", "DirectX 11", "ImGui", "JSON"],
     stats: [
@@ -59,10 +59,9 @@ const projectData = {
         }
     ],
     
-    // Zig-Zag layout (Good for scannable highlights)
     splitOverviews: [
         {
-            title: "TEMP",
+            title: "The Architecture",
             text: [
                 ".",
                 "."
@@ -184,7 +183,7 @@ function renderProjectPage() {
         </style>
 
         <div class="back-nav fade-in">
-            <a href="index.html" class="back-btn">
+            <a href="/" class="back-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:5px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 cd ../portfolio
             </a>

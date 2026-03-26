@@ -57,11 +57,11 @@ const projectData = {
     },
     gallery: [
         {
-            media: { type: "image", src: "image/beak_noir/BeakNoir1.jpg" },
+            media: { type: "image", src: "../image/beak_noir/BeakNoir1.jpg" },
             caption: "" // Leave blank or remove the line entirely, no box will show!
         },
         {
-            media: { type: "image", src: "image/beak_noir/BeakNoir5.jpg" } 
+            media: { type: "image", src: "../image/beak_noir/BeakNoir5.jpg" } 
             // I removed the caption line completely here, and it still works!
         }
     ]
@@ -95,7 +95,7 @@ function renderProjectPage() {
 
     const html = `
         <div class="back-nav fade-in">
-            <a href="index.html" class="back-btn">
+            <a href="/" class="back-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:5px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 cd ../portfolio
             </a>
