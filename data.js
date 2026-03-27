@@ -34,11 +34,11 @@ const portfolioData = {
             statusClass: "active",
             techStack: ["C++20", "DX11", "ImGui", "JSON"],
             description: "My flagship project and primary specialization. A custom 3D level editor created using ImGui.",
-            projectLink: "frostheim.html",
+            projectLink: "editor",
             linkText: "Read Breakdown →",
             media: {
-                type: "image", 
-                src: "image/editor/UndoAndRedo.gif",
+                type: "video", 
+                src: "image/editor/UndoAndRedo.mp4",
                 fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Frostheim+Editor+Video+Goes+Here"
             },
             keyFeatures: [
@@ -59,8 +59,9 @@ const portfolioData = {
             projectLink: "particle_editor.html", 
             linkText: "Read Breakdown →",
             media: {
-                type: "image",
-                src: "https://placehold.co/1280x720/111620/00f0ff?text=Particle+Editor+GIF/Image+Goes+Here"
+                type: "video",
+                src: "image/hailstorm/fireParticle.mp4",
+                fallbackImg: "imge/hailstorm/hailstorm1.png"
             },
             keyFeatures: [
                 "Component-Based Modules",
@@ -79,9 +80,9 @@ const portfolioData = {
             techStack: ["C#", "Unity", "2024"],
             link: "pawn",
             media: {
-                type: "hover-gif", 
+                type: "hover-video", 
                 src: "https://img.youtube.com/vi/RV0J4raLpqY/maxresdefault.jpg", 
-                hoverSrc: "path/to/pawn-gameplay.gif"
+                hoverSrc: "path/to/pawn-gameplay.mp4"
             }
         },
         {
@@ -90,9 +91,9 @@ const portfolioData = {
             techStack: ["C++", "TGE Engine", "2025"],
             link: "tunnel_vision.html",
             media: {
-                type: "hover-gif",
+                type: "hover-video",
                 src: "https://img.youtube.com/vi/C2sNwLEPPF4/maxresdefault.jpg",
-                hoverSrc: "path/to/tunnel-vision.gif"
+                hoverSrc: "path/to/tunnel-vision.mp4"
             }
         },
         {
@@ -101,9 +102,9 @@ const portfolioData = {
             techStack: ["C++", "TGE Engine", "2025"],
             link: "beak_noir",
             media: {
-                type: "hover-gif",
+                type: "hover-video",
                 src: "https://img.youtube.com/vi/gxaEJ56esTE/maxresdefault.jpg",
-                hoverSrc: "path/to/beak-noir.gif"
+                hoverSrc: "path/to/beak-noir.mp4"
             }
         },
         {
@@ -112,9 +113,9 @@ const portfolioData = {
             techStack: ["C++", "Frostheim", "2025"],
             link: "spite_oathbound.html",
             media: {
-                type: "hover-gif",
+                type: "hover-video",
                 src: "https://img.youtube.com/vi/6T9ucwCqhoA/maxresdefault.jpg",
-                hoverSrc: "path/to/spite-oathbound.gif"
+                hoverSrc: "path/to/spite-oathbound.mp4"
             }
         },
         {
@@ -123,7 +124,7 @@ const portfolioData = {
             techStack: ["C++", "Frostheim", "2026"],
             link: "#", 
             media: {
-                type: "hover-gif",
+                type: "hover-video",
                 src: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+Static",
                 hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+GIF"
             }
@@ -134,7 +135,7 @@ const portfolioData = {
             techStack: ["C++", "Frostheim", "2026"],
             link: "#", 
             media: {
-                type: "hover-gif",
+                type: "hover-video",
                 src: "https://placehold.co/600x337/111620/00f0ff?text=TBA+Static",
                 hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=TBA+GIF"
             }

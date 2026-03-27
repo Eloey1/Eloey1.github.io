@@ -1,39 +1,38 @@
 // -----------------------------------------------------
-// 0. DATA RENDERING LOGIC
+// 0. DATA RENDERING LOGIC (OPTIMIZED)
 // -----------------------------------------------------
 
-// Helper function to generate HTML based on media type
 function getMediaHTML(media) {
     if (media.type === 'video') {
         return `
-            <video autoplay loop muted playsinline poster="${media.fallbackImg}">
+            <video autoplay loop muted playsinline preload="metadata" poster="${media.fallbackImg}" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;">
                 <source src="${media.src}" type="video/mp4">
-                <img src="${media.fallbackImg}" alt="Video Fallback">
+                <img src="${media.fallbackImg}" loading="lazy" alt="Video Fallback" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;">
             </video>`;
     } else if (media.type === 'iframe') {
-        return `<iframe src="${media.src}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    } else if (media.type === 'hover-gif') {
-        // NEW: Hover GIF logic!
-        return `<img src="${media.src}" data-static="${media.src}" data-hover="${media.hoverSrc}" class="hover-gif" alt="Project Media">`;
+        return `<iframe loading="lazy" src="${media.src}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; aspect-ratio: 16/9; border: none; display: block;"></iframe>`;
+    } else if (media.type === 'hover-video') {
+        return `
+            <div class="hover-video-container" style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; display: block;">
+                <img src="${media.src}" loading="lazy" decoding="async" class="hover-video-poster" alt="Project Media" style="width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; z-index: 2; transition: opacity 0.3s ease;">
+                <video loop muted playsinline preload="none" class="hover-video-player" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 1;">
+                    <source src="${media.hoverSrc}" type="video/mp4">
+                </video>
+            </div>`;
+   } else if (media.type === 'hover-gif') {
+        return `<img src="${media.src}" data-static="${media.src}" data-hover="${media.hoverSrc}" class="hover-gif" loading="lazy" decoding="async" alt="Project Media" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     } else {
-        return `<img src="${media.src}" alt="Project Media">`;
+        return `<img src="${media.src}" loading="lazy" decoding="async" alt="Project Media" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
     }
 }
 
-function getMediaHTML(media) {
-    if (media.type === 'video') {
-        return `
-            <video autoplay loop muted playsinline poster="${media.fallbackImg}">
-                <source src="${media.src}" type="video/mp4">
-                <img src="${media.fallbackImg}" alt="Video Fallback">
-            </video>`;
-    } else if (media.type === 'iframe') {
-        return `<iframe src="${media.src}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    } else if (media.type === 'hover-gif') {
-        return `<img src="${media.src}" data-static="${media.src}" data-hover="${media.hoverSrc}" class="hover-gif" alt="Project Media">`;
-    } else {
-        return `<img src="${media.src}" alt="Project Media">`;
-    }
+function highlightCode(code) {
+    return code
+        .replace(/\/\/.*/g, match => `<span class="cm">${match}</span>`)
+        .replace(/\b(void|delete|while|for|if|else|int|float|double|bool|class|struct|return)\b/g, '<span class="kw">$1</span>')
+        .replace(/\b(CommandStack|ICommand|Renderer|Pipeline)\b/g, '<span class="ty">$1</span>')
+        .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="fn">$1</span>')
+        .replace(/className=/g, 'class='); 
 }
 
 function renderPortfolio() {
@@ -67,13 +66,13 @@ function renderPortfolio() {
     `;
     document.getElementById('sidebar-container').innerHTML = sidebarHtml;
 
-    // 2. Render Architecture Section
+    // 2. Render Architecture Section (Restored Hover Effects)
     const archHtml = portfolioData.architectureProjects.map((proj, index) => `
-        <article class="featured-card" style="position: relative; ${index > 0 ? 'margin-top: 3rem;' : ''}">
+        <article class="featured-card scroll-reveal" style="position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; ${index > 0 ? 'margin-top: 3rem;' : ''}" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0, 240, 255, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
             
             <a href="${proj.projectLink}" style="position: absolute; inset: 0; z-index: 10; width: 100%; height: 100%;"></a>
 
-            <div class="media-wrapper" style="position: relative; z-index: 1;">
+            <div class="media-wrapper" style="position: relative; z-index: 1; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)';" onmouseout="this.style.transform='scale(1)';">
                 ${getMediaHTML(proj.media)}
             </div>
             
@@ -105,28 +104,29 @@ function renderPortfolio() {
     `).join('');
     document.getElementById('architecture-container').innerHTML = archHtml;
 
-    // 3. Render Games Bento Grid
+    // 3. Render Games Bento Grid (Restored Hover Effects)
     let gamesHtml = portfolioData.gameProjects.map(game => `
-        <div class="bento-card" style="position: relative; overflow: hidden;">
+        <div class="bento-card scroll-reveal" style="position: relative; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--accent-color)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='';">
             
             <a href="${game.link}" style="position: absolute; inset: 0; z-index: 10; width: 100%; height: 100%;"></a>
             
-            <div class="media-wrapper" style="position: relative; z-index: 1;">
+            <div class="media-wrapper" style="position: relative; z-index: 1; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05);">
                 ${getMediaHTML(game.media)}
             </div>
-            <div class="bento-content" style="position: relative; z-index: 1;">
+            
+            <div class="bento-content" style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
                 <div class="bento-header">
                     <h4>${game.title}</h4>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" style="transition: transform 0.3s ease;" class="bento-arrow"><path d="M7 17l9.2-9.2M17 17V7H7" /></svg>
                 </div>
-                <p>${game.description}</p>
+                <p style="flex: 1;">${game.description}</p>
                 <div class="bento-footer"><span>${game.techStack.slice(0, 2).join(' • ')}</span><span>${game.techStack[2]}</span></div>
             </div>
         </div>
     `).join('');
 
     gamesHtml += `
-            <div style="grid-column: 1 / -1; margin-top: 50px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center;">
+            <div class="scroll-reveal" style="grid-column: 1 / -1; margin-top: 50px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center;">
                 <div style="display: inline-block; text-align: left; background: rgba(0, 240, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; padding: 20px; max-width: 800px;">
                     <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
                         <strong style="color: var(--accent-color);">Important Notice:</strong><br>
@@ -142,14 +142,26 @@ function renderPortfolio() {
 renderPortfolio();
 
 // -----------------------------------------------------
-// HOVER GIF LOGIC (Swaps image source when hovering over the card)
+// HOVER MEDIA LOGIC (Supports both GIFs and MP4s)
 // -----------------------------------------------------
 document.addEventListener('mouseover', function(e) {
     const card = e.target.closest('.bento-card, .featured-card');
     if (card) {
+        // Handle Legacy GIFs
         const img = card.querySelector('.hover-gif');
         if (img && img.dataset.hover) {
-            img.src = img.dataset.hover; // Play GIF
+            img.src = img.dataset.hover;
+        }
+
+        // Handle Optimized MP4 Videos
+        const vidContainer = card.querySelector('.hover-video-container');
+        if (vidContainer) {
+            const vid = vidContainer.querySelector('.hover-video-player');
+            const poster = vidContainer.querySelector('.hover-video-poster');
+            if (vid) {
+                vid.play().catch(err => console.log("Video play interrupted"));
+                if (poster) poster.style.opacity = '0';
+            }
         }
     }
 });
@@ -157,9 +169,22 @@ document.addEventListener('mouseover', function(e) {
 document.addEventListener('mouseout', function(e) {
     const card = e.target.closest('.bento-card, .featured-card');
     if (card) {
+        // Handle Legacy GIFs
         const img = card.querySelector('.hover-gif');
         if (img && img.dataset.static) {
-            img.src = img.dataset.static; // Back to static image
+            img.src = img.dataset.static;
+        }
+
+        // Handle Optimized MP4 Videos
+        const vidContainer = card.querySelector('.hover-video-container');
+        if (vidContainer) {
+            const vid = vidContainer.querySelector('.hover-video-player');
+            const poster = vidContainer.querySelector('.hover-video-poster');
+            if (vid) {
+                vid.pause();
+                vid.currentTime = 0; // Resets video to beginning
+                if (poster) poster.style.opacity = '1';
+            }
         }
     }
 });
@@ -236,7 +261,7 @@ if (gl) {
 }
 
 // -----------------------------------------------------
-// 2. UI & PARTICLES (Restored!)
+// 2. UI & PARTICLES
 // -----------------------------------------------------
 const fpsElem = document.getElementById("fps");
 let lastTime = performance.now();
@@ -344,7 +369,7 @@ function animateParticles() {
 animateParticles();
 
 // -----------------------------------------------------
-// 3. SEAMLESS PAGE TRANSITION & BACK-BUTTON FIX
+// 3. SEAMLESS PAGE TRANSITION & SCROLL REVEAL (Restored)
 // -----------------------------------------------------
 window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
@@ -356,6 +381,7 @@ window.addEventListener('pageshow', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Reveal links handler
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function(e) {
             if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
@@ -367,6 +393,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // SCROLL REVEAL ANIMATIONS (Fixes the fade-in logic missing previously)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: "0px 0px -50px 0px"
+    });
+
+    setTimeout(() => {
+        document.querySelectorAll('.scroll-reveal').forEach((el) => {
+            observer.observe(el);
+        });
+    }, 100);
 });
 
 // -----------------------------------------------------
