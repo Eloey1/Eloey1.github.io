@@ -29,7 +29,7 @@ const portfolioData = {
 
     architectureProjects: [
         {
-            title: "Frostheim Editor",
+            title: "Frostheim's Editor",
             status: "★ Specialization", 
             statusClass: "active",
             techStack: ["C++20", "DX11", "ImGui", "JSON"],
@@ -39,7 +39,7 @@ const portfolioData = {
             media: {
                 type: "video", 
                 src: "image/editor/UndoAndRedo.mp4",
-                fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Frostheim+Editor+Video+Goes+Here"
+                fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Editor"
             },
             keyFeatures: [
                 "Content Browser with P4 Integration",
@@ -56,12 +56,12 @@ const portfolioData = {
             statusClass: "", 
             techStack: ["C++", "DirectX 11", "ImGui", "Shaders"],
             description: "A modular, Niagara-inspired particle system and tool built entirely from scratch. Engineered a custom ImGui interface featuring curve editors and a component-based architecture where emitters own distinct behavior modules.",
-            projectLink: "particle_editor.html", 
+            projectLink: "particle_editor", 
             linkText: "Read Breakdown →",
             media: {
                 type: "video",
                 src: "image/hailstorm/fireParticle.mp4",
-                fallbackImg: "imge/hailstorm/hailstorm1.png"
+                fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Particle+System"
             },
             keyFeatures: [
                 "Component-Based Modules",
@@ -89,7 +89,7 @@ const portfolioData = {
             title: "Tunnel Vision",
             description: "Narrative Driven 2D Platformer.",
             techStack: ["C++", "TGE Engine", "2025"],
-            link: "tunnel_vision.html",
+            link: "tunnel_vision",
             media: {
                 type: "hover-video",
                 src: "https://img.youtube.com/vi/C2sNwLEPPF4/maxresdefault.jpg",
@@ -111,7 +111,7 @@ const portfolioData = {
             title: "Spite Oathbound",
             description: "Top-down ARPG built in our custom engine Frostheim.",
             techStack: ["C++", "Frostheim", "2025"],
-            link: "spite_oathbound.html",
+            link: "spite_oathbound",
             media: {
                 type: "hover-video",
                 src: "https://img.youtube.com/vi/6T9ucwCqhoA/maxresdefault.jpg",

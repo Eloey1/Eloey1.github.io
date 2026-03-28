@@ -108,21 +108,27 @@ const projectData = {
 };
 
 // -----------------------------------------------------
-// 2. RENDERING LOGIC
+// 2. RENDERING LOGIC (ULTRA-OPTIMIZED)
 // -----------------------------------------------------
-function getMediaHTML(media, isThumb = false) {
+function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
+    // If it's the first thing they see, load it instantly. Otherwise, lazy load!
+    const loadingBehavior = isFirstLoad ? 'eager' : 'lazy';
+    const videoPreload = isFirstLoad ? 'auto' : 'metadata';
+
     if (isThumb) {
-        return `<img src="${media.thumb}" alt="Thumbnail">`;
+        return `<img src="${media.thumb}" loading="lazy" decoding="async" alt="Thumbnail" style="width: 100%; height: 100%; object-fit: cover;">`;
     }
+    
     if (media.type === 'video') {
-        return `<video autoplay loop muted playsinline poster="${media.fallbackImg || ''}">
-                    <source src="${media.src}" type="video/mp4">
-                    <img src="${media.fallbackImg || ''}" alt="Fallback">
-                </video>`;
+        return `
+            <video autoplay muted playsinline preload="${videoPreload}" poster="${media.fallbackImg || ''}" style="width: 100%; height: 100%; object-fit: contain;">
+                <source src="${media.src}" type="video/mp4">
+                <img src="${media.fallbackImg || ''}" loading="${loadingBehavior}" decoding="async" alt="Fallback" style="width: 100%; height: 100%; object-fit: contain;">
+            </video>`;
     } else if (media.type === 'iframe') {
-        return `<iframe src="${media.src}" title="Video" allowfullscreen></iframe>`;
+        return `<iframe src="${media.src}" loading="${loadingBehavior}" title="Video" allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>`;
     } else {
-        return `<img src="${media.src}" alt="Media">`;
+        return `<img src="${media.src}" loading="${loadingBehavior}" decoding="async" alt="Media" style="width: 100%; height: 100%; object-fit: contain;">`;
     }
 }
 
@@ -197,8 +203,7 @@ function renderProjectPage() {
 
         <div class="steam-carousel-container media-reveal fade-in d-4">
             <div class="steam-main-view" id="carousel-main-view">
-                ${getMediaHTML(projectData.steamCarousel[0])}
-            </div>
+                ${getMediaHTML(projectData.steamCarousel[0], false, true)} </div>
             <div class="steam-thumbs-track" id="carousel-thumbs">
                 ${projectData.steamCarousel.map((item, index) => `
                     <div class="steam-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" onclick="changeCarouselMedia(${index})">
@@ -303,37 +308,55 @@ function renderProjectPage() {
 }
 
 // -----------------------------------------------------
-// 3. STEAM CAROUSEL LOGIC
+// 3. STEAM CAROUSEL LOGIC (SMART AUTO-PLAY)
 // -----------------------------------------------------
 let carouselIndex = 0;
-let carouselTimer;
+let carouselTimer; // Changed from interval to timeout
 
 window.changeCarouselMedia = function(index) {
     carouselIndex = index;
     const mainView = document.getElementById('carousel-main-view');
     const thumbs = document.querySelectorAll('.steam-thumb');
     
+    // Load new media into the main view
     mainView.innerHTML = getMediaHTML(projectData.steamCarousel[index]);
     
+    // Update thumbnail highlights
     thumbs.forEach((t, i) => {
         if (i === index) t.classList.add('active');
         else t.classList.remove('active');
     });
 
-    resetCarouselTimer();
+    // 1. Clear any existing image timer
+    clearTimeout(carouselTimer);
+
+    // 2. Check if the newly added media is a video
+    const videoElement = mainView.querySelector('video');
+    
+    if (videoElement) {
+        // Remove the 'loop' attribute so the video is allowed to end!
+        videoElement.removeAttribute('loop');
+        
+        // When the video naturally finishes, advance the carousel
+        videoElement.onended = () => {
+            advanceCarousel();
+        };
+        
+        // Fallback: If the video fails to load, advance after 5 seconds anyway
+        videoElement.onerror = () => {
+            carouselTimer = setTimeout(advanceCarousel, 5000);
+        };
+    } else {
+        // If it's an image or iframe, wait 5 seconds then advance
+        carouselTimer = setTimeout(advanceCarousel, 5000);
+    }
 };
 
-function startCarouselAutoPlay() {
-    carouselTimer = setInterval(() => {
-        let nextIndex = carouselIndex + 1;
-        if (nextIndex >= projectData.steamCarousel.length) nextIndex = 0;
-        changeCarouselMedia(nextIndex);
-    }, 5000);
-}
-
-function resetCarouselTimer() {
-    clearInterval(carouselTimer);
-    startCarouselAutoPlay();
+// Helper function to figure out the next slide
+function advanceCarousel() {
+    let nextIndex = carouselIndex + 1;
+    if (nextIndex >= projectData.steamCarousel.length) nextIndex = 0;
+    changeCarouselMedia(nextIndex);
 }
 
 renderProjectPage();
