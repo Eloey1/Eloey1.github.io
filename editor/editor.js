@@ -254,7 +254,6 @@ function renderProjectPage() {
     const html = `
         <style>
             /* Intro Styles */
-            .intro-block { margin-bottom: 50px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .intro-section { margin-bottom: 30px; }
             .intro-section h2 { color: var(--text-primary); margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; }
             .intro-section p { margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary); }
@@ -350,7 +349,7 @@ function renderProjectPage() {
                         // NEW LOGIC: Check if it should be full width!
                         if (block.isFullWidth) {
                             return `
-                                <div class="scroll-reveal" style="margin-bottom: 70px;">
+                                <div class="scroll-reveal" style="margin-bottom: 60px;">
                                     ${block.title ? `<h2 style="margin-top: 0; margin-bottom: 20px; color: var(--text-primary); font-size: 1.5rem;">${block.title}</h2>` : ''}
                                     ${block.text.map(p => `<p style="margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary);">${p}</p>`).join('')}
                                     ${block.codeSnippet ? `
@@ -391,11 +390,11 @@ function renderProjectPage() {
                 </section>
 
                 ${projectData.futurePlans && projectData.futurePlans.length > 0 ? `
-                    <section class="article-section" style="margin-top: 80px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);">
-                        <h2 class="scroll-reveal" style="color: var(--accent-color); font-size: 1.8rem; margin-bottom: 30px;">Future Plans</h2>
+                    <section class="article-section scroll-reveal">
+                        <h2 style="color: var(--accent-color); font-size: 1.8rem; margin-bottom: 30px;">Future Plans</h2>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
                             ${projectData.futurePlans.map(plan => `
-                                <div class="scroll-reveal" style="background: rgba(0, 240, 255, 0.02); border: 1px solid rgba(0, 240, 255, 0.1); border-radius: 12px; padding: 25px;">
+                                <div style="background: rgba(0, 240, 255, 0.02); border: 1px solid rgba(0, 240, 255, 0.1); border-radius: 12px; padding: 25px;">
                                     <h3 style="color: var(--text-primary); margin-top: 0; margin-bottom: 15px; font-size: 1.2rem;">${plan.title}</h3>
                                     <p style="color: var(--text-secondary); line-height: 1.6; margin: 0; font-size: 0.95rem;">${plan.text}</p>
                                 </div>
