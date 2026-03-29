@@ -4,7 +4,7 @@ const portfolioData = {
         name: "Emil Barkefors",
         title: "Engine & Tools Programmer",
         
-        description: "My core specialization is developing custom C++ game engines and intuitive level editor tools that bridge the gap between performance and designer workflow.",
+        description: "I develop custom C++ game engines and the intuitive tools that drive them. I focus on writing high-performance backend systems while giving designers a frictionless, drag-and-drop environment to build their worlds.",
         internshipNotice: "I am part of The Game Assembly's internship program. As per the agreement between the Games Industry and The Game Assembly, neither student nor company may be in contact with one another regarding internships before April 23rd. Any internship offers can be made on May 5th, at the earliest.",
         skills: [
             "C++ (14/17/20)", 
@@ -33,7 +33,7 @@ const portfolioData = {
             status: "★ Specialization", 
             statusClass: "active",
             techStack: ["C++20", "DX11", "ImGui", "JSON"],
-            description: "My flagship project and primary specialization. A custom editor created using ImGui.",
+            description: "My flagship project and primary specialization. A custom C++ engine editor built with ImGui, featuring a robust Content Browser, Unity-style Prefabs, and a seamless drag-and-drop workflow.",
             projectLink: "editor",
             linkText: "Read Breakdown →",
             media: {

@@ -17,14 +17,14 @@ const projectData = {
         { 
             type: "video", 
             src: "../image/editor/editor_showcase.mp4", 
-            fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Showcase",
-            thumb: "https://placehold.co/240x135/111620/00f0ff?text=Showcase" 
+            fallbackImg: "../image/editor/showcase_thumb.png",
+            thumb: "../image/editor/showcase_thumb.png" 
         },
         {
             type: "video",
             src: "../image/editor/parent_child.mp4",
-            fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Parent",
-            thumb: "https://placehold.co/1280x720/111620/00f0ff?text=Parent"
+            fallbackImg: "../image/editor/parent_child_thumb.png",
+            thumb: "../image/editor/parent_child_thumb.png"
         },
         { 
             type: "image", 
