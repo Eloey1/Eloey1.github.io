@@ -137,7 +137,7 @@ const projectData = {
             isFullWidth: false,
             text: [
                 "An editor needs a way to manage project files. I developed a Content Browser that gives visual access to all models, textures, and prefabs directly within the interface and handles meta-files automatically.",
-                "I tried to make it as easy as possible to import new assets and drop them out into the world, a goal I always had in mind."
+                "I tried to make it as easy as possible to import new assets and drop them out into the scene, a goal I always had in mind."
             ],
             media: { type: "video", src: "../image/editor/dragAndDrop.mp4" },
             mediaOnLeft: false
@@ -166,8 +166,8 @@ const projectData = {
             title: "Perforce Integration",
             isFullWidth: false,
             text: [
-                "The primary motivation for integrating perforce directly into the editor was to remove workflow friction. The introduction of a new meta-file system also inceresed the complexity of asset managemnt, so the editor-perforce workflow atomatilcy handles this.",
-                "If a user checkouts a asset or mark a file for add, then system will find the corrusponding meta-file and automaticly mirrors the Perforce action."
+                "The primary motivation for integrating Perforce directly into the editor was to remove workflow friction. The introduction of a new meta-file system also increased the complexity of asset managemnt, so the Editor-Perforce workflow automatically handles this.",
+                "If a user checkouts an asset or marks a file for add, then the system will find the corresponding meta-file and automatically mirrors the Perforce action."
             ],
             media: { type: "video", src: "../image/editor/temp_perforce.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Perforce" },
             mediaOnLeft: true
