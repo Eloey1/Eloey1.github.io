@@ -33,7 +33,7 @@ const portfolioData = {
             status: "★ Specialization", 
             statusClass: "active",
             techStack: ["C++20", "DX11", "ImGui", "JSON"],
-            description: "My flagship project and primary specialization. A custom 3D level editor created using ImGui.",
+            description: "My flagship project and primary specialization. A custom editor created using ImGui.",
             projectLink: "editor",
             linkText: "Read Breakdown →",
             media: {

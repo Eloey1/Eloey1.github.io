@@ -1,28 +1,32 @@
 // -----------------------------------------------------
-// 0. DATA RENDERING LOGIC (OPTIMIZED)
+// 0. DATA RENDERING LOGIC (ULTRA-OPTIMIZED)
 // -----------------------------------------------------
 
-function getMediaHTML(media) {
+function getMediaHTML(media, isFirstLoad = false) {
+    const loadingBehavior = isFirstLoad ? 'eager' : 'lazy';
+    const videoPreload = isFirstLoad ? 'auto' : 'none';
+    const fillStyles = "position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;";
+
     if (media.type === 'video') {
         return `
-            <video autoplay loop muted playsinline preload="metadata" poster="${media.fallbackImg}" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;">
+            <video loop muted playsinline preload="${videoPreload}" poster="${media.fallbackImg}" style="${fillStyles}" class="lazy-autoplay">
                 <source src="${media.src}" type="video/mp4">
-                <img src="${media.fallbackImg}" loading="lazy" alt="Video Fallback" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block;">
+                <img src="${media.fallbackImg}" loading="${loadingBehavior}" alt="Video Fallback" style="${fillStyles}">
             </video>`;
     } else if (media.type === 'iframe') {
-        return `<iframe loading="lazy" src="${media.src}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; aspect-ratio: 16/9; border: none; display: block;"></iframe>`;
+        return `<iframe loading="${loadingBehavior}" src="${media.src}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="${fillStyles} border: none;"></iframe>`;
     } else if (media.type === 'hover-video') {
         return `
-            <div class="hover-video-container" style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; display: block;">
-                <img src="${media.src}" loading="lazy" decoding="async" class="hover-video-poster" alt="Project Media" style="width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; z-index: 2; transition: opacity 0.3s ease;">
-                <video loop muted playsinline preload="none" class="hover-video-player" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 1;">
+            <div class="hover-video-container" style="${fillStyles} overflow: hidden;">
+                <img src="${media.src}" loading="${loadingBehavior}" decoding="async" class="hover-video-poster" alt="Project Media" style="${fillStyles} z-index: 2; transition: opacity 0.3s ease;">
+                <video loop muted playsinline preload="none" class="hover-video-player" style="${fillStyles} z-index: 1;">
                     <source src="${media.hoverSrc}" type="video/mp4">
                 </video>
             </div>`;
    } else if (media.type === 'hover-gif') {
-        return `<img src="${media.src}" data-static="${media.src}" data-hover="${media.hoverSrc}" class="hover-gif" loading="lazy" decoding="async" alt="Project Media" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+        return `<img src="${media.src}" data-static="${media.src}" data-hover="${media.hoverSrc}" class="hover-gif" loading="${loadingBehavior}" decoding="async" alt="Project Media" style="${fillStyles}">`;
     } else {
-        return `<img src="${media.src}" loading="lazy" decoding="async" alt="Project Media" style="width: 100%; height: 100%; object-fit: cover; display: block;">`;
+        return `<img src="${media.src}" loading="${loadingBehavior}" decoding="async" alt="Project Media" style="${fillStyles}">`;
     }
 }
 
@@ -66,14 +70,14 @@ function renderPortfolio() {
     `;
     document.getElementById('sidebar-container').innerHTML = sidebarHtml;
 
-    // 2. Render Architecture Section (Restored Hover Effects)
+    // 2. Render Architecture Section (Restored Hover Effects & Optimization)
     const archHtml = portfolioData.architectureProjects.map((proj, index) => `
         <article class="featured-card scroll-reveal" style="position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; ${index > 0 ? 'margin-top: 3rem;' : ''}" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0, 240, 255, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
             
             <a href="${proj.projectLink}" style="position: absolute; inset: 0; z-index: 10; width: 100%; height: 100%;"></a>
 
             <div class="media-wrapper" style="position: relative; z-index: 1; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)';" onmouseout="this.style.transform='scale(1)';">
-                ${getMediaHTML(proj.media)}
+                ${getMediaHTML(proj.media, index === 0)}
             </div>
             
             <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 30px;">
@@ -104,14 +108,14 @@ function renderPortfolio() {
     `).join('');
     document.getElementById('architecture-container').innerHTML = archHtml;
 
-    // 3. Render Games Bento Grid (Restored Hover Effects)
+    // 3. Render Games Bento Grid (Restored Hover Effects & Forced Lazy Loading)
     let gamesHtml = portfolioData.gameProjects.map(game => `
         <div class="bento-card scroll-reveal" style="position: relative; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--accent-color)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='';">
             
             <a href="${game.link}" style="position: absolute; inset: 0; z-index: 10; width: 100%; height: 100%;"></a>
             
             <div class="media-wrapper" style="position: relative; z-index: 1; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                ${getMediaHTML(game.media)}
+                ${getMediaHTML(game.media, false)}
             </div>
             
             <div class="bento-content" style="position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;">
@@ -189,184 +193,6 @@ document.addEventListener('mouseout', function(e) {
     }
 });
 
-// -----------------------------------------------------
-// 1. SMOOTH ANTI-BANDING SHADER BACKGROUND
-// -----------------------------------------------------
-const shaderCanvas = document.getElementById('shader-canvas');
-const gl = shaderCanvas.getContext('webgl');
-
-if (gl) {
-    const vsSource = `
-    attribute vec2 position;
-    void main() { gl_Position = vec4(position, 0.0, 1.0); }
-    `;
-    
-    const fsSource = `
-    precision highp float;
-    uniform vec2 u_resolution;
-    uniform float u_time;
-
-    void main() {
-        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-        uv.x *= u_resolution.x / u_resolution.y;
-        vec3 color = vec3(0.01, 0.015, 0.025);
-        float wave1 = sin(uv.x * 2.5 + u_time * 0.4) * 0.5 + 0.5;
-        float wave2 = cos(uv.y * 2.0 - u_time * 0.2 + uv.x) * 0.5 + 0.5;
-        float wave3 = sin(uv.x * 4.0 + uv.y * 3.0 + u_time * 0.5) * 0.5 + 0.5;
-        float v = (wave1 + wave2 + wave3) / 3.0;
-        vec3 cyan = vec3(0.0, 0.94, 1.0);
-        vec3 deepBlue = vec3(0.0, 0.3, 0.6);
-        color += mix(deepBlue, cyan, v) * v * 0.12;
-        color *= (0.3 + 0.7 * gl_FragCoord.y / u_resolution.y);
-        gl_FragColor = vec4(color, 1.0);
-    }
-    `;
-
-    function createShader(type, source) {
-        const shader = gl.createShader(type);
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-        return shader;
-    }
-
-    const program = gl.createProgram();
-    gl.attachShader(program, createShader(gl.VERTEX_SHADER, vsSource));
-    gl.attachShader(program, createShader(gl.FRAGMENT_SHADER, fsSource));
-    gl.linkProgram(program);
-    gl.useProgram(program);
-
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
-
-    const posLoc = gl.getAttribLocation(program, "position");
-    gl.enableVertexAttribArray(posLoc);
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-    const resLoc = gl.getUniformLocation(program, "u_resolution");
-    const timeLoc = gl.getUniformLocation(program, "u_time");
-
-    function renderShader(time) {
-        if(shaderCanvas.width !== window.innerWidth || shaderCanvas.height !== window.innerHeight) {
-            shaderCanvas.width = window.innerWidth;
-            shaderCanvas.height = window.innerHeight;
-            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        }
-        gl.uniform2f(resLoc, gl.canvas.width, gl.canvas.height);
-        gl.uniform1f(timeLoc, time * 0.001);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-        requestAnimationFrame(renderShader);
-    }
-    requestAnimationFrame(renderShader);
-}
-
-// -----------------------------------------------------
-// 2. UI & PARTICLES
-// -----------------------------------------------------
-const fpsElem = document.getElementById("fps");
-let lastTime = performance.now();
-let frameCount = 0;
-function updateFPS() {
-    const now = performance.now();
-    frameCount++;
-    if (now - lastTime >= 1000) {
-        fpsElem.innerText = frameCount + " FPS";
-        frameCount = 0; lastTime = now;
-    }
-    requestAnimationFrame(updateFPS);
-}
-updateFPS();
-
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-const particleCount = 60;
-const connectionDistance = 150;
-const mouse = { x: null, y: null };
-
-function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.addEventListener('resize', resize); resize();
-
-// Desktop Mouse Events
-window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-
-// Mobile Touch Events
-window.addEventListener('touchstart', (e) => { 
-    mouse.x = e.touches[0].clientX; 
-    mouse.y = e.touches[0].clientY; 
-}, {passive: true});
-
-window.addEventListener('touchmove', (e) => { 
-    mouse.x = e.touches[0].clientX; 
-    mouse.y = e.touches[0].clientY; 
-}, {passive: true});
-
-window.addEventListener('touchend', () => { 
-    mouse.x = null; 
-    mouse.y = null; 
-});
-
-class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        
-        this.vx = (Math.random() - 0.5) * 0.2; 
-        this.vy = (Math.random() - 0.5) * 0.2; 
-        
-        this.size = Math.random() * 2 + 1;
-    }
-    update() {
-        this.x += this.vx; this.y += this.vy;
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-    }
-    draw() {
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.6)';
-        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-    }
-} 
-
-for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-
-function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-
-        for (let j = i; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < connectionDistance) {
-                ctx.beginPath();
-                ctx.strokeStyle = `rgba(0, 240, 255, ${(1 - dist / connectionDistance) * 0.3})`;
-                ctx.lineWidth = 1;
-                ctx.moveTo(particles[i].x, particles[i].y);
-                ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.stroke();
-            }
-        }
-
-        if (mouse.x != null) {
-            const dx = particles[i].x - mouse.x;
-            const dy = particles[i].y - mouse.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 200) {
-                ctx.beginPath();
-                ctx.strokeStyle = `rgba(0, 240, 255, ${(1 - dist / 200) * 0.5})`;
-                ctx.lineWidth = 1.5;
-                ctx.moveTo(particles[i].x, particles[i].y);
-                ctx.lineTo(mouse.x, mouse.y);
-                ctx.stroke();
-            }
-        }
-    }
-    requestAnimationFrame(animateParticles);
-}
-animateParticles();
 
 // -----------------------------------------------------
 // 3. SEAMLESS PAGE TRANSITION & SCROLL REVEAL (Restored)
@@ -398,13 +224,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                // 1. Fade the card in
                 entry.target.classList.add('visible');
+                
+                // 2. If the card has a video, start downloading and playing it NOW!
+                const lazyVids = entry.target.querySelectorAll('video.lazy-autoplay');
+                lazyVids.forEach(vid => {
+                    vid.play().catch(err => console.log("Autoplay prevented:", err));
+                });
+
+                // Stop observing once it's loaded
                 observer.unobserve(entry.target);
             }
         });
     }, {
         threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
+        rootMargin: "0px 0px 100px 0px" // Loads 100px before it enters the screen so it's ready
     });
 
     setTimeout(() => {
@@ -412,6 +247,59 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.observe(el);
         });
     }, 100);
+});
+
+// -----------------------------------------------------
+// 6. SEQUENTIAL BACKGROUND ASSET LOADER
+// -----------------------------------------------------
+window.addEventListener('load', () => {
+    // Give the CPU and network 1 full second to completely finish rendering the page
+    setTimeout(() => {
+        console.log("Page is ready. Starting sequential asset streaming...");
+        
+        const backgroundVideos = document.querySelectorAll('video.lazy-autoplay');
+        
+        // This is an asynchronous queue that loads one video at a time
+        async function loadVideosSequentially() {
+            for (let i = 0; i < backgroundVideos.length; i++) {
+                const vid = backgroundVideos[i];
+                console.log(`Buffering video ${i + 1} of ${backgroundVideos.length}...`);
+                
+                await new Promise((resolve) => {
+                    // If the video is already buffered, skip it!
+                    if (vid.readyState >= 3) {
+                        return resolve();
+                    }
+
+                    // Create a function to move to the next video
+                    const finishLoading = () => {
+                        vid.removeEventListener('canplaythrough', finishLoading);
+                        vid.removeEventListener('error', finishLoading);
+                        resolve();
+                    };
+
+                    // Listen for when the browser says "I have downloaded enough to play this smoothly"
+                    vid.addEventListener('canplaythrough', finishLoading);
+                    
+                    // Listen for errors (so a broken video doesn't freeze the whole queue)
+                    vid.addEventListener('error', finishLoading);
+
+                    // TRIGGER THE DOWNLOAD
+                    vid.preload = 'auto';
+                    vid.load(); // Force the browser to start fetching
+
+                    // FAILSAFE: If a video takes longer than 4 seconds to buffer, 
+                    // move on to the next one so the queue doesn't get stuck forever on slow 4G.
+                    setTimeout(finishLoading, 4000);
+                });
+            }
+            console.log("All background assets successfully streamed into memory!");
+        }
+
+        // Start the queue!
+        loadVideosSequentially();
+
+    }, 1000); 
 });
 
 // -----------------------------------------------------
