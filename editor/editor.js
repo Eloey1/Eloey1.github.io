@@ -9,8 +9,7 @@ const projectData = {
     stats: [
         { label: "Role", value: "Engine & Tools Programmer" },
         { label: "Engine Base", value: "Frostheim (Custom C++)" },
-        { label: "Core Focus", value: "Editor Architecture & UX" },
-        { label: "TEMP", value: "TEMP" }
+        { label: "Core Focus", value: "Editor Architecture & UX" }
     ],
     
     steamCarousel: [
