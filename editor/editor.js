@@ -75,9 +75,9 @@ const projectData = {
                 title: "src/components/TransformComponent.cpp",
                 code: `void TransformComponent::OnInspectorUI(EditorUI& aUI)
 {
-    aUI.Vector3f("Position", myPosition);
+    aUI.DrawVector3f("Position", myPosition);
 
-    aUI.Vector3f("Rotation", {
+    aUI.DrawVector3f("Rotation", {
         [&]() { return myRotation.GetEulerAnglesDegrees(); },
         [&](const CU::Vector3f& v) {
             myRotation = CU::QuaternionF(v * CU::DegToRad<float>());
@@ -85,7 +85,7 @@ const projectData = {
         }
     });
 
-    aUI.Vector3f("Scale   ", myScale);
+    aUI.DrawVector3f("Scale   ", myScale);
 }`
             }
         },
@@ -97,7 +97,7 @@ const projectData = {
             ],
             codeSnippet: {
                 title: "src/editor/EditorUI.cpp",
-                code: `bool EditorUI::Float(const char* aLabel, UIBind<float> aBind, float aResetValue, const char* aFormat)
+                code: `bool EditorUI::DrawFloat(const char* aLabel, UIBind<float> aBind, float aResetValue, const char* aFormat)
 {
     bool moved = false;
     ImGuiID id = ImGui::GetID(aLabel);
@@ -156,7 +156,7 @@ const projectData = {
             isFullWidth: false,
             text: [
                 "When a user creates a new Prefab or Material, the editor needs to show them what it looks like. I made a dedicated deferred and forward rendering pass that frames the asset in an invisible 'studio' and takes a snapshot to save to disk.",
-                "This system is fully hot-reloadable. The moment a user modifies an asset and hits save, the old thumbnail is invalidated, re-rendered, and instantly updated in the Content Browser UI. This system also work if an asset was updated not during runtime"
+                "This system is fully hot-reloadable. The moment a user modifies an asset and hits save, the old thumbnail is invalidated, re-rendered, and instantly updated in the Content Browser UI. This system also works if an asset was updated not during runtime."
             ],
             media: { type: "video", src: "../image/editor/hotreload_thumbnail.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Thumbnails" },
             mediaOnLeft: false
@@ -166,7 +166,7 @@ const projectData = {
             isFullWidth: false,
             text: [
                 "The primary motivation for integrating Perforce directly into the editor was to remove workflow friction. The introduction of a new meta-file system also increased the complexity of asset managemnt, so the Editor-Perforce workflow automatically handles this.",
-                "If a user checkouts an asset or marks a file for add, then the system will find the corresponding meta-file and automatically mirrors the Perforce action."
+                "If a user checks out an asset or marks a file for add, then the system will find the corresponding meta-file and automatically mirrors the Perforce action."
             ],
             media: { type: "video", src: "../image/editor/temp_perforce.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Perforce" },
             mediaOnLeft: true
