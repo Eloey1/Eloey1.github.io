@@ -18,7 +18,9 @@ const portfolioData = {
             "Custom Engine",
             "Unity",
             "Godot",
-            "Unreal"
+            "Unreal",
+            "Perforce",
+            "Github"
         ],
         links: {
             email: "mailto:emilb2002@gmail.com",
@@ -93,7 +95,7 @@ const portfolioData = {
             media: {
                 type: "hover-video",
                 src: "https://img.youtube.com/vi/C2sNwLEPPF4/maxresdefault.jpg",
-                hoverSrc: "path/to/tunnel-vision.mp4"
+                hoverSrc: "image/tunnel_vision/thumb_video.mp4"
             }
         },
         {
@@ -119,7 +121,7 @@ const portfolioData = {
             }
         },
         {
-            title: "3D Platformer",
+            title: "Merle: The Kinda Incompetent Wizard",
             description: "Smooth movement.",
             techStack: ["C++", "Frostheim", "2026"],
             link: "#", 

@@ -17,7 +17,7 @@ const projectData = {
             type: "video", 
             src: "../image/editor/editor_showcase.mp4", 
             fallbackImg: "../image/editor/showcase_thumb.png",
-            thumb: "../image/editor/showcase_thumb.png" 
+            thumb: "../image/editor/showcase_thumb.png"
         },
         {
             type: "video",
@@ -271,11 +271,31 @@ function renderProjectPage() {
             /* MOBILE: Smooth momentum scrolling for thumbnails */
             .steam-thumbs-track { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin; scrollbar-color: var(--accent-color) rgba(0,0,0,0.3); -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
             /* MOBILE: Slightly smaller thumbs so more fit on screen */
-            .steam-thumb { flex: 0 0 100px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: all 0.2s ease; background: #111; scroll-snap-align: start; }
+            .steam-thumb { position: relative; flex: 0 0 100px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: all 0.2s ease; background: #111; scroll-snap-align: start; }
             .steam-thumb.active { opacity: 1; border-color: var(--accent-color); }
             .steam-thumb:hover { opacity: 0.8; }
             .steam-thumb > img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
             
+            /* Play icon overlay for video thumbnails */
+            .thumb-play-icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 28px;
+                height: 28px;
+                background: rgba(0, 0, 0, 0.6);
+                border: 1px solid rgba(255,255,255,0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+                color: white;
+                backdrop-filter: blur(2px);
+            }
+            .thumb-play-icon svg { margin-left: 2px; } /* Optically center the triangle */
+
             @media (min-width: 850px) {
                 .intro-section h2 { font-size: 1.8rem; }
                 .zig-zag-row { flex-direction: row; gap: 50px; align-items: center; }
@@ -302,11 +322,16 @@ function renderProjectPage() {
 
        <div class="steam-carousel-container media-reveal fade-in d-4">
             <div class="steam-main-view" id="carousel-main-view">
-                </div>
+            </div>
             <div class="steam-thumbs-track" id="carousel-thumbs">
                 ${projectData.steamCarousel.map((item, index) => `
                     <div class="steam-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" onclick="changeCarouselMedia(${index})">
                         ${getMediaHTML(item, true)}
+                        ${item.type === 'video' ? `
+                            <div class="thumb-play-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </div>
+                        ` : ''}
                     </div>
                 `).join('')}
             </div>

@@ -5,7 +5,7 @@ const projectData = {
     title: "Tunnel Vision",
     tagline: "Narrative Driven 2D Platformer",
     status: "Complete",
-    techStack: ["C++", "TGE Engine", "Tools", "Data-Driven"],
+    techStack: ["C++", "TGE Engine", "Tools", "Data-Driven", "JSON"],
     stats: [
         { label: "Engine", value: "TGE Engine" },
         { label: "Language", value: "C++" },
@@ -18,21 +18,21 @@ const projectData = {
         fallbackImg: ""
     },
     overview: [
-        "Tunnel Vision was the first game we made in TGA's engine - TGE",
-        ""
+        "Tunnel Vision was our first project built using TGA's in-house engine (TGE). At the time, TGE functioned more as a barebones framework than a complete engine. To solve our tooling needs, we established a custom pipeline where our level designers used Unity as a level editor, exporting scene data as JSON files that we parsed and loaded directly into our engine.",
+        "In the game, players step into the role of a struggling artist, traversing their own mindspace to rediscover their passion for art and overcome their inner doubts."
     ],
     challenges: [
         {
             title: "Particles",
-            desc: "This was my first time making a particle system and when I fell in love making tools. I needed a way of making it possible for other teamates to make particles and in this project i made it possibel with a data driven approach using json files"
+            desc: "This was my first time making a particle system and when I fell in love making tools. I needed a way of making it possible for other teamates to make particles and in this project I made it possibel with a data driven approach using json files"
         },
         {
             title: "Player Movement",
-            desc: "For me a movement can really make or break a platformer and i really worked hard to make this celeste inspired player movement, and i made my first ImGui tool so the level designers could tweak the numbers of the movement and save to a json file"
+            desc: "For me a movement can really make or break a platformer and I really worked hard to make this celeste inspired player movement, and I made my first ImGui tool so the level designers could tweak the numbers of the movement and save to a JSON file"
         }
     ],
     codeSnippet: {
-        title: "particles/DashTrail.json",
+        title: "src/particles/DashTrail.json",
         code: `{
     "dashParticles": {
         "ParticlePoolSize": 50,
