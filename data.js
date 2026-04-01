@@ -5,7 +5,7 @@ const portfolioData = {
         title: "Engine & Tools Programmer",
         
         description: "I develop custom C++ game engines and the intuitive tools that drive them. I focus on writing high-performance backend systems while giving designers a frictionless, drag-and-drop environment to build their worlds.",
-        internshipNotice: "I am part of The Game Assembly's internship program. As per the agreement between the Games Industry and The Game Assembly, neither student nor company may be in contact with one another regarding internships before April 23rd. Any internship offers can be made on May 5th, at the earliest.",
+        internshipNotice: "I am part of The Game Assembly's internship program. As per the agreement between the Games Industry and The Game Assembly, neither student nor company may be in contact with one another regarding internships before April 15th. Any internship offers can be made on April 27th, at the earliest.",
         skills: [
             "C++ (14/17/20)", 
             "DirectX 11", 
@@ -84,7 +84,7 @@ const portfolioData = {
             media: {
                 type: "hover-video", 
                 src: "https://img.youtube.com/vi/RV0J4raLpqY/maxresdefault.jpg", 
-                hoverSrc: "path/to/pawn-gameplay.mp4"
+                hoverSrc: "image/pawns/pawns.mp4"
             }
         },
         {
@@ -95,7 +95,7 @@ const portfolioData = {
             media: {
                 type: "hover-video",
                 src: "https://img.youtube.com/vi/C2sNwLEPPF4/maxresdefault.jpg",
-                hoverSrc: "image/tunnel_vision/thumb_video.mp4"
+                hoverSrc: "image/tunnel_vision/tunnel_vision.mp4"
             }
         },
         {
@@ -106,7 +106,7 @@ const portfolioData = {
             media: {
                 type: "hover-video",
                 src: "https://img.youtube.com/vi/gxaEJ56esTE/maxresdefault.jpg",
-                hoverSrc: "path/to/beak-noir.mp4"
+                hoverSrc: "image/beak_noir/beak_noir.mp4"
             }
         },
         {
@@ -117,7 +117,7 @@ const portfolioData = {
             media: {
                 type: "hover-video",
                 src: "https://img.youtube.com/vi/6T9ucwCqhoA/maxresdefault.jpg",
-                hoverSrc: "path/to/spite-oathbound.mp4"
+                hoverSrc: "image/spite_oathbound/spite.mp4"
             }
         },
         {

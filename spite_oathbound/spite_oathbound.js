@@ -5,7 +5,7 @@ const projectData = {
     title: "Spite Oathbound",
     tagline: "Top-Down ARPG Built on a Custom C++ Engine",
     status: "Complete",
-    techStack: ["C++20", "DirectX 11", "EnTT (ECS)", "ImGui"],
+    techStack: ["C++20", "DirectX 11", "Component System", "ImGui"],
     stats: [
         { label: "Engine", value: "Frostheim (Custom)" },
         { label: "Language", value: "C++" },
