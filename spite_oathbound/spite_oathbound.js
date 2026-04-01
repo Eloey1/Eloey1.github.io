@@ -95,16 +95,16 @@ void Renderer::FlushInstancedBatches() {
 
     gallery: [
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Hitbox+Debug" },
-            caption: "Debug rendering of dynamic weapon hitboxes spawning mid-swing."
+            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Image" },
+            caption: ""
         },
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=NavMesh+AI" },
-            caption: "Enemy pathfinding built on top of the Frostheim routing system."
+            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Image" },
+            caption: ""
         },
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=ECS+Profiler" },
-            caption: "In-engine profiler showing CombatSystem execution times."
+            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Image" },
+            caption: ""
         }
     ]
 };
@@ -259,7 +259,7 @@ function renderProjectPage() {
                 </section>
 
                 <section class="article-section scroll-reveal" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 40px;">
-                    <h2 style="color: var(--text-primary); font-size: 1.5rem; margin-bottom: 20px;">System Visualizations</h2>
+                    <h2 style="color: var(--text-primary); font-size: 1.5rem; margin-bottom: 20px;">Gallery</h2>
                     <div class="gallery-grid">
                         ${projectData.gallery.map(item => `
                             <div class="gallery-item">

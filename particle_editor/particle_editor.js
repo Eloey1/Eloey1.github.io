@@ -12,18 +12,38 @@ const projectData = {
         { label: "Architecture", value: "Emitter / Module Hierarchy" },
         { label: "Serialization", value: "JSON Reflection" }
     ],
-    mainMedia: {
-        type: "video", 
-        src: "your-particle-video.mp4",
-        fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Particle+System+Showcase"
-    },
+    
+    steamCarousel: [
+        { 
+            type: "video", 
+            src: "../image/hailstorm/particles_showcase.mp4",
+            fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Particle+System+Showcase",
+            thumb: "https://placehold.co/240x135/111620/00f0ff?text=Showcase"
+        },
+        {
+            type: "video",
+            src: "../image/hailstorm/purpleParticles.mp4",
+            fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Particles",
+            thumb: "https://placehold.co/240x135/111620/00f0ff?text=Particles"
+        },
+        { 
+            type: "image", 
+            src: "../image/hailstorm/particles1.png", 
+            thumb: "../image/hailstorm/particles1.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/hailstorm/particle_editor.png", 
+            thumb: "../image/hailstorm/particle_editor.png" 
+        }
+    ],
     
     splitOverviews: [
         {
             title: "Motivation & Goal",
             text: [
-                "I made a particle system in our 5th project and a tool for it but I didn't have a lot of time so I was really unhappy how it turned out.",
-                "This got me really motivated to create a new particle system from scratch and start over, and my goal was to build a scalable and modular system and tool that would last the rest of the projects."
+                "During a previous project, tight deadlines forced me to build a particle system and tool that, while functional, ultimately fell short in flexibility and modularity.",
+                "This got me really motivated to create a new particle system from scratch and start over. My goal was to create a highly scalable VFX architecture and editor that would reliably serve the tech art team for all our future projects."
             ],
             media: { type: "image", src: "../image/hailstorm/hailstorm1.png" },
             mediaOnLeft: false
@@ -123,10 +143,6 @@ for (std::unique_ptr<ParticleModule>& module : myModules)
         {
             media: { type: "image", src: "../image/hailstorm/hailstorm6.png" },
             caption: ""
-        },
-        {
-            media: { type: "image", src: "../image/hailstorm/hailstorm7.png" },
-            caption: ""
         }
     ]
 };
@@ -134,16 +150,24 @@ for (std::unique_ptr<ParticleModule>& module : myModules)
 // -----------------------------------------------------
 // 2. RENDERING LOGIC
 // -----------------------------------------------------
-function getMediaHTML(media) {
+function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
+    const loadingBehavior = isFirstLoad ? 'eager' : 'lazy';
+    const videoPreload = isFirstLoad ? 'auto' : 'metadata';
+
+    if (isThumb) {
+        return `<img src="${media.thumb}" loading="lazy" decoding="async" alt="Thumbnail" style="width: 100%; height: 100%; object-fit: cover;">`;
+    }
+    
     if (media.type === 'video') {
-        return `<video autoplay loop muted playsinline poster="${media.fallbackImg}">
-                    <source src="${media.src}" type="video/mp4">
-                    <img src="${media.fallbackImg}" alt="Fallback">
-                </video>`;
+        return `
+            <video autoplay loop muted playsinline preload="${videoPreload}" poster="${media.fallbackImg || ''}" style="width: 100%; height: 100%; object-fit: contain;">
+                <source src="${media.src}" type="video/mp4">
+                <img src="${media.fallbackImg || ''}" loading="${loadingBehavior}" decoding="async" alt="Fallback" style="width: 100%; height: 100%; object-fit: contain;">
+            </video>`;
     } else if (media.type === 'iframe') {
-        return `<iframe src="${media.src}" title="Video" allowfullscreen></iframe>`;
+        return `<iframe src="${media.src}" loading="${loadingBehavior}" title="Video" allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>`;
     } else {
-        return `<img src="${media.src}" alt="Media">`;
+        return `<img src="${media.src}" loading="${loadingBehavior}" decoding="async" alt="Media" style="width: 100%; height: 100%; object-fit: contain;">`;
     }
 }
 
@@ -189,6 +213,40 @@ function renderProjectPage() {
             .ide-header * {
                 pointer-events: none; /* Makes sure you click the header, not the text */
             }
+            
+            /* Steam Carousel Styles */
+            .steam-carousel-container { width: 100%; margin-bottom: 60px; }
+            .steam-main-view { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; margin-bottom: 15px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+            .steam-main-view > * { width: 100%; height: 100%; object-fit: contain; position: absolute; inset: 0; }
+            
+            /* MOBILE: Smooth momentum scrolling for thumbnails */
+            .steam-thumbs-track { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin; scrollbar-color: var(--accent-color) rgba(0,0,0,0.3); -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+            /* MOBILE: Slightly smaller thumbs so more fit on screen */
+            .steam-thumb { position: relative; flex: 0 0 100px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: all 0.2s ease; background: #111; scroll-snap-align: start; }
+            .steam-thumb.active { opacity: 1; border-color: var(--accent-color); }
+            .steam-thumb:hover { opacity: 0.8; }
+            .steam-thumb > img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+            
+            /* Play icon overlay for video thumbnails */
+            .thumb-play-icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 28px;
+                height: 28px;
+                background: rgba(0, 0, 0, 0.6);
+                border: 1px solid rgba(255,255,255,0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+                color: white;
+                backdrop-filter: blur(2px);
+            }
+            .thumb-play-icon svg { margin-left: 2px; } /* Optically center the triangle */
+
             @media (min-width: 850px) {
                 .zig-zag-row {
                     flex-direction: row; /* DESKTOP: Default to Image Left */
@@ -203,6 +261,8 @@ function renderProjectPage() {
                     width: auto;
                     min-width: 0; /* CRITICAL FIX: Stops the code block from squishing the layout */
                 }
+                /* DESKTOP: Restore larger thumbnails */
+                .steam-thumb { flex: 0 0 140px; }
             }
         </style>
 
@@ -219,8 +279,21 @@ function renderProjectPage() {
             <p class="project-tagline fade-in d-3">${projectData.tagline}</p>
         </header>
 
-        <div class="media-wrapper media-reveal hero-media">
-            ${getMediaHTML(projectData.mainMedia)}
+        <div class="steam-carousel-container media-reveal fade-in d-4">
+            <div class="steam-main-view" id="carousel-main-view">
+                </div>
+            <div class="steam-thumbs-track" id="carousel-thumbs">
+                ${projectData.steamCarousel.map((item, index) => `
+                    <div class="steam-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" onclick="changeCarouselMedia(${index})">
+                        ${getMediaHTML(item, true)}
+                        ${item.type === 'video' ? `
+                            <div class="thumb-play-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
+            </div>
         </div>
 
         <div class="article-layout">
@@ -332,6 +405,59 @@ function renderProjectPage() {
     `;
 
     container.innerHTML = html;
+    window.changeCarouselMedia(0);
+}
+
+// -----------------------------------------------------
+// 3. STEAM CAROUSEL LOGIC (SMART AUTO-PLAY)
+// -----------------------------------------------------
+let carouselIndex = 0;
+let carouselTimer;
+
+window.changeCarouselMedia = function(index) {
+    carouselIndex = index;
+    const mainView = document.getElementById('carousel-main-view');
+    const thumbs = document.querySelectorAll('.steam-thumb');
+    
+    // Load new media into the main view (true = isFirstLoad to bypass lazy loading)
+    mainView.innerHTML = getMediaHTML(projectData.steamCarousel[index], false, true);
+    
+    // Update thumbnail highlights
+    thumbs.forEach((t, i) => {
+        if (i === index) t.classList.add('active');
+        else t.classList.remove('active');
+    });
+
+    // 1. Clear any existing image timer
+    clearTimeout(carouselTimer);
+
+    // 2. Check if the newly added media is a video
+    const videoElement = mainView.querySelector('video');
+    
+    if (videoElement) {
+        // Remove the 'loop' attribute so the video is allowed to end!
+        videoElement.removeAttribute('loop');
+        
+        // When the video naturally finishes, advance the carousel
+        videoElement.onended = () => {
+            advanceCarousel();
+        };
+        
+        // Fallback: If the video fails to load, advance after 5 seconds anyway
+        videoElement.onerror = () => {
+            carouselTimer = setTimeout(advanceCarousel, 5000);
+        };
+    } else {
+        // If it's an image or iframe, wait 5 seconds then advance
+        carouselTimer = setTimeout(advanceCarousel, 5000);
+    }
+};
+
+// Helper function to figure out the next slide
+function advanceCarousel() {
+    let nextIndex = carouselIndex + 1;
+    if (nextIndex >= projectData.steamCarousel.length) nextIndex = 0;
+    window.changeCarouselMedia(nextIndex);
 }
 
 renderProjectPage();
