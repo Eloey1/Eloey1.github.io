@@ -9,8 +9,8 @@ const projectData = {
     stats: [
         { label: "Engine", value: "Frostheim (Custom)" },
         { label: "Language", value: "C++" },
-        { label: "Core Focus", value: "Engine Architecture" },
-        { label: "Role", value: "Engine & Tools Programmer" }
+        { label: "Role", value: "Engine & Tools Programmer" },
+        { label: "Release Year", value: "2025" }
     ],
     
     mainMedia: {
@@ -51,8 +51,8 @@ const projectData = {
             title: "Pointer-Based Component System",
             isFullWidth: false,
             text: [
-                ".",
-                ""
+                "While an Object-Oriented, pointer-based component model isn't the most performant architecture compared to a modern ECS, it was the design the team agreed upon to get production moving quickly, and I built the system to meet those requirements.",
+                "As the game scaled, the pitfalls of this design became apparent. Heavy reliance on raw pointers led to memory management issues and dangling pointers. We were too deep into production to safely rewrite the core, but this tech debt was a massive learning experience that directly motivated my push for rewriting our component system in time for the next project."
             ],
             media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Component+Architecture" },
             mediaOnLeft: false
@@ -61,33 +61,65 @@ const projectData = {
             title: "Automatic Instancing Renderer",
             isFullWidth: true,
             text: [
-                "As the game scaled and enemy counts increased, CPU draw call overhead became a massive bottleneck. Stepping into the graphics pipeline, I developed an automatic hardware instancing system to alleviate the CPU.",
-                "Every frame, the renderer gathers all active meshes, sorts them first by Material ID and then by Mesh ID, and dynamically batches identical objects together. The engine then submits them to the GPU using a single instanced draw call, which resulted in massive performance gains and kept our framerate smooth during chaotic combat."
+                "As the game scaled and the levels got bigger, draw call overhead became a significant bottleneck. To solve this, I developed an automatic hardware instancing system that dynamically groups identical objects into rendering batches.",
+                "The pipeline sorts active renderables by Mesh and Material. As shown below, the engine binds a global instance buffer, iterates through each sub-mesh element, and applies the specific Pipeline State Object (PSO) and textures for that material batch. Finally, it dispatches a single 'DrawIndexedInstanced' call per batch, which drastically reduced our draw call count and maintained smooth framerate."
             ],
             codeSnippet: {
-                title: "src/graphics/Renderer.cpp",
-                code: `class="cm">// Flushes the dynamically batched render commands to the GPU
-void Renderer::FlushInstancedBatches() {
-    for (auto& [materialId, meshMap] : m_RenderBatches) {
-        BindMaterial(materialId);
+                title: "src/graphics/GraphicsEngine.cpp",
+                code: `void GraphicsEngine::DrawModelInstanced(const Mesh& aMesh, const MeshBatch& aBatch, MaterialDomain aDomain, GraphicsCommandList& inoutCommandList)
+{
+    if (!PrepareModelForRendering(aMesh))
+        return;
 
-        for (auto& [meshId, instanceData] : meshMap) {
-            if (instanceData.empty()) continue;
+    ObjectBuffer objectBuffer = {};
+    UpdateAndSetConstantBuffer(inoutCommandList, ConstantBufferType::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
 
-            class="cm">// Upload all transform matrices to the GPU Instance Buffer
-            m_InstanceBuffer->SetData(instanceData.data(), instanceData.size() * sizeof(InstanceData));
-            m_InstanceBuffer->Bind(1); class="cm">// Bind to shader slot 1
+    inoutCommandList.BeginEvent(aMesh.GetName() + "_Instanced");
 
-            auto mesh = AssetManager::GetMesh(meshId);
-            mesh->Bind();
+    inoutCommandList.SetVertexBuffer(&aMesh.myVertexBuffer, myGlobalInstanceBuffer.get());
+    inoutCommandList.SetIndexBuffer(aMesh.myIndexBuffer);
 
-            class="cm">// Execute a single hardware instanced draw call for X identical meshes
-            RenderCommand::DrawIndexedInstanced(mesh->GetIndexCount(), instanceData.size(), 0, 0, 0);
+    for (size_t elementIndex = 0; elementIndex < aMesh.myElements.size(); ++elementIndex)
+    {
+        const Mesh::Element& element = aMesh.myElements[elementIndex];
 
-            class="cm">// Clear the batch for the next frame
-            instanceData.clear(); 
+        for (const MaterialBatch& matBatch : aBatch.MaterialsPerElement[elementIndex])
+        {
+            Material* material = matBatch.Material;
+
+            if (material->GetDescription().Domain != aDomain)
+                continue;
+
+            inoutCommandList.SetPipelineStateObject(material->myPSO);
+
+            if (material->HasMaterialBuffer())
+            {
+                UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBufferType::MaterialBuffer, material->myData, Material::MATERIAL_BUFFER_SIZE, material->myBufferSlot,
+                    PipelineStage_VertexShader | PipelineStage_PixelShader);
+            }
+
+            std::vector<Texture*> textures(material->myTextures.size());
+            for (size_t i = 0; i < material->myTextures.size(); ++i)
+                if (material->myTextures[i])
+                    textures[i] = &material->myTextures[i]->GetTexture();
+
+            inoutCommandList.SetShaderResources(
+                textures.data(),
+                textures.size(),
+                0,
+                PipelineStage_PixelShader
+            );
+
+            inoutCommandList.DrawIndexedInstanced(
+                element.NumIndices,
+                element.IndexOffset,
+                matBatch.InstanceCount,
+                matBatch.InstanceOffsetGlobal
+            );
         }
     }
+
+    inoutCommandList.EndEvent();
 }`
             }
         }
@@ -95,15 +127,11 @@ void Renderer::FlushInstancedBatches() {
 
     gallery: [
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Image" },
+            media: { type: "image", src: "../image/spite_oathbound/spite1.png" },
             caption: ""
         },
         {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Image" },
-            caption: ""
-        },
-        {
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Image" },
+            media: { type: "image", src: "../image/spite_oathbound/spite2.png" },
             caption: ""
         }
     ]
@@ -128,8 +156,10 @@ function getMediaHTML(media) {
 function highlightCode(code) {
     return code
         .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`)
-        .replace(/\b(void|float|if|else|return|auto|for|const|bool|continue|class|sizeof)\b/g, '<span className="kw">$1</span>')
-        .replace(/\b(Renderer|AssetManager|RenderCommand|InstanceData|m_RenderBatches|m_InstanceBuffer)\b/g, '<span className="ty">$1</span>')
+        .replace(/"(.*?)"/g, '<span className="ty" style="color: #a5d6ff;">"$1"</span>')
+        .replace(/\b(void|float|if|else|return|auto|for|const|bool|continue|class|sizeof|size_t)\b/g, '<span className="kw">$1</span>')
+        .replace(/\b(GraphicsEngine|Mesh|MeshBatch|MaterialDomain|GraphicsCommandList|ObjectBuffer|ConstantBufferType|MaterialBatch|Material|Texture|Element|std|vector)\b/g, '<span className="ty">$1</span>')
+        .replace(/\b(PipelineStage_VertexShader|PipelineStage_PixelShader|MATERIAL_BUFFER_SIZE)\b/g, '<span className="ty" style="color: #d2a8ff;">$1</span>')
         .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span className="fn">$1</span>')
         .replace(/className=/g, 'class='); 
 }
@@ -258,7 +288,7 @@ function renderProjectPage() {
                     }).join('')}
                 </section>
 
-                <section class="article-section scroll-reveal" style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 40px;">
+                <section class="article-section scroll-reveal" style="padding-top: 40px;">
                     <h2 style="color: var(--text-primary); font-size: 1.5rem; margin-bottom: 20px;">Gallery</h2>
                     <div class="gallery-grid">
                         ${projectData.gallery.map(item => `
@@ -268,9 +298,11 @@ function renderProjectPage() {
                                         ${getMediaHTML(item.media)}
                                     </div>
                                 </div>
+                                ${item.caption ? `
                                 <div class="gallery-caption">
                                     <span class="accent" style="margin-right: 5px; color: var(--accent-color);">></span> ${item.caption}
                                 </div>
+                                ` : ''}
                             </div>
                         `).join('')}
                     </div>

@@ -38,16 +38,24 @@ const projectData = {
         }
     ],
     
-    splitOverviews: [
+    introSections: [
         {
             title: "Motivation & Goal",
-            text: [
-                "During a previous project, tight deadlines forced me to build a particle system and tool that, while functional, ultimately fell short in flexibility and modularity.",
-                "This got me really motivated to create a new particle system from scratch and start over. My goal was to create a highly scalable VFX architecture and editor that would reliably serve the tech art team for all our future projects."
-            ],
-            media: { type: "image", src: "../image/hailstorm/hailstorm1.png" },
-            mediaOnLeft: false
+            paragraphs: [
+                "During a previous project, tight deadlines forced me to build a particle system and authoring tool that, while functional, ultimately fell short in flexibility and modularity.",
+                "Driven by that experience, I was highly motivated to build this new system entirely from scratch. My core goal was to engineer a highly scalable VFX architecture and editor that would reliably serve the tech art team for all our future projects."
+            ]
         },
+        {
+            title: "Result & Reflection",
+            paragraphs: [
+                "By adopting a modular, Niagara-inspired architecture early on, I successfully eliminated the bottlenecks of my previous system. Technical artists can now easily combine and tweak behaviors like velocity, color over life, and size curves without needing custom code for every new effect.",
+                "Even though the system is still in active development, it has successfully powered the VFX pipeline throughout an entire project. Collaborating closely with the technical art team and iterating on their daily feedback was an incredible learning experience. Ultimately, this feedback loop resulted in a highly intuitive environment for the tech artists, while establishing a robust foundation that made my own development workflow much easier."
+            ]
+        }
+    ],
+
+    splitOverviews: [
         {
             title: "The Architecture",
             text: [
@@ -191,6 +199,12 @@ function renderProjectPage() {
 
     const html = `
         <style>
+            /* Intro Styles */
+            .intro-block { margin-bottom: 60px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .intro-section { margin-bottom: 30px; }
+            .intro-section h2 { color: var(--text-primary); margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; }
+            .intro-section p { margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary); }
+
             .zig-zag-row {
                 display: flex;
                 flex-direction: column; /* MOBILE: Image on top, Text below */
@@ -248,6 +262,7 @@ function renderProjectPage() {
             .thumb-play-icon svg { margin-left: 2px; } /* Optically center the triangle */
 
             @media (min-width: 850px) {
+                .intro-section h2 { font-size: 1.8rem; }
                 .zig-zag-row {
                     flex-direction: row; /* DESKTOP: Default to Image Left */
                     gap: 50px;
@@ -318,6 +333,15 @@ function renderProjectPage() {
 
             <div class="article-main fade-in d-5">
                 
+                <section class="intro-block scroll-reveal">
+                    ${projectData.introSections.map(section => `
+                        <div class="intro-section">
+                            <h2>${section.title}</h2>
+                            ${section.paragraphs.map(p => `<p>${p}</p>`).join('')}
+                        </div>
+                    `).join('')}
+                </section>
+
                 <section class="article-section">
                     ${projectData.splitOverviews.map(block => {
                         const textHTML = `
