@@ -78,7 +78,44 @@ const projectData = {
                 "When upgrading the engine, we needed better performance and memory safety without forcing the entire team to completely relearn a pure Data-Oriented ECS. To solve this, I engineered a 'Semi-ECS' architecture.",
                 "Under the hood, the memory layout is tightly packed, utilizing IDs and handles to guarantee O(1) lookup speeds and cache coherency. However, it exposes a familiar, object-oriented base component interface to the gameplay programmers. This approach massively improved stability while keeping the team's workflow fast and comfortable."
             ],
-            media: { type: "image", src: "https://placehold.co/1280x400/111620/00f0ff?text=Semi-ECS+Architecture" },
+            codeSnippet: {
+                title: "src/engine/Actor/Actor.h",
+                code: `template <typename T>
+struct ComponentRef
+{
+    Scene* ScenePtr = nullptr;
+    ActorID OwnerID = INVALID_INDEX;
+
+    T* operator->() const { return ScenePtr->GetPool<T>().TryGet(OwnerID); }
+    T& operator*() const { return *ScenePtr->GetPool<T>().TryGet(OwnerID); }
+
+    bool IsValid() const { return ScenePtr && ScenePtr->HasComponent<T>(OwnerID); }
+    explicit operator bool() const noexcept { return IsValid(); }
+};
+
+class Actor
+{
+    friend class Scene;
+public:
+    Actor(ActorID aID, Scene* aScene);
+
+    template <class T, class... Args> requires(std::is_base_of_v<Component, T>)
+    T& AddComponent(Args&&... someArgs);
+
+    template <class T> requires(std::is_base_of_v<Component, T>)
+    T& GetComponent();
+
+    template <class T> requires(std::is_base_of_v<Component, T>)
+    ComponentRef<T> GetRef() const;
+
+    bool IsActive() const { return myScene->IsActorActive(myID); }
+    void Destroy() const;
+
+private:
+    ActorID myID = INVALID_INDEX;
+    Scene* myScene = nullptr;
+};`
+            },
             mediaOnLeft: false
         },
         {
@@ -131,10 +168,11 @@ function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
 }
 
 function highlightCode(code) {
-    return code
+    let safeCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return safeCode
         .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`)
-        .replace(/\b(void|delete|while|for|if|else|int|float|double|bool|class|struct|return|const|constexpr|auto|template|typename|std|forward|virtual|public|default)\b/g, '<span class="kw">$1</span>')
-        .replace(/\b(CharacterController|CollisionFlags|CollisionFlag|Vector3f|CU)\b/g, '<span class="ty">$1</span>')
+        .replace(/\b(void|delete|while|for|if|else|int|float|double|bool|class|struct|return|const|constexpr|auto|template|typename|std|forward|virtual|public|private|friend|default|requires|explicit|operator|noexcept)\b/g, '<span class="kw">$1</span>')
+        .replace(/\b(CharacterController|CollisionFlags|CollisionFlag|Vector3f|CU|ComponentRef|Scene|ActorID|Actor|Component|INVALID_INDEX|T|Args)\b/g, '<span class="ty">$1</span>')
         .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="fn">$1</span>')
         .replace(/className=/g, 'class=');
 }
