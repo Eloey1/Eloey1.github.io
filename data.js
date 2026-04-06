@@ -4,7 +4,7 @@ const portfolioData = {
         name: "Emil Barkefors",
         title: "Engine & Tools Programmer",
         
-        description: "I develop custom C++ game engines and the intuitive tools that drive them. I focus on writing high-performance backend systems while giving designers a frictionless, drag-and-drop environment to build their worlds.",
+        description: "I'm a soon-to-be graduate in Game Development and Programming from The Game Assembly in Malmö, Sweden. During my studies I have developed a interest for custom C++ Engines and Tools.",
         internshipNotice: "I am part of The Game Assembly's internship program. As per the agreement between the Games Industry and The Game Assembly, neither student nor company may be in contact with one another regarding internships before April 15th. Any internship offers can be made on April 27th, at the earliest.",
         skills: [
             "C++ (14/17/20)", 
@@ -18,7 +18,6 @@ const portfolioData = {
             "Custom Engine",
             "Unity",
             "Godot",
-            "Unreal",
             "Perforce",
             "Github"
         ],

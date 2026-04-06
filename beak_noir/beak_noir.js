@@ -18,7 +18,7 @@ const projectData = {
         fallbackImg: ""
     },
     overview: [
-        "Beak Noir is an isometric action-adventure game where players shoot their way through a dangerous syndicate of gangster snakes to solve the mystery of their missing mouse friend.",
+        "Beak Noir is an isometric action-adventure game where the player shoots their way through a dangerous syndicate of gangster snakes to solve the mystery of their missing mouse friend.",
         "This was our fourth game project and second time utilizing The Game Assembly's engine TGE. Since I was already comfortable with the engine at this point, I intentionally challenged myself by taking on new responsibilities. I focused on building pipelines for our level designers and our animators."
     ],
     challenges: [

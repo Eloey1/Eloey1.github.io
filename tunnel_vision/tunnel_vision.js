@@ -24,11 +24,11 @@ const projectData = {
     challenges: [
         {
             title: "Particles",
-            desc: "This was my first time making a particle system and when I fell in love making tools. I needed a way of making it possible for other teamates to make particles and in this project I made it possibel with a data driven approach using json files"
+            desc: "This was my first time making a particle system and when I fell in love making tools. I needed a way of making it possible for other teamates to make particles and in this project I made it possible with a data driven approach using JSON files"
         },
         {
             title: "Player Movement",
-            desc: "For me a movement can really make or break a platformer and I really worked hard to make this celeste inspired player movement, and I made my first ImGui tool so the level designers could tweak the numbers of the movement and save to a JSON file"
+            desc: "For me a player movement can really make or break a platformer and I really worked hard to replicate Celeste inspired movement. Hence I made my first ImGui tool so the level designers could tweak the numbers of the movement and save it to a JSON file"
         }
     ],
     codeSnippet: {

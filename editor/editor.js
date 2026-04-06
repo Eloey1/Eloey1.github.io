@@ -65,7 +65,7 @@ const projectData = {
             title: "Result & Reflection",
             paragraphs: [
                 "I am incredibly proud of how the editor turned out. While a project of this scale is never truly 'finished', it successfully achieved its primary goal: drastically improving our team's workflow by bringing previously scattered utilities into one seamless, unified environment.",
-                "Will I keep developing Frostheim's editor? Absolutely. Building this from scratch was a massive challenge, but wrestling with complex architectural problems is exactly how you grow as an engine and tools programmer. I plan to continue expanding its features and pushing the editor to be the best it can possibly be."
+                "Will I keep developing Frostheim's editor? Absolutely. Building this from scratch was a massive challenge, but wrestling with complex architectural problems is exactly how you grow as an Engine and Tools programmer. I plan to continue expanding its features and pushing the editor to be the best it can possibly be."
             ]
         }
     ],
@@ -211,7 +211,7 @@ public:
     futurePlans: [
         {
             title: "Advanced Prefab Hierarchies",
-            text: "I plan to expand the prefab system to support complex, multi-level hierarchies, allowing entire structures of parent and child to be saved as a single asset. Additionally, I want to develop a dedicated prefab editor as an isolated prefab window."
+            text: "I plan to expand the Prefab system to support complex, multi-level hierarchies, allowing entire structures of parent and child to be saved as a single asset. Additionally, I want to develop a dedicated Prefab editor as an isolated Prefab window."
         },
         {
             title: "Continuous Iteration",

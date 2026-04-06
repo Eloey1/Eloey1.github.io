@@ -42,7 +42,7 @@ const projectData = {
         {
             title: "My Role & Responsibilities",
             paragraphs: [
-                "As the Engine and Tools Programmer, my primary focus was laying the foundational architecture. Alongside a teammate, I established the build environment using Premake, ensuring a clean, scalable multi-project solution. I also designed the engine's initial game object model, building a traditional pointer-based component system.",
+                "As the Engine and Tools Programmer, my primary focus was laying the foundational architecture. Alongside a teammate, I established the build environment using Premake to ensure a clean, scalable multi-project solution. I also designed the engine's initial game object model, building a traditional pointer-based component system.",
                 "While I wasn't the primary graphics programmer, I stepped in to heavily optimize the rendering pipeline. I developed an automatic instancing system that dynamically batched draw calls based on shared meshes and materials, which resulted in massive performance gains and kept our framerate smooth."
             ]
         }

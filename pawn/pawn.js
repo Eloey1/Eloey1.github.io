@@ -23,16 +23,16 @@ const projectData = {
         fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Pawn's+Gambit"
     },
    overview: [
-        "Pawn's Gambit is an award-winning puzzle game built in Unity for mobile. You are a pawn that needs to save the queen from the king, battling enemies like the Rook, Knight or the Bishop who all have different moves.", 
+        "Pawn's Gambit is an award-winning puzzle game built in Unity for mobile. You are a pawn that needs to save the Queen from the King, battling enemies like the Rook, Knight or the Bishop who all have different moves.", 
     ],
     challenges: [
         {
             title: "Camera",
-            desc: "This was my first time making a camera for a mobile game and it was a little different because, for example, the camera shake I made looked fine when testing on my PC. But when we later tried it on the mobile it was crazy strong so i had to tone it down"
+            desc: "This was my first time making a camera for a mobile game and it was a little different because, for example, the camera shake I made looked fine when testing on my PC. But when we later tried it on the mobile it was crazy strong so I had to tone it down"
         },
         {
             title: "Particles & Optimizations",
-            desc: "I worked a lot with the particles in this project and i had to put in a bit of work on optimizing the particles usages, so it was a lot of research on how i can still have particles without destroying the performance."
+            desc: "I worked a lot with the particles in this project and I had to put in a bit of work on optimizing the particles usages, so it was a lot of research on how I can still have particles without worsening the performance."
         }
     ],
     
