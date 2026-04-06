@@ -23,7 +23,7 @@ const portfolioData = {
         ],
         links: {
             email: "mailto:emilb2002@gmail.com",
-            resume: "Resume.pdf",
+            resume: "image/Emil-Resume.pdf",
             linkedin: "https://www.linkedin.com/in/emil-barkefors-901096231/"
         }
     },
