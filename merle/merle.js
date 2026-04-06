@@ -72,11 +72,11 @@ const projectData = {
 
     splitOverviews: [
         {
-            title: "Pragmatic Semi-ECS & Layer System",
+            title: "Semi-ECS",
             isFullWidth: true,
             text: [
-                "When upgrading the engine, we needed better performance and memory safety without forcing the entire team to completely relearn a pure Data-Oriented ECS paradigm. To solve this, I engineered a 'Semi-ECS' architecture.",
-                "Under the hood, the memory layout is tightly packed, utilizing IDs and handles to guarantee O(1) lookup speeds and cache coherency. However, it exposes a familiar, object-oriented base component interface to the gameplay programmers. This pragmatic approach massively improved performance and stability while keeping the team's workflow fast and comfortable. Alongside this, I implemented an application layer system to dynamically manage and isolate execution stacks at runtime."
+                "When upgrading the engine, we needed better performance and memory safety without forcing the entire team to completely relearn a pure Data-Oriented ECS. To solve this, I engineered a 'Semi-ECS' architecture.",
+                "Under the hood, the memory layout is tightly packed, utilizing IDs and handles to guarantee O(1) lookup speeds and cache coherency. However, it exposes a familiar, object-oriented base component interface to the gameplay programmers. This approach massively improved stability while keeping the team's workflow fast and comfortable."
             ],
             media: { type: "image", src: "https://placehold.co/1280x400/111620/00f0ff?text=Semi-ECS+Architecture" },
             mediaOnLeft: false
@@ -86,7 +86,7 @@ const projectData = {
             isFullWidth: false,
             text: [
                 "For a 3D platformer, movement is everything. I was one of the two primary programmers dedicated to the player character, specifically focusing on the core movement mechanics.",
-                "We integrated the PhysX CharacterController and spent weeks iterating on the physics parameters, jump curves, and momentum logic. Collaborating closely on the fine-tuning allowed us to nail the elusive 'game feel', ensuring the final platforming felt incredibly smooth, responsive, and satisfying."
+                "Using the PhysX CharacterController as our foundation, we made a completely data-driven player movement. Rather than hardcoding jump arcs and momentum logic, we built the system so that altering the underlying stats could create entirely different movement. We exposed all of these parameters directly to the level designers, empowering them to tweak the numbers, rapidly iterate, and dial in the perfect 'game feel' without ever needing to touch the code."
             ],
             media: { type: "video", src: "../image/merle/merle_movement.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Player+Movement" },
             mediaOnLeft: true
@@ -95,8 +95,8 @@ const projectData = {
             title: "Dynamic Camera & Unreal Spline Pipeline",
             isFullWidth: false,
             text: [
-                "I took ownership of the dynamic game camera, ensuring it smoothly tracked the player through complex 3D environments without clipping. However, the design team also needed a way to create cinematic, scripted camera movements.",
-                "To solve this without spending weeks building a complex curve editor from scratch, I developed a custom data pipeline between Unreal Engine and Frostheim. Designers could draw standard splines in Unreal, and my tool would export and parse that data directly into our engine. This cross-engine workflow gave the team the power to author professional camera rail tracks with zero friction."
+                "I took ownership of the dynamic game camera, ensuring it smoothly tracked the player through complex 3D environments without clipping. However, other disciplines on the team also needed a way to create cinematic, scripted camera movements.",
+                "To solve this, I developed a custom data pipeline between Unreal Engine and Frostheim. The team could draw standard splines in Unreal, which were then automatically exported into our level files and parsed directly by our engine. This cross-engine workflow gave the team the power to easily create camera rail tracks with zero friction."
             ],
             media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Unreal+Spline+Tool" },
             mediaOnLeft: false
