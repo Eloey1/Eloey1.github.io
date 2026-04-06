@@ -114,7 +114,7 @@ function renderProjectPage() {
         <div class="article-layout">
             <aside class="article-sidebar fade-in d-4">
                 <div class="stats-panel">
-                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">Project Details</h3>
+                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">Project Overview</h3>
                     ${projectData.stats.map(s => `
                         <div class="stat-item">
                             <span class="stat-label">${s.label}</span>

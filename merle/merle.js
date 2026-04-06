@@ -2,190 +2,106 @@
 // 1. PROJECT DATA
 // -----------------------------------------------------
 const projectData = {
-    title: "Spite Oathbound",
-    tagline: "Top-Down ARPG Built on a Custom C++ Engine",
-    status: "Complete",
-    techStack: ["C++20", "DirectX 11", "Component System", "ImGui"],
+    title: "Merle: The Kinda Incompetent Wizard",
+    tagline: "3D Platformer Featuring Fluid Movement and Custom Physics",
+    status: "Released 2026",
+    techStack: ["C++20", "Frostheim Engine", "ImGui", "PhysX"],
     stats: [
         { label: "Engine", value: "Frostheim (Custom)" },
         { label: "Language", value: "C++" },
-        { label: "Role", value: "Engine & Tools Programmer" },
-        { label: "Release Year", value: "2025" }
+        { label: "Role", value: "Engine & Gameplay Programmer" },
+        { label: "Release Year", value: "2026" }
     ],
     
     steamCarousel: [
+        // --- Example of how to add a YouTube Video for Merle's Trailer! ---
+        // { 
+        //     type: "youtube", 
+        //     src: "https://www.youtube.com/embed/YOUR_VIDEO_ID", 
+        //     thumb: "https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg" 
+        // },
         { 
-            type: "youtube", 
-            src: "https://www.youtube.com/embed/6T9ucwCqhoA", 
-            thumb: "https://img.youtube.com/vi/6T9ucwCqhoA/maxresdefault.jpg" 
+            type: "video", 
+            src: "../image/merle/merle_gameplay.mp4",
+            fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Merle+Gameplay+Trailer",
+            thumb: "https://placehold.co/240x135/111620/00f0ff?text=Trailer"
         },
         { 
             type: "image", 
-            src: "../image/spite_oathbound/spite1.png", 
-            thumb: "../image/spite_oathbound/spite1.png" 
+            src: "../image/merle/Screenshot_01.png", 
+            thumb: "../image/merle/Screenshot_01.png" 
         },
         { 
             type: "image", 
-            src: "../image/spite_oathbound/spite2.png", 
-            thumb: "../image/spite_oathbound/spite2.png" 
-        }
+            src: "../image/merle/Screenshot_02.png", 
+            thumb: "../image/merle/Screenshot_02.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/merle/Screenshot_03.png", 
+            thumb: "../image/merle/Screenshot_03.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/merle/Screenshot_04.png", 
+            thumb: "../image/merle/Screenshot_04.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/merle/Screenshot_05.png", 
+            thumb: "../image/merle/Screenshot_05.png" 
+        },
     ],
 
     introSections: [
         {
-            title: "The Leap to a Custom Engine",
+            title: "Evolving the Frostheim Engine",
             paragraphs: [
-                "Spite Oathbound is a top-down Action RPG, but more importantly, it was our fifth project and the very first time we built our own game engine from the ground up.",
-                "Having developed a deep interest in engine architecture and tools programming, I took on a major role in shaping the codebase. My primary goal was to design the 'Frostheim Engine' to be as decoupled and modular as possible, as I strongly believe that strict modularity is the foundation of any maintainable engine."
+                "For our sixth project, we took a step back to address the technical debt we had found during Spite Oathbound. My primary focus was overhauling our component and actor architecture to eliminate the heavy reliance on raw pointers, effectively resolving the memory management issues and dangling pointer crashes we had previously struggled with.",
+                "To push the engine's modularity even further, I created a application layer system. This allowed us to dynamically push and pop layers at runtime, meaning we could completely isolate or remove parts of the application stack on the fly. This architectural upgrade massively improved our stability and workflow."
             ]
         },
         {
-            title: "My Role & Responsibilities",
+            title: "Result & Reflection",
             paragraphs: [
-                "As the Engine and Tools Programmer, my primary focus was laying the foundational architecture. Alongside a teammate, I established the build environment using Premake, ensuring a clean, scalable multi-project solution. I also designed the engine's initial game object model, building a traditional pointer-based component system.",
-                "While I wasn't the primary graphics programmer, I stepped in to heavily optimize the rendering pipeline. I developed an automatic instancing system that dynamically batched draw calls based on shared meshes and materials, which resulted in massive performance gains and kept our framerate smooth."
+                "Refactoring the engine's core was a massive time investment, but the payoff was undeniable. The entire programming team was significantly happier with the improved workflow, safety, and stability. Seeing the team smoothly develop gameplay mechanics without fighting the architecture made me incredibly proud of where the Frostheim engine stands today.",
+                "Building a custom engine and immediately using it in production is the ultimate stress test, it quickly exposes what actually works in practice versus just in theory. While we have already identified new systems we want to optimize for our next project, this continuous cycle of building, using, and refining has been one of the greatest learning experiences of my education."
             ]
         }
     ],
-    
+
     splitOverviews: [
         {
-            title: "Core Architecture & Premake Build System",
+            title: "Pragmatic Semi-ECS & Layer System",
             isFullWidth: true,
             text: [
-                "To support three upcoming projects, I established our build environment using Premake. This allowed us to cleanly separate the Engine, Game, and Editor into modular projects without fighting manual Visual Studio configurations.",
-                "I designed a decoupled application loop to separate game logic from rendering. While strict modularity was the goal, production realities caused some tightly coupled dependencies to slip through. Documenting these bottlenecks became a crucial learning experience that directly improved the architecture of our next engine iteration."
+                "When upgrading the engine, we needed better performance and memory safety without forcing the entire team to completely relearn a pure Data-Oriented ECS paradigm. To solve this, I engineered a 'Semi-ECS' architecture.",
+                "Under the hood, the memory layout is tightly packed, utilizing IDs and handles to guarantee O(1) lookup speeds and cache coherency. However, it exposes a familiar, object-oriented base component interface to the gameplay programmers. This pragmatic approach massively improved performance and stability while keeping the team's workflow fast and comfortable. Alongside this, I implemented an application layer system to dynamically manage and isolate execution stacks at runtime."
             ],
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Engine+Architecture" },
-            mediaOnLeft: true
-        },
-        {
-            title: "Pointer-Based Component System",
-            isFullWidth: true,
-            text: [
-                "While an Object-Oriented, pointer-based component model isn't the most performant architecture compared to a modern ECS, it was the design the team agreed upon to get production moving quickly, and I built the system to meet those requirements.",
-                "As the game scaled, the pitfalls of this design became apparent. Heavy reliance on raw pointers led to memory management issues and dangling pointers. We were too deep into production to safely rewrite the core, but this tech debt was a massive learning experience that directly motivated my push for rewriting our component system in time for the next project."
-            ],
-            codeSnippet: {
-                title: "src/core/Actor.h",
-                code: `class Actor
-{
-public:
-    explicit Actor(const std::string& aName = "Actor");
-    ~Actor();
-
-    void Update(float aDeltaTime);
-
-    template <class T, class... Args>
-    T& AddComponent(Args&&... someArgs);
-
-    template <class T>
-    T& GetComponent();
-
-    template <class T>
-    const T& GetComponent() const;
-
-    template <class T>
-    T* TryGetComponent();
-
-    template <class T>
-    const T* TryGetComponent() const;
-
-private:
-    bool myIsActive;
-    std::string myName;
-    std::vector<Component*> myComponents;
-    Scene* myScene;
-};`
-            }
-        },
-        {
-            title: "Foundational Tools & ImGui Integration",
-            isFullWidth: false,
-            text: [
-                "Before I developed a fully integrated editor, the team needed a way to debug and manipulate the game in real-time. I established the foundational tools architecture, creating a system for the team to easily instantiate floating ImGui panels.",
-                "While these standalone panels were incredibly useful during early production, managing a chaotic workspace of floating windows is what ultimately motivated me to create the Editor as my specialization."
-            ],
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=ImGui+Floating+Panels" },
+            media: { type: "image", src: "https://placehold.co/1280x400/111620/00f0ff?text=Semi-ECS+Architecture" },
             mediaOnLeft: false
         },
         {
-            title: "Dynamic Camera Shake",
+            title: "PhysX Character Controller",
             isFullWidth: false,
             text: [
-                "In a top-down Action RPG, combat is all about impact and 'game feel'. I took ownership of the camera system and built a custom camera shake mechanic that I am incredibly proud of, as it completely transformed how heavy and satisfying our combat felt.",
-                "Instead of a jittery screen shake, I wanted the movement to feel natural and organic. The system smoothly blends in and out of shakes and can layer multiple impacts on top of each other."
+                "For a 3D platformer, movement is everything. I was one of the two primary programmers dedicated to the player character, specifically focusing on the core movement mechanics.",
+                "We integrated the PhysX CharacterController and spent weeks iterating on the physics parameters, jump curves, and momentum logic. Collaborating closely on the fine-tuning allowed us to nail the elusive 'game feel', ensuring the final platforming felt incredibly smooth, responsive, and satisfying."
             ],
-            media: { type: "video", src: "../image/spite_oathbound/camera_shake.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Camera+Shake" },
+            media: { type: "video", src: "../image/merle/merle_movement.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Player+Movement" },
             mediaOnLeft: true
         },
         {
-            title: "Automatic Instancing Renderer",
-            isFullWidth: true,
+            title: "Dynamic Camera & Unreal Spline Pipeline",
+            isFullWidth: false,
             text: [
-                "As the game scaled and the levels got bigger, draw call overhead became a significant bottleneck. To solve this, I developed an automatic hardware instancing system that dynamically groups identical objects into rendering batches.",
-                "The pipeline sorts active actors by Mesh and Material. As shown below, the engine binds a global instance buffer, iterates through each sub-mesh element, and applies the specific Pipeline State Object (PSO) and textures for that material batch. Finally, it dispatches a single 'DrawIndexedInstanced' call per batch, which drastically reduced our draw call count and maintained smooth framerate."
+                "I took ownership of the dynamic game camera, ensuring it smoothly tracked the player through complex 3D environments without clipping. However, the design team also needed a way to create cinematic, scripted camera movements.",
+                "To solve this without spending weeks building a complex curve editor from scratch, I developed a custom data pipeline between Unreal Engine and Frostheim. Designers could draw standard splines in Unreal, and my tool would export and parse that data directly into our engine. This cross-engine workflow gave the team the power to author professional camera rail tracks with zero friction."
             ],
-            codeSnippet: {
-                title: "src/graphics/GraphicsEngine.cpp",
-                code: `void GraphicsEngine::DrawModelInstanced(const Mesh& aMesh, const MeshBatch& aBatch, MaterialDomain aDomain, GraphicsCommandList& inoutCommandList)
-{
-    if (!PrepareModelForRendering(aMesh))
-        return;
-
-    ObjectBuffer objectBuffer = {};
-    UpdateAndSetConstantBuffer(inoutCommandList, ConstantBufferType::ObjectBuffer, objectBuffer, 1, PipelineStage_VertexShader);
-
-    inoutCommandList.BeginEvent(aMesh.GetName() + "_Instanced");
-
-    inoutCommandList.SetVertexBuffer(&aMesh.myVertexBuffer, myGlobalInstanceBuffer.get());
-    inoutCommandList.SetIndexBuffer(aMesh.myIndexBuffer);
-
-    for (size_t elementIndex = 0; elementIndex < aMesh.myElements.size(); ++elementIndex)
-    {
-        const Mesh::Element& element = aMesh.myElements[elementIndex];
-
-        for (const MaterialBatch& matBatch : aBatch.MaterialsPerElement[elementIndex])
-        {
-            Material* material = matBatch.Material;
-
-            if (material->GetDescription().Domain != aDomain)
-                continue;
-
-            inoutCommandList.SetPipelineStateObject(material->myPSO);
-
-            if (material->HasMaterialBuffer())
-            {
-                UpdateAndSetConstantBufferInternal(inoutCommandList, ConstantBufferType::MaterialBuffer, material->myData, Material::MATERIAL_BUFFER_SIZE, material->myBufferSlot,
-                    PipelineStage_VertexShader | PipelineStage_PixelShader);
-            }
-
-            std::vector<Texture*> textures(material->myTextures.size());
-            for (size_t i = 0; i < material->myTextures.size(); ++i)
-                if (material->myTextures[i])
-                    textures[i] = &material->myTextures[i]->GetTexture();
-
-            inoutCommandList.SetShaderResources(
-                textures.data(),
-                textures.size(),
-                0,
-                PipelineStage_PixelShader
-            );
-
-            inoutCommandList.DrawIndexedInstanced(
-                element.NumIndices,
-                element.IndexOffset,
-                matBatch.InstanceCount,
-                matBatch.InstanceOffsetGlobal
-            );
+            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Unreal+Spline+Tool" },
+            mediaOnLeft: false
         }
-    }
-
-    inoutCommandList.EndEvent();
-}`
-            }
-        }
-    ]
+    ],
 };
 
 // -----------------------------------------------------
@@ -217,12 +133,10 @@ function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
 function highlightCode(code) {
     return code
         .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`)
-        .replace(/"(.*?)"/g, '<span className="ty" style="color: #a5d6ff;">"$1"</span>')
-        .replace(/\b(void|float|if|else|return|auto|for|const|bool|continue|class|sizeof|size_t|public|private|explicit|template)\b/g, '<span className="kw">$1</span>')
-        .replace(/\b(GraphicsEngine|Mesh|MeshBatch|MaterialDomain|GraphicsCommandList|ObjectBuffer|ConstantBufferType|MaterialBatch|Material|Texture|Element|std|vector|string|Actor|Component|Scene|T|Args)\b/g, '<span className="ty">$1</span>')
-        .replace(/\b(PipelineStage_VertexShader|PipelineStage_PixelShader|MATERIAL_BUFFER_SIZE)\b/g, '<span className="ty" style="color: #d2a8ff;">$1</span>')
-        .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span className="fn">$1</span>')
-        .replace(/className=/g, 'class='); 
+        .replace(/\b(void|delete|while|for|if|else|int|float|double|bool|class|struct|return|const|constexpr|auto|template|typename|std|forward|virtual|public|default)\b/g, '<span class="kw">$1</span>')
+        .replace(/\b(CharacterController|CollisionFlags|CollisionFlag|Vector3f|CU)\b/g, '<span class="ty">$1</span>')
+        .replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="fn">$1</span>')
+        .replace(/className=/g, 'class=');
 }
 
 function renderProjectPage() {
@@ -487,4 +401,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+});
+
+// -----------------------------------------------------
+// 5. GLOBAL IDE WINDOW COLLAPSE LOGIC
+// -----------------------------------------------------
+document.addEventListener('click', function(e) {
+    const header = e.target.closest('.ide-header');
+    if (header) {
+        const ideWindow = header.closest('.ide-window');
+        if (ideWindow) {
+            ideWindow.classList.toggle('collapsed');
+        }
+    }
 });

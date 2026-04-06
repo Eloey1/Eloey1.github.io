@@ -4,7 +4,7 @@
 const projectData = {
     title: "Particle System & Editor",
     tagline: "Modular CPU-Based VFX Tool",
-    status: "In Development",
+    status: "Active Engine Feature",
     techStack: ["C++", "DirectX 11", "ImGui", "Shaders", "JSON"],
     stats: [
         { label: "Simulation Space", value: "CPU (Data-Oriented)" },
@@ -35,6 +35,11 @@ const projectData = {
             type: "image", 
             src: "../image/hailstorm/particle_editor.png", 
             thumb: "../image/hailstorm/particle_editor.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/hailstorm/hailstorm6.png", 
+            thumb: "../image/hailstorm/hailstorm6.png" 
         }
     ],
     
@@ -42,7 +47,7 @@ const projectData = {
         {
             title: "Motivation & Goal",
             paragraphs: [
-                "During a previous project, tight deadlines forced me to build a particle system and authoring tool that, while functional, ultimately fell short in flexibility and modularity.",
+                "During a previous project, tight deadlines forced me to build a particle system and tool that, while functional, ultimately fell short in flexibility and modularity.",
                 "Driven by that experience, I was highly motivated to build this new system entirely from scratch. My core goal was to engineer a highly scalable VFX architecture and editor that would reliably serve the tech art team for all our future projects."
             ]
         },
@@ -58,6 +63,7 @@ const projectData = {
     splitOverviews: [
         {
             title: "The Architecture",
+            isFullWidth: false,
             text: [
                 "The system is heavily inspired by Unreal Engine's Niagara, so I made a component-based architecture where emitters own distinct behavior modules (like velocity, color over life, and size curves).",
                 "My technical artists had a large wishlist of features. So I tried to implement them all and it turned out great. Now it is easy to add new behavior and modules."
@@ -67,6 +73,7 @@ const projectData = {
         },
         {
             title: "The Workflow",
+            isFullWidth: true,
             text: [
                 "It's always a priority for me that it's easy for other programmers to both understand my code and extend its behavior.",
                 "I went through several iterations of the particle editor, actively seeking and applying feedback from my technical artists. This continuous feedback loop was crucial in making this tool."
@@ -83,34 +90,26 @@ for (std::unique_ptr<ParticleModule>& module : myModules)
         },
         {
             title: "Custom UI",
+            isFullWidth: false,
             text: [
                 "I have tried to make a clear UI with aligned titles and a reset button on every type for a uniform look.",
                 "My inspiration for the component-like look is from Unity and Godot."
             ],
             media: { type: "image", src: "../image/hailstorm/hailstorm3.png" },
-            mediaOnLeft: true
+            mediaOnLeft: false
         },
         {
             title: "Curves",
+            isFullWidth: false,
             text: [
                 "My technical artists really wanted to have curves in the modules so I made that with a custom UI widget.",
                 "I had made a full Easing utility from before so I also upgraded our curve class so I can have different easing on the curve for nice and non-linear curves."
             ],
             media: { type: "image", src: "../image/hailstorm/hailstorm5.png" },
-            mediaOnLeft: false
+            mediaOnLeft: true
         }
     ],
 
-    futurePlans: [
-       {
-            title: "Mesh Particles & Instance Rendering",
-            desc: "The current rendering pipeline utilizes a geometry shader to expand point data into billboarded 2D quads. Driven by requests from the tech art team, my next major milestone is to overhaul the rendering architecture to support true 3D mesh particles efficiently using instancing for reduced draw calls."
-        },
-        {
-            title: "GPU-Based System",
-            desc: "It would be a fun challenge to transition this into a fully GPU-based system using compute shaders in the future. Moving the update loop off the CPU would guarantee maximum performance and massive particle counts."
-        }
-    ],
     codeSnippet: {
         title: "src/particles/modules/BoxSpawnModule.h",
         code: `struct BoxSpawnModule : ParticleModule
@@ -143,20 +142,21 @@ for (std::unique_ptr<ParticleModule>& module : myModules)
     REFLECT(VAR(Strength), VAR(Size))
 };`
     },
-    gallery: [
-        {
-            media: { type: "video", src: "../image/hailstorm/purpleParticles.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Particles" },
-            caption: ""
+
+    futurePlans: [
+       {
+            title: "Mesh Particles & Instance Rendering",
+            text: "The current rendering pipeline utilizes a geometry shader to expand point data into billboarded 2D quads. Driven by requests from the tech art team, my next major milestone is to overhaul the rendering architecture to support true 3D mesh particles efficiently using instancing for reduced draw calls."
         },
         {
-            media: { type: "image", src: "../image/hailstorm/hailstorm6.png" },
-            caption: ""
+            title: "GPU-Based System",
+            text: "It would be a fun challenge to transition this into a fully GPU-based system using compute shaders in the future. Moving the update loop off the CPU would guarantee maximum performance and massive particle counts."
         }
     ]
 };
 
 // -----------------------------------------------------
-// 2. RENDERING LOGIC
+// 2. RENDERING LOGIC (ULTRA-OPTIMIZED)
 // -----------------------------------------------------
 function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
     const loadingBehavior = isFirstLoad ? 'eager' : 'lazy';
@@ -166,14 +166,16 @@ function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
         return `<img src="${media.thumb}" loading="lazy" decoding="async" alt="Thumbnail" style="width: 100%; height: 100%; object-fit: cover;">`;
     }
     
-    if (media.type === 'video') {
+    if (media.type === 'youtube') {
+        return `<iframe src="${media.src}?rel=0" title="YouTube Video" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%; position: absolute; inset: 0;"></iframe>`;
+    } else if (media.type === 'video') {
         return `
             <video autoplay loop muted playsinline preload="${videoPreload}" poster="${media.fallbackImg || ''}" style="width: 100%; height: 100%; object-fit: contain;">
                 <source src="${media.src}" type="video/mp4">
                 <img src="${media.fallbackImg || ''}" loading="${loadingBehavior}" decoding="async" alt="Fallback" style="width: 100%; height: 100%; object-fit: contain;">
             </video>`;
     } else if (media.type === 'iframe') {
-        return `<iframe src="${media.src}" loading="${loadingBehavior}" title="Video" allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>`;
+        return `<iframe src="${media.src}" loading="${loadingBehavior}" title="Video" allowfullscreen style="width: 100%; height: 100%; border: none; position: absolute; inset: 0;"></iframe>`;
     } else {
         return `<img src="${media.src}" loading="${loadingBehavior}" decoding="async" alt="Media" style="width: 100%; height: 100%; object-fit: contain;">`;
     }
@@ -181,16 +183,16 @@ function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
 
 function highlightCode(code) {
     return code
-        .replace(/"(.*?)"/g, '<span class="ty" style="color: #a5d6ff;">"$1"</span>')
-        .replace(/\b(struct|float|void|override|int|for|const|size_t)\b/g, '<span class="kw">$1</span>')
+        .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`)
+        .replace(/"(.*?)"/g, '<span className="ty" style="color: #a5d6ff;">"$1"</span>')
+        .replace(/\b(struct|float|void|override|int|for|const|size_t|class|auto)\b/g, '<span class="kw">$1</span>')
         .replace(/\b(MODULE_NAME|REFLECT|VAR)\b/g, '<span class="kw" style="color: #ffbd2e;">$1</span>')
-        .replace(/\b(Vector3f|Matrix4x4f|Matrix3x3f|Particle|std|vector|EditorUI|ParticleModule)\b/g, '<span class="ty">$1</span>')
+        .replace(/\b(Vector3f|Matrix4x4f|Matrix3x3f|Particle|std|vector|EditorUI|ParticleModule|BoxSpawnModule|CU)\b/g, '<span class="ty">$1</span>')
         .replace(/\b([a-zA-Z_]\w*)(?=\()/g, match => {
             if (['MODULE_NAME', 'REFLECT', 'VAR', 'for'].includes(match)) return match;
             return `<span class="fn">${match}</span>`;
         })
         .replace(/\b(\d+\.?\d*f?)\b/g, '<span class="kw" style="color: #79c0ff;">$1</span>')
-        .replace(/\/\/.*/g, match => `<span class="cm">${match}</span>`)
         .replace(/className=/g, 'class='); 
 }
 
@@ -200,36 +202,19 @@ function renderProjectPage() {
     const html = `
         <style>
             /* Intro Styles */
-            .intro-block { margin-bottom: 60px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
             .intro-section { margin-bottom: 30px; }
             .intro-section h2 { color: var(--text-primary); margin-top: 0; margin-bottom: 15px; font-size: 1.5rem; }
             .intro-section p { margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary); }
+            .intro-block { margin-bottom: 60px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-            .zig-zag-row {
-                display: flex;
-                flex-direction: column; /* MOBILE: Image on top, Text below */
-                gap: 30px;
-                margin-bottom: 60px;
-                align-items: center;
-            }
-            .zig-zag-col {
-                width: 100%;
-                min-width: 0; /* CRITICAL FIX: Stops the code block from squishing the layout */
-            }
-            /* Clean CSS fix for clickable headers */
-            .ide-header {
-                cursor: pointer !important;
-                position: relative;
-                z-index: 10;
-                user-select: none;
-                -webkit-tap-highlight-color: transparent;
-            }
-            .ide-header * {
-                pointer-events: none; /* Makes sure you click the header, not the text */
-            }
+            /* Zig-Zag Styles */
+            .zig-zag-row { display: flex; flex-direction: column; gap: 30px; margin-bottom: 60px; align-items: center; }
+            .zig-zag-col { width: 100%; min-width: 0; }
+            .ide-header { cursor: pointer !important; position: relative; z-index: 10; user-select: none; -webkit-tap-highlight-color: transparent; }
+            .ide-header * { pointer-events: none; }
             
             /* Steam Carousel Styles */
-            .steam-carousel-container { width: 100%; margin-bottom: 60px; }
+            .steam-carousel-container { width: 100%; margin-bottom: 40px; }
             .steam-main-view { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; margin-bottom: 15px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
             .steam-main-view > * { width: 100%; height: 100%; object-fit: contain; position: absolute; inset: 0; }
             
@@ -259,24 +244,15 @@ function renderProjectPage() {
                 color: white;
                 backdrop-filter: blur(2px);
             }
-            .thumb-play-icon svg { margin-left: 2px; } /* Optically center the triangle */
+            .thumb-play-icon svg { margin-left: 2px; }
 
             @media (min-width: 850px) {
                 .intro-section h2 { font-size: 1.8rem; }
-                .zig-zag-row {
-                    flex-direction: row; /* DESKTOP: Default to Image Left */
-                    gap: 50px;
-                    align-items: center;
-                }
-                .zig-zag-row.media-right {
-                    flex-direction: row-reverse; /* DESKTOP: Swap to Image Right */
-                }
-                .zig-zag-col {
-                    flex: 1 1 0%; /* DESKTOP: Share width equally */
-                    width: auto;
-                    min-width: 0; /* CRITICAL FIX: Stops the code block from squishing the layout */
-                }
-                /* DESKTOP: Restore larger thumbnails */
+                .zig-zag-row { flex-direction: row; gap: 50px; align-items: center; }
+                .zig-zag-row.media-right { flex-direction: row-reverse; }
+                .zig-zag-col { flex: 1 1 0%; width: auto; min-width: 0; }
+                
+                /* DESKTOP: Restore large luxurious padding and larger thumbnails */
                 .steam-thumb { flex: 0 0 140px; }
             }
         </style>
@@ -294,14 +270,14 @@ function renderProjectPage() {
             <p class="project-tagline fade-in d-3">${projectData.tagline}</p>
         </header>
 
-        <div class="steam-carousel-container media-reveal fade-in d-4">
+       <div class="steam-carousel-container media-reveal fade-in d-4">
             <div class="steam-main-view" id="carousel-main-view">
-                </div>
+            </div>
             <div class="steam-thumbs-track" id="carousel-thumbs">
                 ${projectData.steamCarousel.map((item, index) => `
                     <div class="steam-thumb ${index === 0 ? 'active' : ''}" data-index="${index}" onclick="changeCarouselMedia(${index})">
                         ${getMediaHTML(item, true)}
-                        ${item.type === 'video' ? `
+                        ${item.type === 'video' || item.type === 'youtube' ? `
                             <div class="thumb-play-icon">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                             </div>
@@ -312,9 +288,9 @@ function renderProjectPage() {
         </div>
 
         <div class="article-layout">
-            <aside class="article-sidebar fade-in d-4">
+            <aside class="article-sidebar fade-in d-5">
                 <div class="stats-panel">
-                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">System Architecture</h3>
+                    <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); margin-bottom: 1.5rem;">Project Overview</h3>
                     ${projectData.stats.map(s => `
                         <div class="stat-item">
                             <span class="stat-label">${s.label}</span>
@@ -344,46 +320,51 @@ function renderProjectPage() {
 
                 <section class="article-section">
                     ${projectData.splitOverviews.map(block => {
-                        const textHTML = `
-                            <div class="zig-zag-col">
-                                <h2 style="margin-top: 0; margin-bottom: 20px;">${block.title}</h2>
-                                ${block.text.map(p => `<p>${p}</p>`).join('')}
-                            </div>
-                        `;
-                        
-                        let visualHTML = '';
-                        if (block.codeSnippet) {
-                            visualHTML = `
-                                <div class="ide-window collapsed" style="margin: 0; width: 100%;">
-                                    <div class="ide-header" onclick="void(0)">
-                                        <div class="ide-dot" style="background:#ff5f56"></div><div class="ide-dot" style="background:#ffbd2e"></div><div class="ide-dot" style="background:#27c93f"></div>
-                                        <span style="margin-left:auto; color:var(--text-secondary); font-size: 0.75rem;">${block.codeSnippet.title}</span>
-                                    </div>
-                                    <div class="ide-content" style="max-height: 350px; overflow-y: auto; overflow-x: auto;">${highlightCode(block.codeSnippet.code)}</div>
+                        if (block.isFullWidth) {
+                            return `
+                                <div class="scroll-reveal" style="margin-bottom: 60px;">
+                                    ${block.title ? `<h2 style="margin-top: 0; margin-bottom: 20px; color: var(--text-primary); font-size: 1.5rem;">${block.title}</h2>` : ''}
+                                    ${block.text.map(p => `<p style="margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary);">${p}</p>`).join('')}
+                                    ${block.codeSnippet ? `
+                                        <div class="ide-window collapsed" style="margin-top: 30px; width: 100%;">
+                                            <div class="ide-header" onclick="void(0)">
+                                                <div class="ide-dot" style="background:#ff5f56"></div><div class="ide-dot" style="background:#ffbd2e"></div><div class="ide-dot" style="background:#27c93f"></div>
+                                                <span style="margin-left:auto; color:var(--text-secondary); font-size: 0.75rem;">${block.codeSnippet.title}</span>
+                                            </div>
+                                            <div class="ide-content" style="max-height: 450px; overflow-y: auto; overflow-x: auto;">${highlightCode(block.codeSnippet.code)}</div>
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `;
-                        } else if (block.media) {
+                        }
+
+                        const textHTML = `
+                            <div class="zig-zag-col">
+                                ${block.title ? `<h2 style="margin-top: 0; margin-bottom: 20px; color: var(--text-primary);">${block.title}</h2>` : ''}
+                                ${block.text.map(p => `<p style="margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary);">${p}</p>`).join('')}
+                            </div>
+                        `;
+                        let visualHTML = '';
+                        if (block.media) {
                             visualHTML = `
                                 <div class="media-wrapper" style="padding-bottom: 60%; border-bottom: none; border-radius: 12px; overflow: hidden; margin: 0; border: 1px solid rgba(255,255,255,0.05); width: 100%; position: relative;">
                                     ${getMediaHTML(block.media)}
                                 </div>
                             `;
                         }
-
-                        const sideElementHTML = `<div class="zig-zag-col">${visualHTML}</div>`;
-
                         return `
                             <div class="scroll-reveal zig-zag-row ${block.mediaOnLeft ? 'media-left' : 'media-right'}">
-                                ${sideElementHTML}
+                                <div class="zig-zag-col">${visualHTML}</div>
                                 ${textHTML}
                             </div>
                         `;
                     }).join('')}
                 </section>
 
-                <section class="article-section scroll-reveal">
-                    <h2>Module Code Example</h2>
-                    <p>An example of how simple it is to construct a new logic module for the particle emitters using the custom component architecture and reflection macros.</p>
+                ${projectData.codeSnippet ? `
+                <section class="article-section scroll-reveal" style="margin-bottom: 60px;">
+                    <h2 style="color: var(--text-primary); margin-top: 0; margin-bottom: 15px; font-size: 1.5rem;">Module Code Example</h2>
+                    <p style="margin-bottom: 15px; line-height: 1.6; font-size: 1.05rem; color: var(--text-secondary);">An example of how simple it is to construct a new logic module for the particle emitters using the custom component architecture and reflection macros.</p>
                     <div class="ide-wrapper scroll-reveal" style="margin-top: 20px;">
                         <div class="ide-window collapsed">
                             <div class="ide-header" onclick="void(0)">
@@ -394,36 +375,22 @@ function renderProjectPage() {
                         </div>
                     </div>
                 </section>
+                ` : ''}
 
-                <section class="article-section scroll-reveal">
-                    <h2>Future Plans</h2>
-                    <div class="feature-grid">
-                        ${projectData.futurePlans.map(plan => `
-                            <div class="bento-card" style="padding: 2rem; border-color: rgba(0, 240, 255, 0.2);">
-                                <h4 style="margin-bottom: 15px; color: var(--accent-color); font-size: 1.2rem;">${plan.title}</h4>
-                                <p style="margin: 0; font-size: 0.95rem; color: var(--text-secondary);">${plan.desc}</p>
-                            </div>
-                        `).join('')}
-                    </div>
-                </section>
+                ${projectData.futurePlans && projectData.futurePlans.length > 0 ? `
+                    <section class="article-section scroll-reveal" style="padding-top: 20px;">
+                        <h2 style="color: var(--accent-color); font-size: 1.8rem; margin-bottom: 30px;">Future Plans</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                            ${projectData.futurePlans.map(plan => `
+                                <div style="background: rgba(0, 240, 255, 0.02); border: 1px solid rgba(0, 240, 255, 0.1); border-radius: 12px; padding: 25px;">
+                                    <h3 style="color: var(--text-primary); margin-top: 0; margin-bottom: 15px; font-size: 1.2rem;">${plan.title}</h3>
+                                    <p style="color: var(--text-secondary); line-height: 1.6; margin: 0; font-size: 0.95rem;">${plan.text || plan.desc}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </section>
+                ` : ''}
 
-                <section class="article-section scroll-reveal">
-                    <h2>Gallery</h2>
-                    <div class="gallery-grid">
-                        ${projectData.gallery.map(item => `
-                            <div class="gallery-item">
-                                <div class="media-wrapper" style="padding-bottom: 66.66%; border-bottom: none; ${item.caption ? '' : 'border-radius: 12px;'}">
-                                    ${getMediaHTML(item.media)}
-                                </div>
-                                ${item.caption ? `
-                                <div class="gallery-caption">
-                                    <span class="accent" style="margin-right: 5px;">></span> ${item.caption}
-                                </div>
-                                ` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                </section>
             </div>
         </div>
     `;
@@ -452,27 +419,31 @@ window.changeCarouselMedia = function(index) {
         else t.classList.remove('active');
     });
 
-    // 1. Clear any existing image timer
+    // 1. Clear any existing timer
     clearTimeout(carouselTimer);
 
-    // 2. Check if the newly added media is a video
-    const videoElement = mainView.querySelector('video');
-    
-    if (videoElement) {
-        // Remove the 'loop' attribute so the video is allowed to end!
-        videoElement.removeAttribute('loop');
-        
-        // When the video naturally finishes, advance the carousel
-        videoElement.onended = () => {
-            advanceCarousel();
-        };
-        
-        // Fallback: If the video fails to load, advance after 5 seconds anyway
-        videoElement.onerror = () => {
+    const activeMedia = projectData.steamCarousel[index];
+
+    // 2. Decide how to handle auto-playing based on media type
+    if (activeMedia.type === 'youtube') {
+        // DO NOTHING: Leave the timer cleared. 
+        // This lets the user click Play on the YouTube video and watch it at their own pace without the carousel interrupting them.
+    } else if (activeMedia.type === 'video') {
+        const videoElement = mainView.querySelector('video');
+        if (videoElement) {
+            // Remove the 'loop' attribute so the video is allowed to end!
+            videoElement.removeAttribute('loop');
+            
+            // When the video naturally finishes, advance the carousel
+            videoElement.onended = () => { advanceCarousel(); };
+            
+            // Fallback: If the video fails to load, advance after 5 seconds anyway
+            videoElement.onerror = () => { carouselTimer = setTimeout(advanceCarousel, 5000); };
+        } else {
             carouselTimer = setTimeout(advanceCarousel, 5000);
-        };
+        }
     } else {
-        // If it's an image or iframe, wait 5 seconds then advance
+        // If it's a static image or a standard iframe, wait 5 seconds then advance
         carouselTimer = setTimeout(advanceCarousel, 5000);
     }
 };
@@ -487,32 +458,26 @@ function advanceCarousel() {
 renderProjectPage();
 
 // -----------------------------------------------------
-// SEAMLESS PAGE TRANSITION LOGIC
+// 4. SEAMLESS PAGE TRANSITION LOGIC
 // -----------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        document.body.classList.add('is-loaded');
-    }, 100);
+    setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
 
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function(e) {
             if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
                 e.preventDefault();
                 const destination = this.href;
-
                 document.body.classList.remove('is-loaded');
                 document.body.classList.add('is-exiting');
-
-                setTimeout(() => {
-                    window.location.href = destination;
-                }, 500); 
+                setTimeout(() => { window.location.href = destination; }, 500); 
             }
         });
     });
 });
 
 // -----------------------------------------------------
-// GLOBAL IDE WINDOW COLLAPSE LOGIC
+// 5. GLOBAL IDE WINDOW COLLAPSE LOGIC
 // -----------------------------------------------------
 document.addEventListener('click', function(e) {
     const header = e.target.closest('.ide-header');

@@ -34,7 +34,7 @@ const portfolioData = {
             title: "Frostheim's Editor",
             status: "★ Specialization", 
             statusClass: "active",
-            techStack: ["C++20", "DX11", "ImGui", "JSON"],
+            techStack: ["C++20", "DirectX 11", "ImGui", "JSON"],
             description: "My flagship project and primary specialization. A custom C++ engine editor built with ImGui, featuring a robust Content Browser, Unity-style Prefabs, and a seamless drag-and-drop workflow.",
             projectLink: "editor",
             linkText: "Read Breakdown →",
@@ -54,7 +54,7 @@ const portfolioData = {
         },
         {
             title: "Particle System & Editor",
-            status: "Complete",
+            status: "Production-Proven",
             statusClass: "", 
             techStack: ["C++", "DirectX 11", "ImGui", "Shaders"],
             description: "A modular, Niagara-inspired particle system and tool built entirely from scratch. Engineered a custom ImGui interface featuring curve editors and a component-based architecture where emitters own distinct behavior modules.",
@@ -77,13 +77,35 @@ const portfolioData = {
 
     gameProjects: [
         {
+            title: "Spite Oathbound",
+            description: "Top-down ARPG built in our custom engine Frostheim.",
+            techStack: ["C++", "Frostheim", "2025"],
+            link: "spite_oathbound",
+            media: {
+                type: "hover-video",
+                src: "https://img.youtube.com/vi/6T9ucwCqhoA/maxresdefault.jpg",
+                hoverSrc: "image/spite_oathbound/spite.mp4"
+            }
+        },
+        {
+            title: "Merle: The Kinda Incompetent Wizard",
+            description: "3D platformer with Smooth movement.",
+            techStack: ["C++", "Frostheim", "2026"],
+            link: "merle", 
+            media: {
+                type: "hover-video",
+                src: "image/merle/merle.png",
+                hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+GIF"
+            }
+        },
+        {
             title: "Pawn's Gambit",
             description: "The Rookies Runner-up & People's Choice award-winning puzzle game.",
             techStack: ["C#", "Unity", "2024"],
             link: "pawn",
             media: {
                 type: "hover-video", 
-                src: "https://img.youtube.com/vi/RV0J4raLpqY/maxresdefault.jpg", 
+                src: "image/pawns/pawn_gambit.jpg", 
                 hoverSrc: "image/pawns/pawns.mp4"
             }
         },
@@ -107,28 +129,6 @@ const portfolioData = {
                 type: "hover-video",
                 src: "https://img.youtube.com/vi/gxaEJ56esTE/maxresdefault.jpg",
                 hoverSrc: "image/beak_noir/beak_noir.mp4"
-            }
-        },
-        {
-            title: "Spite Oathbound",
-            description: "Top-down ARPG built in our custom engine Frostheim.",
-            techStack: ["C++", "Frostheim", "2025"],
-            link: "spite_oathbound",
-            media: {
-                type: "hover-video",
-                src: "https://img.youtube.com/vi/6T9ucwCqhoA/maxresdefault.jpg",
-                hoverSrc: "image/spite_oathbound/spite.mp4"
-            }
-        },
-        {
-            title: "Merle: The Kinda Incompetent Wizard",
-            description: "Smooth movement.",
-            techStack: ["C++", "Frostheim", "2026"],
-            link: "#", 
-            media: {
-                type: "hover-video",
-                src: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+Static",
-                hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+GIF"
             }
         },
         {
