@@ -36,9 +36,6 @@
     <script src="particle_editor.js"></script>
 
     <script>
-        // -----------------------------------------------------
-        // 1. SMOOTH ANTI-BANDING SHADER BACKGROUND
-        // -----------------------------------------------------
         const shaderCanvas = document.getElementById('shader-canvas');
         const gl = shaderCanvas.getContext('webgl');
 
@@ -119,9 +116,6 @@
             requestAnimationFrame(renderShader);
         }
 
-        // -----------------------------------------------------
-        // 2. SEAMLESS PAGE TRANSITION & BACK-BUTTON FIX
-        // -----------------------------------------------------
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 document.body.classList.remove('is-exiting');
@@ -148,9 +142,6 @@
                 });
             });
 
-            // -----------------------------------------------------
-            // 3. SCROLL REVEAL LOGIC
-            // -----------------------------------------------------
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
