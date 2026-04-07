@@ -36,9 +36,6 @@
     <script src="beak_noir.js"></script>
 
     <script>
-        // -----------------------------------------------------
-        // 1. SMOOTH ANTI-BANDING SHADER BACKGROUND
-        // -----------------------------------------------------
         const shaderCanvas = document.getElementById('shader-canvas');
         const gl = shaderCanvas.getContext('webgl');
 
@@ -119,9 +116,6 @@
             requestAnimationFrame(renderShader);
         }
 
-        // -----------------------------------------------------
-        // 2. SEAMLESS FADE TRANSITION LOGIC
-        // -----------------------------------------------------
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {
                 document.body.classList.remove('is-exiting');
@@ -148,7 +142,6 @@
                 });
             });
 
-            // Scroll Reveal Observer
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -163,9 +156,6 @@
             }, 100);
         });
         
-        // -----------------------------------------------------
-        // 3. GLOBAL IDE WINDOW COLLAPSE LOGIC
-        // -----------------------------------------------------
         document.addEventListener('click', function(e) {
             const header = e.target.closest('.ide-header');
             if (header) {

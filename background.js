@@ -1,6 +1,3 @@
-// -----------------------------------------------------
-// 1. SMOOTH ANTI-BANDING SHADER BACKGROUND
-// -----------------------------------------------------
 const shaderCanvas = document.getElementById('shader-canvas');
 const gl = shaderCanvas.getContext('webgl');
 
@@ -69,9 +66,6 @@ if (gl) {
     requestAnimationFrame(renderShader);
 }
 
-// -----------------------------------------------------
-// 2. UI & PARTICLES
-// -----------------------------------------------------
 const fpsElem = document.getElementById("fps");
 let lastTime = performance.now();
 let frameCount = 0;
@@ -96,11 +90,9 @@ const mouse = { x: null, y: null };
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener('resize', resize); resize();
 
-// Desktop Mouse Events
 window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
 window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
-// Mobile Touch Events
 window.addEventListener('touchstart', (e) => { 
     mouse.x = e.touches[0].clientX; 
     mouse.y = e.touches[0].clientY; 

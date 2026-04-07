@@ -1,6 +1,3 @@
-// -----------------------------------------------------
-// 1. PROJECT DATA
-// -----------------------------------------------------
 const projectData = {
     title: "Spite Oathbound",
     tagline: "Top-Down ARPG Built on a Custom C++ Engine",
@@ -203,9 +200,6 @@ private:
     ]
 };
 
-// -----------------------------------------------------
-// 2. RENDERING LOGIC (ULTRA-OPTIMIZED)
-// -----------------------------------------------------
 function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
     const loadingBehavior = isFirstLoad ? 'eager' : 'lazy';
     const videoPreload = isFirstLoad ? 'auto' : 'metadata';
@@ -218,7 +212,7 @@ function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
         return `<iframe src="${media.src}?rel=0" title="YouTube Video" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%; position: absolute; inset: 0;"></iframe>`;
     } else if (media.type === 'video') {
         return `
-            <video autoplay loop muted playsinline preload="${videoPreload}" poster="${media.fallbackImg || ''}" style="width: 100%; height: 100%; object-fit: contain;">
+            <video autoplay loop muted controls playsinline preload="${videoPreload}" poster="${media.fallbackImg || ''}" style="width: 100%; height: 100%; object-fit: contain;">
                 <source src="${media.src}" type="video/mp4">
                 <img src="${media.fallbackImg || ''}" loading="${loadingBehavior}" decoding="async" alt="Fallback" style="width: 100%; height: 100%; object-fit: contain;">
             </video>`;
@@ -427,9 +421,6 @@ function renderProjectPage() {
     window.changeCarouselMedia(0);
 }
 
-// -----------------------------------------------------
-// 3. STEAM CAROUSEL LOGIC (SMART AUTO-PLAY)
-// -----------------------------------------------------
 let carouselIndex = 0;
 let carouselTimer;
 
@@ -438,45 +429,35 @@ window.changeCarouselMedia = function(index) {
     const mainView = document.getElementById('carousel-main-view');
     const thumbs = document.querySelectorAll('.steam-thumb');
     
-    // Load new media into the main view (true = isFirstLoad to bypass lazy loading)
     mainView.innerHTML = getMediaHTML(projectData.steamCarousel[index], false, true);
     
-    // Update thumbnail highlights
     thumbs.forEach((t, i) => {
         if (i === index) t.classList.add('active');
         else t.classList.remove('active');
     });
 
-    // 1. Clear any existing timer
     clearTimeout(carouselTimer);
 
     const activeMedia = projectData.steamCarousel[index];
 
-    // 2. Decide how to handle auto-playing based on media type
     if (activeMedia.type === 'youtube') {
-        // DO NOTHING: Leave the timer cleared. 
-        // This lets the user click Play on the YouTube video and watch it at their own pace without the carousel interrupting them.
+        
     } else if (activeMedia.type === 'video') {
         const videoElement = mainView.querySelector('video');
         if (videoElement) {
-            // Remove the 'loop' attribute so the video is allowed to end!
             videoElement.removeAttribute('loop');
             
-            // When the video naturally finishes, advance the carousel
             videoElement.onended = () => { advanceCarousel(); };
             
-            // Fallback: If the video fails to load, advance after 5 seconds anyway
             videoElement.onerror = () => { carouselTimer = setTimeout(advanceCarousel, 5000); };
         } else {
             carouselTimer = setTimeout(advanceCarousel, 5000);
         }
     } else {
-        // If it's a static image or a standard iframe, wait 5 seconds then advance
         carouselTimer = setTimeout(advanceCarousel, 5000);
     }
 };
 
-// Helper function to figure out the next slide
 function advanceCarousel() {
     let nextIndex = carouselIndex + 1;
     if (nextIndex >= projectData.steamCarousel.length) nextIndex = 0;
@@ -485,9 +466,6 @@ function advanceCarousel() {
 
 renderProjectPage();
 
-// -----------------------------------------------------
-// 4. SEAMLESS PAGE TRANSITION LOGIC
-// -----------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => { document.body.classList.add('is-loaded'); }, 100);
 

@@ -1,6 +1,3 @@
-// -----------------------------------------------------
-// 1. PROJECT DATA
-// -----------------------------------------------------
 const projectData = {
     title: "Beak Noir",
     tagline: "An Isometric Action-Adventure. Solve the mystery.",
@@ -58,18 +55,14 @@ const projectData = {
     gallery: [
         {
             media: { type: "image", src: "../image/beak_noir/BeakNoir1.jpg" },
-            caption: "" // Leave blank or remove the line entirely, no box will show!
+            caption: ""
         },
         {
             media: { type: "image", src: "../image/beak_noir/BeakNoir5.jpg" } 
-            // I removed the caption line completely here, and it still works!
         }
     ]
 };
 
-// -----------------------------------------------------
-// 2. RENDERING LOGIC
-// -----------------------------------------------------
 function getMediaHTML(media) {
     if (media.type === 'video') {
         return `<video autoplay loop muted playsinline poster="${media.fallbackImg}">

@@ -233,7 +233,7 @@ function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
     
     if (media.type === 'video') {
         return `
-            <video autoplay loop muted playsinline preload="${videoPreload}" poster="${media.fallbackImg || ''}" style="width: 100%; height: 100%; object-fit: contain;">
+            <video autoplay loop muted controls playsinline preload="${videoPreload}" poster="${media.fallbackImg || ''}" style="width: 100%; height: 100%; object-fit: contain;">
                 <source src="${media.src}" type="video/mp4">
                 <img src="${media.fallbackImg || ''}" loading="${loadingBehavior}" decoding="async" alt="Fallback" style="width: 100%; height: 100%; object-fit: contain;">
             </video>`;

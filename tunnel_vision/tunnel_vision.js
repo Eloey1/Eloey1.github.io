@@ -1,6 +1,3 @@
-// -----------------------------------------------------
-// 1. PROJECT DATA
-// -----------------------------------------------------
 const projectData = {
     title: "Tunnel Vision",
     tagline: "Narrative Driven 2D Platformer",
@@ -80,9 +77,6 @@ const projectData = {
     ]
 };
 
-// -----------------------------------------------------
-// 2. RENDERING LOGIC
-// -----------------------------------------------------
 function getMediaHTML(media) {
     if (media.type === 'video') {
         return `<video autoplay loop muted playsinline poster="${media.fallbackImg}">
@@ -90,7 +84,6 @@ function getMediaHTML(media) {
                     <img src="${media.fallbackImg}" alt="Fallback">
                 </video>`;
     } else if (media.type === 'iframe') {
-        // Includes YouTube security attributes so it plays properly!
         return `<iframe src="${media.src}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>`;
     } else {
         return `<img src="${media.src}" alt="Media">`;

@@ -1,7 +1,3 @@
-// -----------------------------------------------------
-// 0. DATA RENDERING LOGIC (ULTRA-OPTIMIZED)
-// -----------------------------------------------------
-
 function getMediaHTML(media, isFirstLoad = false) {
     const loadingBehavior = isFirstLoad ? 'eager' : 'lazy';
     const videoPreload = isFirstLoad ? 'auto' : 'none';
@@ -40,7 +36,6 @@ function highlightCode(code) {
 }
 
 function renderPortfolio() {
-    // 1. Render Sidebar
     const sidebarHtml = `
         <div>
             <div class="status-badge"><div class="pulse"></div> ${portfolioData.sidebar.status}</div>
@@ -70,7 +65,6 @@ function renderPortfolio() {
     `;
     document.getElementById('sidebar-container').innerHTML = sidebarHtml;
 
-    // 2. Render Architecture Section (Restored Hover Effects & Optimization)
     const archHtml = portfolioData.architectureProjects.map((proj, index) => `
         <article class="featured-card scroll-reveal" style="position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; ${index > 0 ? 'margin-top: 3rem;' : ''}" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px rgba(0, 240, 255, 0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
             
@@ -108,7 +102,6 @@ function renderPortfolio() {
     `).join('');
     document.getElementById('architecture-container').innerHTML = archHtml;
 
-    // 3. Render Games Bento Grid (Restored Hover Effects & Forced Lazy Loading)
     let gamesHtml = portfolioData.gameProjects.map(game => `
         <div class="bento-card scroll-reveal" style="position: relative; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='var(--accent-color)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='';">
             
@@ -145,19 +138,14 @@ function renderPortfolio() {
 
 renderPortfolio();
 
-// -----------------------------------------------------
-// HOVER MEDIA LOGIC (Supports both GIFs and MP4s)
-// -----------------------------------------------------
 document.addEventListener('mouseover', function(e) {
     const card = e.target.closest('.bento-card, .featured-card');
     if (card) {
-        // Handle Legacy GIFs
         const img = card.querySelector('.hover-gif');
         if (img && img.dataset.hover) {
             img.src = img.dataset.hover;
         }
 
-        // Handle Optimized MP4 Videos
         const vidContainer = card.querySelector('.hover-video-container');
         if (vidContainer) {
             const vid = vidContainer.querySelector('.hover-video-player');
@@ -173,30 +161,24 @@ document.addEventListener('mouseover', function(e) {
 document.addEventListener('mouseout', function(e) {
     const card = e.target.closest('.bento-card, .featured-card');
     if (card) {
-        // Handle Legacy GIFs
         const img = card.querySelector('.hover-gif');
         if (img && img.dataset.static) {
             img.src = img.dataset.static;
         }
 
-        // Handle Optimized MP4 Videos
         const vidContainer = card.querySelector('.hover-video-container');
         if (vidContainer) {
             const vid = vidContainer.querySelector('.hover-video-player');
             const poster = vidContainer.querySelector('.hover-video-poster');
             if (vid) {
                 vid.pause();
-                vid.currentTime = 0; // Resets video to beginning
+                vid.currentTime = 0;
                 if (poster) poster.style.opacity = '1';
             }
         }
     }
 });
 
-
-// -----------------------------------------------------
-// 3. SEAMLESS PAGE TRANSITION & SCROLL REVEAL (Restored)
-// -----------------------------------------------------
 window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
         document.body.classList.remove('is-exiting');
@@ -207,7 +189,6 @@ window.addEventListener('pageshow', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Reveal links handler
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function(e) {
             if (this.hostname === window.location.hostname && !this.hash && this.target !== '_blank') {
@@ -220,26 +201,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // SCROLL REVEAL ANIMATIONS (Fixes the fade-in logic missing previously)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // 1. Fade the card in
                 entry.target.classList.add('visible');
                 
-                // 2. If the card has a video, start downloading and playing it NOW!
                 const lazyVids = entry.target.querySelectorAll('video.lazy-autoplay');
                 lazyVids.forEach(vid => {
                     vid.play().catch(err => console.log("Autoplay prevented:", err));
                 });
 
-                // Stop observing once it's loaded
                 observer.unobserve(entry.target);
             }
         });
     }, {
         threshold: 0.15,
-        rootMargin: "0px 0px 100px 0px" // Loads 100px before it enters the screen so it's ready
+        rootMargin: "0px 0px 100px 0px"
     });
 
     setTimeout(() => {
@@ -249,62 +226,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 });
 
-// -----------------------------------------------------
-// 6. SEQUENTIAL BACKGROUND ASSET LOADER
-// -----------------------------------------------------
 window.addEventListener('load', () => {
-    // Give the CPU and network 1 full second to completely finish rendering the page
     setTimeout(() => {
         console.log("Page is ready. Starting sequential asset streaming...");
         
         const backgroundVideos = document.querySelectorAll('video.lazy-autoplay');
         
-        // This is an asynchronous queue that loads one video at a time
         async function loadVideosSequentially() {
             for (let i = 0; i < backgroundVideos.length; i++) {
                 const vid = backgroundVideos[i];
                 console.log(`Buffering video ${i + 1} of ${backgroundVideos.length}...`);
                 
                 await new Promise((resolve) => {
-                    // If the video is already buffered, skip it!
                     if (vid.readyState >= 3) {
                         return resolve();
                     }
 
-                    // Create a function to move to the next video
                     const finishLoading = () => {
                         vid.removeEventListener('canplaythrough', finishLoading);
                         vid.removeEventListener('error', finishLoading);
                         resolve();
                     };
 
-                    // Listen for when the browser says "I have downloaded enough to play this smoothly"
                     vid.addEventListener('canplaythrough', finishLoading);
                     
-                    // Listen for errors (so a broken video doesn't freeze the whole queue)
                     vid.addEventListener('error', finishLoading);
 
-                    // TRIGGER THE DOWNLOAD
                     vid.preload = 'auto';
-                    vid.load(); // Force the browser to start fetching
+                    vid.load();
 
-                    // FAILSAFE: If a video takes longer than 4 seconds to buffer, 
-                    // move on to the next one so the queue doesn't get stuck forever on slow 4G.
                     setTimeout(finishLoading, 4000);
                 });
             }
             console.log("All background assets successfully streamed into memory!");
         }
 
-        // Start the queue!
         loadVideosSequentially();
 
     }, 1000); 
 });
 
-// -----------------------------------------------------
-// 4. GLOBAL IDE WINDOW COLLAPSE LOGIC
-// -----------------------------------------------------
 document.addEventListener('click', function(e) {
     const header = e.target.closest('.ide-header');
     if (header) {
