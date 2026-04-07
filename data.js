@@ -4,7 +4,7 @@ const portfolioData = {
         name: "Emil Barkefors",
         title: "Engine & Tools Programmer",
         
-        description: "I'm a soon-to-be graduate in Game Development and Programming from The Game Assembly in Malmö, Sweden. During my studies I have developed a interest for custom C++ Engines and Tools.",
+        description: "I'm a soon-to-be graduate in Game Programming from The Game Assembly in Malmö, Sweden. During my studies I have developed a interest for custom C++ Engines and Tools.",
         internshipNotice: "I am part of The Game Assembly's internship program. As per the agreement between the Games Industry and The Game Assembly, neither student nor company may be in contact with one another regarding internships before April 15th. Any internship offers can be made on April 27th, at the earliest.",
         skills: [
             "C++ (14/17/20)", 
@@ -94,7 +94,7 @@ const portfolioData = {
             media: {
                 type: "hover-video",
                 src: "image/merle/merle.png",
-                hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=Platformer+GIF"
+                hoverSrc: "image/merle/merle_gameplay.mp4"
             }
         },
         {

@@ -171,7 +171,7 @@ const projectData = {
             title: "Perforce Integration",
             isFullWidth: false,
             text: [
-                "The primary motivation for integrating Perforce directly into the editor was to remove workflow friction. The introduction of a new meta-file system also increased the complexity of asset managemnt, so the Editor-Perforce workflow automatically handles this.",
+                "The primary motivation for integrating Perforce directly into the editor was to remove workflow friction. The introduction of a new meta-file system also increased the complexity of asset management, so the Editor-Perforce workflow automatically handles this.",
                 "If a user checks out an asset or marks a file for add, then the system will find the corresponding meta-file and automatically mirrors the Perforce action."
             ],
             media: { type: "video", src: "../image/editor/temp_perforce.mp4", fallbackImg: "https://placehold.co/600x400/111620/00f0ff?text=Perforce" },

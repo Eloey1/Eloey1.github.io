@@ -23,8 +23,8 @@ const projectData = {
         { 
             type: "video", 
             src: "../image/merle/merle_gameplay.mp4",
-            fallbackImg: "https://placehold.co/1280x720/111620/00f0ff?text=Merle+Gameplay+Trailer",
-            thumb: "https://placehold.co/240x135/111620/00f0ff?text=Trailer"
+            fallbackImg: "../image/merle/merle_thumb.png",
+            thumb: "../image/merle/merle_thumb.png"
         },
         { 
             type: "image", 
@@ -135,7 +135,7 @@ private:
                 "I took ownership of the dynamic game camera, ensuring it smoothly tracked the player through complex 3D environments without clipping. However, other disciplines on the team also needed a way to create cinematic, scripted camera movements.",
                 "To solve this, I developed a custom data pipeline between Unreal Engine and Frostheim. The team could draw standard splines in Unreal, which were then automatically exported into our level files and parsed directly by our engine. This cross-engine workflow gave the team the power to easily create camera rail tracks with zero friction."
             ],
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=Unreal+Spline+Tool" },
+            media: { type: "video", src: "../image/merle/camera_spline.mp4" },
             mediaOnLeft: false
         }
     ],
