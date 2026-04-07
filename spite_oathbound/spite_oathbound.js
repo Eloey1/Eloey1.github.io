@@ -21,14 +21,29 @@ const projectData = {
         },
         { 
             type: "image", 
-            src: "../image/spite_oathbound/spite1.png", 
-            thumb: "../image/spite_oathbound/spite1.png" 
+            src: "../image/spite_oathbound/screenshot 1.png", 
+            thumb: "../image/spite_oathbound/screenshot 1.png" 
         },
         { 
             type: "image", 
-            src: "../image/spite_oathbound/spite2.png", 
-            thumb: "../image/spite_oathbound/spite2.png" 
-        }
+            src: "../image/spite_oathbound/screenshot 2.png", 
+            thumb: "../image/spite_oathbound/screenshot 2.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/spite_oathbound/screenshot 3.png", 
+            thumb: "../image/spite_oathbound/screenshot 3.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/spite_oathbound/screenshot 4.png", 
+            thumb: "../image/spite_oathbound/screenshot 4.png" 
+        },
+        { 
+            type: "image", 
+            src: "../image/spite_oathbound/screenshot 5.png", 
+            thumb: "../image/spite_oathbound/screenshot 5.png" 
+        },
     ],
 
     introSections: [
@@ -106,7 +121,7 @@ private:
                 "Before I developed a fully integrated editor, the team needed a way to debug and manipulate the game in real-time. I established the foundational tools architecture, creating a system for the team to easily instantiate floating ImGui panels.",
                 "While these standalone panels were incredibly useful during early production, managing a chaotic workspace of floating windows is what ultimately motivated me to create the Editor as my specialization."
             ],
-            media: { type: "image", src: "https://placehold.co/600x400/111620/00f0ff?text=ImGui+Floating+Panels" },
+            media: { type: "image", src: "../image/spite_oathbound/floating_panels.png" },
             mediaOnLeft: false
         },
         {
