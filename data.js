@@ -134,10 +134,10 @@ const portfolioData = {
             title: "TBA",
             description: "Unannounced project.",
             techStack: ["C++", "Frostheim", "2026"],
-            link: "#", 
+            link: "/", 
             media: {
                 type: "hover-video",
-                src: "https://placehold.co/600x337/111620/00f0ff?text=TBA+Static",
+                src: "https://placehold.co/600x337/111620/00f0ff?text=TBA",
                 hoverSrc: "https://placehold.co/600x337/111620/00f0ff?text=TBA+GIF"
             }
         }
