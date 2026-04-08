@@ -17,6 +17,12 @@ const projectData = {
             fallbackImg: "../image/hailstorm/showcase_thumb.png",
             thumb: "../image/hailstorm/showcase_thumb.png"
         },
+        { 
+            type: "video", 
+            src: "../image/hailstorm/Softparticles Clip1.mp4",
+            fallbackImg: "../image/hailstorm/softparticles_thumb.png",
+            thumb: "../image/hailstorm/softparticles_thumb.png"
+        },
         {
             type: "video",
             src: "../image/hailstorm/purpleParticles.mp4",
