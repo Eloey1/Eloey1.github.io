@@ -182,17 +182,19 @@ function getMediaHTML(media, isThumb = false, isFirstLoad = false) {
 }
 
 function highlightCode(code) {
-    return code
-        .replace(/\/\/.*/g, match => `<span className="cm">${match}</span>`)
-        .replace(/"(.*?)"/g, '<span className="ty" style="color: #a5d6ff;">"$1"</span>')
-        .replace(/\b(struct|float|void|override|int|for|const|size_t|class|auto)\b/g, '<span class="kw">$1</span>')
-        .replace(/\b(MODULE_NAME|REFLECT|VAR)\b/g, '<span class="kw" style="color: #ffbd2e;">$1</span>')
-        .replace(/\b(Vector3f|Matrix4x4f|Matrix3x3f|Particle|std|vector|EditorUI|ParticleModule|BoxSpawnModule|CU)\b/g, '<span class="ty">$1</span>')
+    let safeCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    return safeCode
+        .replace(/\/\/.*/g, match => `<span className='cm'>${match}</span>`)
+        .replace(/"(.*?)"/g, `<span className='ty' style='color: #a5d6ff;'>"$1"</span>`)
+        .replace(/\b(struct|float|void|override|int|for|const|size_t|class|auto)\b/g, `<span className='kw'>$1</span>`)
+        .replace(/\b(MODULE_NAME|REFLECT|VAR)\b/g, `<span className='kw' style='color: #ffbd2e;'>$1</span>`)
+        .replace(/\b(Vector3f|Matrix4x4f|Matrix3x3f|Particle|std|vector|EditorUI|ParticleModule|BoxSpawnModule|CU|unique_ptr)\b/g, `<span className='ty'>$1</span>`)
         .replace(/\b([a-zA-Z_]\w*)(?=\()/g, match => {
             if (['MODULE_NAME', 'REFLECT', 'VAR', 'for'].includes(match)) return match;
-            return `<span class="fn">${match}</span>`;
+            return `<span className='fn'>${match}</span>`;
         })
-        .replace(/\b(\d+\.?\d*f?)\b/g, '<span class="kw" style="color: #79c0ff;">$1</span>')
+        .replace(/\b(\d+\.?\d*f?)\b/g, `<span className='kw' style='color: #79c0ff;'>$1</span>`)
         .replace(/className=/g, 'class='); 
 }
 
