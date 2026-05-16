@@ -1,6 +1,6 @@
 const portfolioData = {
     sidebar: {
-        status: "Seeking 2026 Internship",
+        status: "Tools Internship (Fall 2026)",
         name: "Emil Barkefors",
         title: "Tools & Engine Programmer",
         
